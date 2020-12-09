@@ -1,4 +1,9 @@
 import React, { Component } from "react";
+import { Link, Route, Switch, Redirect } from "react-router-dom";
+import Home from "./home";
+import AddUser from "./adduser";
+import Header from "./common/header";
+import Leftsidebarnav from "./common/leftSidebarnav";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -19,10 +24,8 @@ class Dashboard extends Component {
 
   componentWillUnmount() {}
 
-  // Prototype methods, Bind in Constructor (ES2015)
   handleEvent() {}
 
-  // className Properties (Stage 3 Proposal)
   handler = () => {
     this.setState();
   };
@@ -30,7 +33,30 @@ class Dashboard extends Component {
   render() {
     return (
       <div className="sb-nav-fixed">
-        Main users dashboard
+        <Header />
+        <div id="layoutSidenav">
+          <Leftsidebarnav/>
+          <div id="layoutSidenav_content">
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/adduser" component={AddUser} />
+            </Switch>
+
+            <footer className="py-4 bg-light mt-auto">
+              <div className="container-fluid">
+                <div className="d-flex align-items-center justify-content-between small">
+                  <div className="text-muted">Copyright &copy; Source dev</div>
+                  <div>
+                    <a href="#">
+                      {" "}
+                      Powered by <strong>Source dev</strong>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </footer>
+          </div>
+        </div>
       </div>
     );
   }
