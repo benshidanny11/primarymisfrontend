@@ -14,13 +14,17 @@ import "./../assets/styles/css/mainstyle.css";
 // Import components
 import { Route, BrowserRouter, Switch } from "react-router-dom";
 import Dashboard from "./pages/mainusers/dashboard";
+import Adduser from "./pages/mainusers/adduser";
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/"  component={Dashboard}/>
+        <Route exact path="/" component={Dashboard} />
+         <Route exact path="/adduser"  component={Dashboard}/>
       </Switch>
+
+     
     </BrowserRouter>
   );
 }
