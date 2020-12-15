@@ -10,23 +10,45 @@ import "../assets/styles/flaticon/flaticon.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./../assets/styles/css/style.css";
 import "./../assets/styles/css/mainstyle.css";
+import "react-toastify/dist/ReactToastify.css";
 
 // Import components
 import { Route, BrowserRouter, Switch } from "react-router-dom";
-import Dashboard from "./pages/mainusers/dashboard";
-import Adduser from "./pages/mainusers/adduser";
+import Dashboard from "./pages/mainusers/_dashboard";
 
-function App() {
+import cookie from "react-cookies";
+import { connect } from 'react-redux'
+import jwt from "jsonwebtoken";
+
+import { publicRoutes, model_routes } from "../routes";
+function App(props) {
+  //const dispatch = useDispatch();
+ //dispatch(decodeToken(cookie.load("primary-mis-token")));
+//   const user=useSelector((state) => state.loginReducer);
+//  const state=useSelector((state) => state);
+//  console.log("USer in app",user)
+//   cookie.save("user",JSON.stringify(user))
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={Dashboard} />
-         <Route exact path="/adduser"  component={Dashboard}/>
+        {publicRoutes.map((prop, key) => (
+          <Route exact path={prop.path} key={key} component={prop.component} />
+        ))}
+        {model_routes(props).map((prop, key) => (
+          <Route exact path={prop.path} key={key} component={Dashboard} />
+        ))}
       </Switch>
-
-     
     </BrowserRouter>
   );
 }
+const mapStateToProps = (state) => {
+  const token = cookie.load("primary-mis-token");
+  try {
+   const user = jwt.verify(token, "primaryMIS@gmail.com130852");
+   return { ...state, user };
+ } catch (error) {
+   return { ...state, error};
+ }
+} 
 
-export default App;
+export default connect(mapStateToProps, {  })(App);
