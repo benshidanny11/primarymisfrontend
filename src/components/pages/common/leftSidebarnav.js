@@ -1,34 +1,15 @@
-import React, { Component } from 'react'
-import { Link, Redirect } from "react-router-dom";
+import React from 'react'
+import { Link } from "react-router-dom";
+import cookie from "react-cookies";
 
-export default class Leftsidebarnav extends Component {
-    constructor(props) {
-        super(props)
+function Leftsidebarnav(props) {
 
-        this.state = {
-                 
-        }
-
-        this.handleEvent = this.handleEvent.bind(this)
+   
+    const handleGetUSers=()=>{
+      //userS.dispatch(getAllUsersAction)
+    //  dispatch(getAllUsersAction)
     }
 
-    componentDidMount() {
-        
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) { if (prevState.name !== this.state.name) { this.handler() } }
-
-    componentWillUnmount() {
-        
-    }
-
-    // Prototype methods, Bind in Constructor (ES2015)
-    handleEvent() {}
-
-    // Class Properties (Stage 3 Proposal)
-    handler = () => { this.setState() }
-
-    render() {
         return (
             <div id="layoutSidenav_nav">
             <nav
@@ -67,13 +48,13 @@ export default class Leftsidebarnav extends Component {
                   >
                     <nav className="sb-sidenav-menu-nested nav">
                       <div className="nav-link">
-                        <Link to="adduser">Add user</Link>
+                        <Link to="createuser">Add user</Link>
                       </div>
 
                       <Link to="/updateuser" className="nav-link">
                         Update user
                       </Link>
-                      <Link to="/viewusers" className="nav-link">
+                      <Link to="/allusers" className="nav-link" onClick={handleGetUSers}>
                         All users
                       </Link>
                     </nav>
@@ -178,12 +159,13 @@ export default class Leftsidebarnav extends Component {
               <div className="sb-sidenav-footer">
                 <div className="small">Logged in as:</div>
                 {
-                  "Benshi danny" /* {`${this.props.user.firstName} ${this.props.user.lastname}`} */
+                cookie.load("user").names
                 }
               </div>
             </nav>
           </div>
           
         )
-    }
+   
 }
+export default Leftsidebarnav
