@@ -1,3 +1,4 @@
+import React from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {
   Table,
@@ -8,11 +9,25 @@ import {
   TableRow,
   Paper,
   Button,
-  CircularProgress,
 } from "@material-ui/core";
 import ContentLoader from "react-content-loader";
+import { Visibility } from "@material-ui/icons";
 
-function Userslist({ users, isLoading }) {
+
+import Avatar from '@material-ui/core/Avatar';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import PersonIcon from '@material-ui/icons/Person';
+import AddIcon from '@material-ui/icons/Add';
+import Typography from '@material-ui/core/Typography';
+import { blue } from '@material-ui/core/colors';
+import StudentMenu from "../menus/studentMenu";
+
+function Userslist({ students }) {
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: "#1168ca",
@@ -31,10 +46,9 @@ function Userslist({ users, isLoading }) {
     },
   }))(TableRow);
 
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
 
+  const [open, setOpen] = React.useState(false);
+  const [selectedValue, setSelectedValue] = React.useState("");
   const useStyles = makeStyles({
     table: {},
     container: {
@@ -46,11 +60,32 @@ function Userslist({ users, isLoading }) {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      marginTop:20
-    
+      marginTop: 20,
+    },
+    submit: {
+      backgroundColor: "#F55128",
+      borderRadius: 5,
+      color: "#fff",
+    },
+
+    button: {
+      height: 35,
+      backgroundColor: "#1168ca",
+      color: "white",
+      "&:hover": {
+        background: "#2579da",
+        color: "#fff",
+      },
     },
   });
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
+  const handleClose = (value) => {
+    setOpen(false);
+    setSelectedValue(value);
+  };
   const classes = useStyles();
 
   return (
@@ -59,28 +94,41 @@ function Userslist({ users, isLoading }) {
         <TableHead>
           <TableRow>
             <StyledTableCell>Full name</StyledTableCell>
-            <StyledTableCell align="">Email address</StyledTableCell>
-            <StyledTableCell align="">Phone number</StyledTableCell>
-            <StyledTableCell align="">User role</StyledTableCell>
-            <StyledTableCell align="center">Option 1</StyledTableCell>
-            <StyledTableCell align="center">Option 2</StyledTableCell>
+            <StyledTableCell align="">Parents email</StyledTableCell>
+            <StyledTableCell align="">Parents number</StyledTableCell>
+            <StyledTableCell align="">Student class</StyledTableCell>
+            <StyledTableCell align="center">Options</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.length !== 0 ? (
-            users.map((user, key) => (
+          {students.length !== 0 ? (
+            students.map((student, key) => (
               <StyledTableRow key={key}>
                 <StyledTableCell component="th" scope="row">
-                  {user.names}
-                </StyledTableCell>
-                <StyledTableCell align="">{user.email}</StyledTableCell>
-                <StyledTableCell align="">{user.phonenumber}</StyledTableCell>
-                <StyledTableCell align="">{user.role}</StyledTableCell>
-                <StyledTableCell align="">
-                  <Button>Update user</Button>
+                  {student.studentnames}
                 </StyledTableCell>
                 <StyledTableCell align="">
-                  <Button color="primary">Remove user</Button>
+                  {student.parentsemail}
+                </StyledTableCell>
+                <StyledTableCell align="">
+                  {student.parentsphonenumber}
+                </StyledTableCell>
+                <StyledTableCell align="">{student.classname}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {" "}
+                  <Button
+                    aria-controls="customized-menu"
+                    aria-haspopup="true"
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    startIcon={<Visibility />}
+                    onClick={handleClickOpen}
+                  >
+                    View more
+                  </Button>
+                  <StudentMenu selectedValue={selectedValue} open={open} onClose={handleClose} student={student.studentnames}/>
+                    
                 </StyledTableCell>
               </StyledTableRow>
             ))

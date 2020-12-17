@@ -9,4 +9,17 @@
   width: 100%;
 }
 
+.selectorContainer {
+  display: grid;
+  justify-content: space-between;
+  align-items: center;
+  grid-template-columns: 15% 15%;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.message-container {
+  margin: 10px;
+}
+
 /*# sourceMappingURL=style.css.map */
