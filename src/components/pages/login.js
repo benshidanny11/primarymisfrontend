@@ -62,8 +62,6 @@ function Login(props) {
 
   useEffect(() => {
     const loginResponse = state.loginReducer;
-   
-  
       if (loginResponse.type === "loading") {
         $("#progress").removeClass("progress");
       } else if (loginResponse.type === "error") {
