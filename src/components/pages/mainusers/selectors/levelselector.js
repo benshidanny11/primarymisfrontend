@@ -8,6 +8,7 @@ import {
   Button,
 } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
+import classNames from "classnames";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -22,11 +23,7 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
-  },
- 
-  selector: {
-    //width:120
-  },
+  }
 }));
 
 export default function LevelList({ handelLevelChange }) {
@@ -39,36 +36,23 @@ export default function LevelList({ handelLevelChange }) {
     handelLevelChange(event.target.value);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
   return (
     <div className="selectorContainer">
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-controlled-open-select-label">
-          select level
-        </InputLabel>
-        <Select
-          id="demo-controlled-open-select"
-          open={open}
-          onClose={handleClose}
-          onOpen={handleOpen}
+      
+        <select
           value={age}
           onChange={handleChange}
-          className={classes.selector}
+          id="selector"
+          className=" form-control"
         >
-          <MenuItem value={1}>P one</MenuItem>
-          <MenuItem value={2}>P two</MenuItem>
-          <MenuItem value={3}>P three</MenuItem>
-          <MenuItem value={4}>P four</MenuItem>
-          <MenuItem value={5}>P five</MenuItem>
-          <MenuItem value={6}>P six</MenuItem>
-        </Select>
+          <option value={1}>P one</option>
+          <option value={2}>P two</option>
+          <option value={3}>P three</option>
+          <option value={4}>P four</option>
+          <option value={5}>P five</option>
+          <option value={6}>P six</option>
+        </select>
       </FormControl>
       <Button
         variant="contained"

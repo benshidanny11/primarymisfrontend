@@ -52,16 +52,25 @@ export const getAllStudentsAction = (levelid) => async (dispatch) => {
     payload: { type: "loading" },
   });
   try {
-    const { data } = await axios.get(`${getStudentssAPI}/${levelid}`, {
+    // const { data } = await 
+    axios.get(`${getStudentssAPI}/${levelid}`, {
       headers: {
         "Content-Type": "application/json",
         token: cookie.load("primary-mis-token"),
       },
-    });
+    }).then((response)=>{
+    //  console.log(response)
+      dispatch({
+        type: actionType.GET_ALL_STUDENTS_RESPONSE_ACTION,
+        payload: response.data,
+      });
+   }).catch((e)=>{
     dispatch({
-      type: actionType.GET_ALL_STUDENTS_RESPONSE_ACTION,
-      payload: data,
+      type: actionType.GET_ALL_STUDENTS_ERROR_ACTION,
+      payload: e.response.data,
     });
+   })
+ 
   } catch (e) {
     dispatch({
       type: actionType.GET_ALL_STUDENTS_ERROR_ACTION,

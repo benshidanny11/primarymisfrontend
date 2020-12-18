@@ -9,71 +9,58 @@ import {
   DialogTitle,
   Dialog,
   Typography,
+  Divider,
+  Icon,
 } from "@material-ui/core";
 
-import { Edit, Delete, Report } from "@material-ui/icons";
-
 import { blue } from "@material-ui/core/colors";
+import classNames from "classnames";
 
 const useStyles = makeStyles({
   avatar: {
-    color: blue,
+    color: "#1168ca",
   },
 });
 
-export default function StudentMenu(props) {
+export default function StudentMenu({
+  onClose,
+  selectedValue,
+  open,
+  student,
+  options,
+}) {
   const classes = useStyles();
-  const { onClose, selectedValue, open } = props;
 
   const handleClose = () => {
-    onClose(selectedValue);
+    //onClose(selectedValue);
   };
-
+  console.log(options[1]);
   const handleListItemClick = (value) => {
     onClose(value);
   };
-
   return (
     <Dialog
       onClose={handleClose}
       aria-labelledby="simple-dialog-title"
       open={open}
     >
-      <DialogTitle id="simple-dialog-title">{props.student}</DialogTitle>
+      <DialogTitle id="simple-dialog-title">{student.studentnames}</DialogTitle>
+      <Divider />
       <List>
-        <ListItem
-          autoFocus
-          button
-          onClick={() => handleListItemClick("addAccount")}
-        >
-          {" "}
-          <ListItemAvatar>
-            <Report className={classes.avatar} />
-          </ListItemAvatar>
-          <ListItemText primary="View student report" />
-        </ListItem>
-        <ListItem
-          autoFocus
-          button
-          onClick={() => handleListItemClick("addAccount")}
-        >
-          {" "}
-          <ListItemAvatar>
-            <Edit className={classes.avatar} />
-          </ListItemAvatar>
-          <ListItemText primary="Update student" />
-        </ListItem>
-        <ListItem
-          autoFocus
-          button
-          onClick={() => handleListItemClick("addAccount")}
-        >
-          {" "}
-          <ListItemAvatar>
-            <Delete className={classes.avatar} />
-          </ListItemAvatar>
-          <ListItemText primary="Delete student" />
-        </ListItem>
+        {options.map((option) => (
+          <ListItem
+            autoFocus
+            button
+            onClick={() => handleListItemClick("addAccount")}
+            key={option[0]}
+          >
+            {" "}
+            <ListItemAvatar>
+              <Icon className={classNames(classes.avatar,option[1])} />
+            </ListItemAvatar>
+            <ListItemText primary={option[0]} />
+          </ListItem>
+        ))}
       </List>
     </Dialog>
   );

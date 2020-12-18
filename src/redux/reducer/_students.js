@@ -1,7 +1,6 @@
 import actionTypes from "./../action/_actionTypes";
 const initialState = {
   students: null,
-  data:{},
 };
 
 
@@ -21,8 +20,8 @@ export const studentReducer = (state = initialState, action) => {
 
     case actionTypes.GET_ALL_STUDENTS_ERROR_ACTION:
       return {
-        ...state,
-        user: { ...payload },
+        students:[],
+        data:payload,
         type: "error",
       };
 

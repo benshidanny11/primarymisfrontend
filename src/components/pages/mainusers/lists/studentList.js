@@ -13,21 +13,22 @@ import {
 import ContentLoader from "react-content-loader";
 import { Visibility } from "@material-ui/icons";
 
+import {
+  Avatar,
+  Typography,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  DialogTitle,
+  Dialog,
+} from "@material-ui/core";
 
-import Avatar from '@material-ui/core/Avatar';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
-import PersonIcon from '@material-ui/icons/Person';
-import AddIcon from '@material-ui/icons/Add';
-import Typography from '@material-ui/core/Typography';
-import { blue } from '@material-ui/core/colors';
 import StudentMenu from "../menus/studentMenu";
 
-function Userslist({ students }) {
+import cookie from "react-cookies";
+
+function Userslist({ students, displayNoDataFound }) {
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: "#1168ca",
@@ -46,15 +47,22 @@ function Userslist({ students }) {
     },
   }))(TableRow);
 
-
   const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState("");
+  const [selectedStudent, setSelectedStudent] = React.useState({});
+  const [options, setOptions] = React.useState([]);
+
+  const role = cookie.load("user").role;
+  console.log(role);
+  /*
+  ["View student report","Update student","Delete student"]
+  */
+
   const useStyles = makeStyles({
     table: {},
     container: {
-      width: 1100,
       margin: 20,
       overflow: "auto",
+      padding: 10,
     },
     progressContainer: {
       display: "flex",
@@ -78,82 +86,109 @@ function Userslist({ students }) {
       },
     },
   });
-  const handleClickOpen = () => {
+  const handleClickOpen = (student) => {
+    // console.log(student)
+    setSelectedStudent(student);
+    if (role === "HEAD_MASTER") {
+      setOptions([
+        ["View student report", "fas fa-file-invoice"],
+        ["Send report to parent", "far fa-share-square"],
+        ["Update student", "fas fa-user-edit"],
+        ["Delete student", "fas fa-trash-alt"],
+      ]);
+    }
     setOpen(true);
   };
 
   const handleClose = (value) => {
     setOpen(false);
-    setSelectedValue(value);
+    setSelectedStudent(value);
   };
   const classes = useStyles();
 
   return (
-    <TableContainer component={Paper} className={classes.container}>
-      <Table className={classes.table} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Full name</StyledTableCell>
-            <StyledTableCell align="">Parents email</StyledTableCell>
-            <StyledTableCell align="">Parents number</StyledTableCell>
-            <StyledTableCell align="">Student class</StyledTableCell>
-            <StyledTableCell align="center">Options</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {students.length !== 0 ? (
-            students.map((student, key) => (
-              <StyledTableRow key={key}>
-                <StyledTableCell component="th" scope="row">
-                  {student.studentnames}
-                </StyledTableCell>
-                <StyledTableCell align="">
-                  {student.parentsemail}
-                </StyledTableCell>
-                <StyledTableCell align="">
-                  {student.parentsphonenumber}
-                </StyledTableCell>
-                <StyledTableCell align="">{student.classname}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {" "}
-                  <Button
-                    aria-controls="customized-menu"
-                    aria-haspopup="true"
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    startIcon={<Visibility />}
-                    onClick={handleClickOpen}
-                  >
-                    View more
-                  </Button>
-                  <StudentMenu selectedValue={selectedValue} open={open} onClose={handleClose} student={student.studentnames}/>
-                    
-                </StyledTableCell>
-              </StyledTableRow>
-            ))
-          ) : (
-            <TableRow className={classes.progressContainer}>
-              <ContentLoader>
-                <rect x="0" y="0" rx="5" ry="5" width="70" height="70" />
-                <rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
-                <rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
-              </ContentLoader>
-              <ContentLoader>
-                <rect x="0" y="0" rx="5" ry="5" width="70" height="70" />
-                <rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
-                <rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
-              </ContentLoader>
-              <ContentLoader>
-                <rect x="0" y="0" rx="5" ry="5" width="70" height="70" />
-                <rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
-                <rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
-              </ContentLoader>
+    <div className="main-container">
+      <TableContainer component={Paper} className={classes.container}>
+        <Table className={classes.table} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Full name</StyledTableCell>
+              <StyledTableCell align="">Parents email</StyledTableCell>
+              <StyledTableCell align="">Parents number</StyledTableCell>
+              <StyledTableCell align="">Student class</StyledTableCell>
+              <StyledTableCell align="center">Options</StyledTableCell>
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {displayNoDataFound ? (
+              <Typography
+                variant="h5"
+                align="center"
+                component="h5"
+                gutterBottom
+              >
+                No data found
+              </Typography>
+            ) : students.length !== 0 ? (
+              students.map((student, key) => (
+                <StyledTableRow key={key}>
+                  <StyledTableCell component="th" scope="row">
+                    {student.studentnames}
+                  </StyledTableCell>
+                  <StyledTableCell align="">
+                    {student.parentsemail}
+                  </StyledTableCell>
+                  <StyledTableCell align="">
+                    {student.parentsphonenumber}
+                  </StyledTableCell>
+                  <StyledTableCell align="">
+                    {student.classname}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {" "}
+                    <Button
+                      aria-controls="customized-menu"
+                      aria-haspopup="true"
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      startIcon={<Visibility />}
+                      onClick={() => handleClickOpen(student)}
+                    >
+                      View more
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))
+            ) : (
+              <TableRow className={classes.progressContainer}>
+                <ContentLoader>
+                  <rect x="0" y="0" rx="5" ry="5" width="70" height="70" />
+                  <rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
+                  <rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
+                </ContentLoader>
+                <ContentLoader>
+                  <rect x="0" y="0" rx="5" ry="5" width="70" height="70" />
+                  <rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
+                  <rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
+                </ContentLoader>
+                <ContentLoader>
+                  <rect x="0" y="0" rx="5" ry="5" width="70" height="70" />
+                  <rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
+                  <rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
+                </ContentLoader>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <StudentMenu
+          student={selectedStudent}
+          open={open}
+          onClose={handleClose}
+          options={options}
+        />
+      </TableContainer>
+    </div>
   );
 }
 export default Userslist;
