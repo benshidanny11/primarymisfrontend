@@ -80,7 +80,6 @@ function Userslist({ users, isLoading }) {
                   <Button>Update user</Button>
                 </StyledTableCell>
                 <StyledTableCell align="">
-                  {" "}
                   <Button color="primary">Remove user</Button>
                 </StyledTableCell>
               </StyledTableRow>

@@ -9,4 +9,36 @@
   width: 100%;
 }
 
+.selectorContainer {
+  display: grid;
+  justify-content: space-between;
+  align-items: center;
+  grid-template-columns: 15% 15%;
+  padding-right: 5px;
+  padding-left: 5px;
+  padding-top: 10px;
+}
+
+.message-container {
+  margin: 10px;
+}
+
+.main-container {
+  padding: 20;
+}
+
+#selector {
+  outline: none;
+  flex-grow: 1;
+  height: 40px;
+  padding-left: 10px;
+  color: #4b4a4a;
+}
+
+#selector:focus {
+  border: 1px solid #c7c7c7;
+  height: 40px;
+  box-shadow: none;
+}
+
 /*# sourceMappingURL=style.css.map */
