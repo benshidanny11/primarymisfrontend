@@ -50,10 +50,6 @@ function Leftsidebarnav(props) {
                       <div className="nav-link">
                         <Link to="createuser">Add user</Link>
                       </div>
-
-                      <Link to="/updateuser" className="nav-link">
-                        Update user
-                      </Link>
                       <Link to="/allusers" className="nav-link" onClick={handleGetUSers}>
                         All users
                       </Link>
@@ -85,39 +81,21 @@ function Leftsidebarnav(props) {
                       className="sb-sidenav-menu-nested nav accordion"
                       id="sidenavAccordionPages"
                     >
-                      <div
+                      <Link
                         className="nav-link collapsed"
                         data-toggle="collapse"
                         data-target="#pagesCollapseAuth"
                         aria-expanded="false"
                         aria-controls="pagesCollapseAuth"
+                        to="/students"
                       >
                         Students
                         <div className="sb-sidenav-collapse-arrow">
                           <i className="fas fa-angle-down"></i>
                         </div>
-                      </div>
-                      <div
-                        className="collapse"
-                        id="pagesCollapseAuth"
-                        aria-labelledby="headingOne"
-                        data-parent="#sidenavAccordionPages"
-                      >
-                        <nav className="sb-sidenav-menu-nested nav">
-                          <Link className="nav-link" to="addstudent">
-                            Add new student
-                          </Link>
-
-                          <Link className="nav-link" to="getstudents">
-                            View students
-                          </Link>
-
-                          <Link className="nav-link" to="updatestudent">
-                            Update student
-                          </Link>
-                        </nav>
-                      </div>
-                      <div
+                      </Link>
+                      
+                      <Link
                         className="nav-link collapsed"
                         data-toggle="collapse"
                         data-target="#pagesCollapseError"
@@ -128,27 +106,8 @@ function Leftsidebarnav(props) {
                         <div className="sb-sidenav-collapse-arrow">
                           <i className="fas fa-angle-down"></i>
                         </div>
-                      </div>
-                      <div
-                        className="collapse"
-                        id="pagesCollapseError"
-                        aria-labelledby="headingOne"
-                        data-parent="#sidenavAccordionPages"
-                      >
-                        <nav className="sb-sidenav-menu-nested nav">
-                          <Link className="nav-link" to="addsubject">
-                            Add new subject
-                          </Link>
-
-                          <Link className="nav-link" to="getsubjects">
-                            View subjects
-                          </Link>
-
-                          <Link className="nav-link" to="updatesubject">
-                            Update subject
-                          </Link>
-                        </nav>
-                      </div>
+                      </Link>
+                      
 
                      
                     </nav>
