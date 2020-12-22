@@ -14,19 +14,15 @@ import ContentLoader from "react-content-loader";
 import { Visibility } from "@material-ui/icons";
 
 import {
-  Avatar,
   Typography,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  DialogTitle,
-  Dialog,
+
 } from "@material-ui/core";
 
 import StudentMenu from "../menus/studentMenu";
 
 import cookie from "react-cookies";
+
+import Updatestudentmodal from "../modals/updateStudentModal";
 
 function Userslist({ students, displayNoDataFound }) {
   const StyledTableCell = withStyles((theme) => ({
@@ -47,10 +43,11 @@ function Userslist({ students, displayNoDataFound }) {
     },
   }))(TableRow);
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false);  
   const [selectedStudent, setSelectedStudent] = React.useState({});
   const [options, setOptions] = React.useState([]);
-
+  const [showUpdateStudentModal,setShowUpdateStudentModal]=React.useState(false);
+  const [actionStudent,setActionStudent]=React.useState({});
   const role = cookie.load("user").role;
   console.log(role);
   /*
@@ -100,9 +97,14 @@ function Userslist({ students, displayNoDataFound }) {
     setOpen(true);
   };
 
-  const handleClose = (value) => {
+  const handleClose = ({student,option}) => {
+    setActionStudent(student)
+    if(option==="Update student"){
+      setShowUpdateStudentModal(true)
+      
+    }
     setOpen(false);
-    setSelectedStudent(value);
+    
   };
   const classes = useStyles();
 
@@ -127,7 +129,7 @@ function Userslist({ students, displayNoDataFound }) {
                 component="h5"
                 gutterBottom
               >
-                No data found
+                No students found
               </Typography>
             ) : students.length !== 0 ? (
               students.map((student, key) => (
@@ -188,6 +190,8 @@ function Userslist({ students, displayNoDataFound }) {
           options={options}
         />
       </TableContainer>
+      <Updatestudentmodal  show={showUpdateStudentModal}
+          onHide={() => setShowUpdateStudentModal(false)} student={actionStudent}/>
     </div>
   );
 }

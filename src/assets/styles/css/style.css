@@ -41,4 +41,18 @@
   box-shadow: none;
 }
 
+.submit-student {
+  border: 1px solid blue;
+}
+
+.progresscontainer {
+  margin-top: 50px;
+}
+
+.dotprogress {
+  display: none;
+  height: 0px;
+  visibility: hidden;
+}
+
 /*# sourceMappingURL=style.css.map */
