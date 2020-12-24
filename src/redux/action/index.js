@@ -10,7 +10,8 @@ import {
   handleLevelChangeAction,
   getClassesAction,
   createStudentAction,
-  updateStudentAction
+  updateStudentAction,
+  deleteStudentAction
 } from "./_students";
 export {
   loginAction,
@@ -22,5 +23,6 @@ export {
   handleLevelChangeAction,
   getClassesAction,
   createStudentAction,
-  updateStudentAction
+  updateStudentAction,
+  deleteStudentAction
 };

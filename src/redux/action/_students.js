@@ -10,6 +10,7 @@ const getStudentssAPI = "https://primaryims.herokuapp.com/api/student/students";
 const createStudentAPI = "https://primaryims.herokuapp.com/api/student/create";
 const updateStudentAPI = "https://primaryims.herokuapp.com/api/student/update";
 const getClassesAPI = "https://primaryims.herokuapp.com/api/class/classes/";
+const deleteStudentAPI="https://primaryims.herokuapp.com/api/student/delete";
 
 dotenv.config();
 
@@ -26,8 +27,8 @@ export const createStudentAction = (studentData) => async (dispatch) => {
         studentnames: studentData.studentsNames,
         parentsemail: studentData.parentsEmail,
         parentsphonenumber: studentData.parentsPhone,
-        levelid: studentData.studentClass,
-        classid: studentData.studentLevel,
+        levelid: studentData.studentLevel,
+        classid: studentData.studentClass,
       },
       {
         headers: {
@@ -78,6 +79,33 @@ export const updateStudentAction = (studentData) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: actionType.UPDATE_STUDENT_ERROR_ACTION,
+      payload: e.response,
+    });
+  }
+};
+
+export const deleteStudentAction = (id) => async (dispatch) => {
+  dispatch({
+    type: actionType.DELETE_STUDENT_LOADING_ACTION,
+    payload: { type: "loading-delete" },
+  });
+  try {
+    const { data } = await axios.delete(
+      `${deleteStudentAPI}/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          token: cookie.load("primary-mis-token"),
+        },
+      }
+    );
+    dispatch({
+      type: actionType.DELETE_STUDENT_RESPONSE_ACTION,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionType.DELETE_STUDENT_ERROR_ACTION,
       payload: e.response,
     });
   }

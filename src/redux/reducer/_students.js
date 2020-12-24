@@ -8,6 +8,9 @@ const createInitialState = {
 const updateInitialState = {
   updatedSudent: null,
 };
+const deleteInitialState = {
+  deleteData: null,
+};
 export const studentReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
@@ -86,6 +89,31 @@ export const createStudentReducer = (state = createInitialState, action) => {
       return {
         ...state,
        type:"loading-create",
+      };
+    default:
+      return state;
+  }
+};
+
+export const deleteStudentReducer = (state = deleteInitialState, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case actionTypes.DELETE_STUDENT_RESPONSE_ACTION:
+      return {
+        ...state,
+        ...payload,
+        type: "success-delete",
+      };
+    case actionTypes.DELETE_STUDENT_ERROR_ACTION:
+      return {
+        ...state,
+        payload,
+        type: "error-delete",
+      };
+    case actionTypes.DELETE_STUDENT_LOADING_ACTION:
+      return {
+        ...state,
+       type:"loading-delete",
       };
     default:
       return state;

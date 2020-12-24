@@ -13,16 +13,14 @@ import {
 import ContentLoader from "react-content-loader";
 import { Visibility } from "@material-ui/icons";
 
-import {
-  Typography,
-
-} from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 
 import StudentMenu from "../menus/studentMenu";
 
 import cookie from "react-cookies";
 
 import Updatestudentmodal from "../modals/updateStudentModal";
+import Deletestudentmodal from "../modals/deleteStudentModal";
 
 function Userslist({ students, displayNoDataFound }) {
   const StyledTableCell = withStyles((theme) => ({
@@ -43,11 +41,16 @@ function Userslist({ students, displayNoDataFound }) {
     },
   }))(TableRow);
 
-  const [open, setOpen] = React.useState(false);  
+  const [open, setOpen] = React.useState(false);
   const [selectedStudent, setSelectedStudent] = React.useState({});
   const [options, setOptions] = React.useState([]);
-  const [showUpdateStudentModal,setShowUpdateStudentModal]=React.useState(false);
-  const [actionStudent,setActionStudent]=React.useState({});
+  const [showUpdateStudentModal, setShowUpdateStudentModal] = React.useState(
+    false
+  );
+  const [actionStudent, setActionStudent] = React.useState({});
+  const [showDeleteStudentModal, setShowDeleteStudentModal] = React.useState(
+    false
+  );
   const role = cookie.load("user").role;
   console.log(role);
   /*
@@ -96,15 +99,17 @@ function Userslist({ students, displayNoDataFound }) {
     }
     setOpen(true);
   };
-
-  const handleClose = ({student,option}) => {
-    setActionStudent(student)
-    if(option==="Update student"){
-      setShowUpdateStudentModal(true)
-      
+  const handleHideDeleteModal=()=>{
+   setShowDeleteStudentModal(false);
+  }
+  const handleClose = ({ student, option }) => {
+    setActionStudent(student);
+    if (option === "Update student") {
+      setShowUpdateStudentModal(true);
+    } else if (option === "Delete student") {
+      setShowDeleteStudentModal(true);
     }
     setOpen(false);
-    
   };
   const classes = useStyles();
 
@@ -190,8 +195,16 @@ function Userslist({ students, displayNoDataFound }) {
           options={options}
         />
       </TableContainer>
-      <Updatestudentmodal  show={showUpdateStudentModal}
-          onHide={() => setShowUpdateStudentModal(false)} student={actionStudent}/>
+      <Updatestudentmodal
+        show={showUpdateStudentModal}
+        onHide={() => setShowUpdateStudentModal(false)}
+        student={actionStudent}
+      />
+      <Deletestudentmodal
+        showDeleteWarning={showDeleteStudentModal}
+        handleHideModal={handleHideDeleteModal}
+        id={actionStudent.studentid}
+      />
     </div>
   );
 }

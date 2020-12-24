@@ -10,6 +10,17 @@ import Progress from "./progressModal";
 import { $ } from "react-jquery-plugin";
 import { ToastContainer, toast } from "react-toastify";
 import { handleCreateErrorToast } from "../../../../utils/showToastUtil";
+import { withStyles, createStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
+import { CustomButton, CustomCancelButton } from "../styledcontrols/buttons";
+
+const styles = (theme) =>
+  createStyles({
+    button: {
+      backgroundColor: "red",
+    },
+  });
+
 class Addstudentmodal extends Component {
   constructor(props) {
     super(props);
@@ -21,38 +32,13 @@ class Addstudentmodal extends Component {
       hideModal: false,
       showResponseModal: false,
     };
-    // this.handleLevelChangeEvent.bind(this);
   }
 
-  componentDidMount() {
-    // if (this.props.allClasses) {
-    //   this.setState({
-    //     classes: this.props.allClasses,
-    //   });
-    // }
-  }
-  /*
-    return {
-        ...state,
-        createdStudent:payload,
-        type: "success-create",
-      };
-    case actionTypes.CREATE_STUDENT_ERROR_ACTION:
-      return {
-        ...state,
-        payload,
-        type: "error-create",
-      };
-    case actionTypes.CREATE_STUDENT_LOADING_ACTION:
-      return {
-        ...state,
-       type:"loading-create",
-      };
-  */
+  // classes = useStyles();
+
+  componentDidMount() {}
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-   
-
     if (!_.isEqual(prevProps.allClasses, this.props.allClasses)) {
       this.setState({
         classes: this.props.allClasses,
@@ -81,6 +67,7 @@ class Addstudentmodal extends Component {
       }
     }
   }
+
   componentWillMount() {}
 
   handleLevelChangeEvent(e) {
@@ -88,6 +75,7 @@ class Addstudentmodal extends Component {
   }
   handleStudentSubmit(e) {
     e.preventDefault();
+
     const studentData = {
       studentsNames: e.target.studentnames.value,
       parentsEmail: e.target.parentemail.value,
@@ -95,7 +83,6 @@ class Addstudentmodal extends Component {
       studentClass: e.target.studentclass.value,
       studentLevel: e.target.studentslevel.value,
     };
-
     this.props.createStudentAction(studentData);
     this.setState({
       hideModal: true,
@@ -118,6 +105,7 @@ class Addstudentmodal extends Component {
   };
   render() {
     const { classes, showProgress, hideModal, showResponseModal } = this.state;
+
     return (
       <div>
         {!showResponseModal ? (
@@ -126,9 +114,9 @@ class Addstudentmodal extends Component {
             size="md"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-            onHide={() => hideModal}
+            // onHide={() => hideModal}
           >
-            <Modal.Header closeButton>
+            <Modal.Header closeButton={true}>
               <Modal.Title id="contained-modal-title-vcenter">
                 Register new student
               </Modal.Title>
@@ -142,7 +130,7 @@ class Addstudentmodal extends Component {
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control selector"
                     id="firstname"
                     name="studentnames"
                     required
@@ -218,19 +206,21 @@ class Addstudentmodal extends Component {
                     )}
                   </select>
                 </div>
-                <Modal.Footer>
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={this.props.onHide}
-                  >
-                    Cancel
-                  </button>
-                  <input
-                    type="submit"
-                    className="btn submit-student"
-                    value="Register student"
-                  />
+                <Modal.Footer id="footer">
+                  <div className="btn-container">
+                    <CustomCancelButton
+                      type="button"
+                      className="btn-cancel"
+                      handleHide={this.props.onHide}
+                      label="Cancel"
+                    />
+
+                    <CustomButton
+                      type="submit"
+                      label="Add student"
+                      className="btn-submit"
+                    />
+                  </div>
                 </Modal.Footer>
               </form>
             </Modal.Body>
@@ -245,12 +235,18 @@ class Addstudentmodal extends Component {
             </Modal.Header>
             <Modal.Body> Student is registered successfully</Modal.Body>
             <Modal.Footer>
-              <BtnModal
+              <CustomCancelButton
+                type="button"
+                className="btn-cancel"
+                handleHide={this.handleRedirect.bind(this)}
+                label="Okay"
+              />
+              {/* <BtnModal
                 variant="primary"
                 onClick={this.handleRedirect.bind(this)}
               >
-               Okay
-              </BtnModal>
+                Okay
+              </BtnModal> */}
             </Modal.Footer>
           </Modal>
         )}

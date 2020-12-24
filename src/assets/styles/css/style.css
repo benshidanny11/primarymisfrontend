@@ -27,7 +27,7 @@
   padding: 20;
 }
 
-#selector {
+.selector:focus {
   outline: none;
   flex-grow: 1;
   height: 40px;
@@ -53,6 +53,33 @@
   display: none;
   height: 0px;
   visibility: hidden;
+}
+
+.btn-submit {
+  background-color: "#1168ca";
+  color: "white";
+  float: right;
+}
+
+.btn-cancel {
+  float: left;
+  margin-right: 100px;
+}
+
+.btn-container {
+  width: 100%;
+  justify-content: space-between;
+}
+
+#footer {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+input[type=text], input[type=email], input[type=password], input[type=tel], select {
+  outline: none;
+  box-shadow: none !important;
+  border: 1px solid #ccc !important;
 }
 
 /*# sourceMappingURL=style.css.map */

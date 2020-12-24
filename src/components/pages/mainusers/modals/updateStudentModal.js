@@ -10,6 +10,7 @@ import Progress from "./progressModal";
 import { $ } from "react-jquery-plugin";
 import { ToastContainer, toast } from "react-toastify";
 import { handleCreateErrorToast } from "../../../../utils/showToastUtil";
+import { CustomButton, CustomCancelButton } from "../styledcontrols/buttons";
 class Updatestudentmodal extends Component {
   constructor(props) {
     super(props);
@@ -147,7 +148,7 @@ class Updatestudentmodal extends Component {
             size="md"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-            onHide={() => hideModal}
+            // onHide={() => hideModal}
           >
             <Modal.Header closeButton>
               <Modal.Title id="contained-modal-title-vcenter">
@@ -257,8 +258,19 @@ class Updatestudentmodal extends Component {
                     )}
                   </select>
                 </div>
-                <Modal.Footer>
-                  <button
+                <Modal.Footer id="footer">
+                <div className="btn-container">
+                    <CustomCancelButton
+                      type="button"
+                      className="btn-cancel"
+                      handleHide={this.props.onHide}
+                      label="Cancel"
+                    />
+                      
+                    <CustomButton type="submit" label="Update student" className="btn-submit"/>
+                    
+                  </div>
+                  {/* <button
                     type="button"
                     className="btn btn-secondary"
                     onClick={this.handleRedirect.bind(this)}
@@ -269,7 +281,7 @@ class Updatestudentmodal extends Component {
                     type="submit"
                     className="btn submit-student"
                     value="Register student"
-                  />
+                  /> */}
                 </Modal.Footer>
               </form>
             </Modal.Body>
@@ -284,12 +296,18 @@ class Updatestudentmodal extends Component {
             </Modal.Header>
             <Modal.Body> Student is upated successfully!</Modal.Body>
             <Modal.Footer>
-              <BtnModal
+              {/* <BtnModal
                 variant="primary"
                 onClick={this.handleRedirect.bind(this)}
               >
                 Okay
-              </BtnModal>
+              </BtnModal> */}
+              <CustomCancelButton
+                      type="button"
+                      className="btn-cancel"
+                      handleHide={this.handleRedirect.bind(this)}
+                      label="Okay"
+                    />
             </Modal.Footer>
           </Modal>
         )}

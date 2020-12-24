@@ -4,6 +4,7 @@ import {
   studentReducer,
   createStudentReducer,
   updateStudentReducer,
+  deleteStudentReducer
 } from "./_students";
 
 export default combineReducers({
@@ -13,4 +14,5 @@ export default combineReducers({
   studentReducer,
   createStudentReducer,
   updateStudentReducer,
+  deleteStudentReducer
 });
