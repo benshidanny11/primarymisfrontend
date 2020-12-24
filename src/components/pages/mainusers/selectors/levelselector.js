@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { $ } from "react-jquery-plugin";
 import {
   InputLabel,
   MenuItem,
@@ -13,20 +14,30 @@ import classNames from "classnames";
 const useStyles = makeStyles((theme) => ({
   button: {
     height: 35,
-    backgroundColor:"#1168ca",
-    color:"white",
-    '&:hover': {
+    backgroundColor: "#1168ca",
+    color: "white",
+    "&:hover": {
       background: "#2579da",
       color: "#fff",
-   }
+    },
   },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
-  }
+  },
 }));
+const addStudent = () => {
+ 
+  $("#exampleModal").on("show.bs.modal", function (event) {
+    var button = $(event.relatedTarget);
+    var recipient = button.data("whatever");
+    var modal = $(this);
+    modal.find(".modal-title").text("New message to " + recipient);
+    modal.find(".modal-body input").val(recipient);
+  });
+};
 
-export default function LevelList({ handelLevelChange }) {
+export default function LevelList({ handelLevelChange, handleShowModal}) {
   const classes = useStyles();
   const [age, setAge] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -39,7 +50,6 @@ export default function LevelList({ handelLevelChange }) {
   return (
     <div className="selectorContainer">
       <FormControl className={classes.formControl}>
-      
         <select
           value={age}
           onChange={handleChange}
@@ -58,6 +68,7 @@ export default function LevelList({ handelLevelChange }) {
         variant="contained"
         startIcon={<Add />}
         className={classes.button}
+        onClick={handleShowModal}
       >
         Add student
       </Button>

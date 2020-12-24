@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Avatar,
@@ -29,16 +29,16 @@ export default function StudentMenu({
   student,
   options,
 }) {
-  const classes = useStyles();
-
+  const classes = useStyles(); 
+ 
   const handleClose = () => {
     //onClose(selectedValue);
   };
-  console.log(options[1]);
-  const handleListItemClick = (value) => {
-    onClose(value);
+  const handleUpdateStudentModal = (option) => {
+    onClose({student,option});
   };
   return (
+    <div>
     <Dialog
       onClose={handleClose}
       aria-labelledby="simple-dialog-title"
@@ -51,7 +51,7 @@ export default function StudentMenu({
           <ListItem
             autoFocus
             button
-            onClick={() => handleListItemClick("addAccount")}
+            onClick={() => handleUpdateStudentModal(option[0])}
             key={option[0]}
           >
             {" "}
@@ -63,5 +63,7 @@ export default function StudentMenu({
         ))}
       </List>
     </Dialog>
+    
+    </div>
   );
 }
