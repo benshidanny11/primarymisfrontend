@@ -101,6 +101,7 @@ function Leftsidebarnav(props) {
                         data-target="#pagesCollapseError"
                         aria-expanded="false"
                         aria-controls="pagesCollapseError"
+                        to="/subjects"
                       >
                         Subjects
                         <div className="sb-sidenav-collapse-arrow">

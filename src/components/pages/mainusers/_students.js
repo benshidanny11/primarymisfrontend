@@ -5,7 +5,7 @@ import {
 } from "../../../redux/action";
 import { connect } from "react-redux";
 import StudentList from "./lists/studentList";
-import LevelList from "./selectors/levelselector";
+import LevelList from "./upperlayer/levelselector";
 import Addstudentmodal from "./modals/addStudentModal";
 class Students extends Component {
   constructor(props) {
@@ -70,7 +70,7 @@ class Students extends Component {
   render() {
     const { students, levelid, displayNoDataFound, showModal } = this.state;
     return (
-      <div className="d-block">
+      <div className="d-block"> 
          <Addstudentmodal
           show={showModal}
           onHide={() => this.setState({ showModal: false })}
