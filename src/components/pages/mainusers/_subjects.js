@@ -3,11 +3,13 @@ import SubjectsUpper from "./upperlayer/subjectsupper";
 import {
   handleLevelChangeAction,
   getAllSubjectssAction,
+  getAllStudentsAction,
 } from "../../../redux/action";
 import { connect } from "react-redux";
 import _ from "lodash";
 import SubjectList from "./lists/subjectList";
 import AddSubjectModal from "./modals/addSubjectModal";
+import cookie from "react-cookies";
 class Subjects extends Component {
   constructor(props) {
     super(props);
@@ -16,11 +18,16 @@ class Subjects extends Component {
       Subjects: [],
       displayNoDataFound: false,
       showModal: false,
+      students: [],
+      levelid:1
     };
     this.handleEvent = this.handleEvent.bind(this);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+
+   
+  }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { levelid } = this.state;
@@ -30,8 +37,8 @@ class Subjects extends Component {
     }
   }
 
-  componentWillReceiveProps({ levelid, subjects, type }) {
-    console.log(type);
+  componentWillReceiveProps({ levelid, subjects, type, students }) {
+    console.log("students",students)
     if (levelid) {
       this.setState({
         levelid: levelid,
@@ -43,9 +50,16 @@ class Subjects extends Component {
         this.setState({ Subjects: subjects });
       } else {
         this.setState({ displayNoDataFound: false });
-        this.setState({ Subjects: subjects });
+        this.setState({ Subjects: subjects,levelid});
       }
     }
+   if(students){
+    if (students.length > 0) {
+      this.setState({
+        students,
+      });
+    }
+   }
   }
   componentWillMount() {
     this.props.getAllSubjectssAction();
@@ -62,24 +76,30 @@ class Subjects extends Component {
   }
 
   render() {
-    const { Subjects, displayNoDataFound, showModal } = this.state;
-    //  console.log(Subjects)
+    const { Subjects, displayNoDataFound, showModal,students } = this.state;
+    const { role } = cookie.load("user");
+    const subject = Subjects[0];
     return (
       <div className="d-block">
         <AddSubjectModal
           show={showModal}
           onHide={() => this.setState({ showModal: false })}
         />
-        <SubjectsUpper
-          handelLevelChange={this.props.handleLevelChangeAction}
-          handleShowModal={this.handleShowModal.bind(this)}
-        />
+        {role !== "TEACHER" ? (
+          <SubjectsUpper
+            handelLevelChange={this.props.handleLevelChangeAction}
+            handleShowModal={this.handleShowModal.bind(this)}
+          />
+        ) : (
+          ""
+        )}
         <div className="breadcrumb mb-4 breadcrumb-item active message-container">
           <span className="">THere are {Subjects.length} subects.</span>
         </div>
         <SubjectList
           subjects={Subjects}
           displayNoDataFound={displayNoDataFound}
+          students={students}
         />
       </div>
     );
@@ -87,15 +107,17 @@ class Subjects extends Component {
 }
 
 const mapStateToProps = ({ studentReducer, getAllSubjectsReducer }) => {
-  // console.log(getAllSubjectsReducer.Subjects);
+  console.log("students",studentReducer.students)
   return {
     levelid: studentReducer.payload,
     subjects: getAllSubjectsReducer.Subjects,
     type: getAllSubjectsReducer.type,
+    students: studentReducer.students,
   };
 };
 
 export default connect(mapStateToProps, {
   handleLevelChangeAction,
   getAllSubjectssAction,
+  getAllStudentsAction,
 })(Subjects);

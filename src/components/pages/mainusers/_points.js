@@ -1,51 +1,53 @@
 import React, { Component } from "react";
 import {
-  getAllStudentsAction,
+  getAllPointsAction,
   handleLevelChangeAction,
 } from "../../../redux/action";
 import { connect } from "react-redux";
-import StudentList from "./lists/studentList";
-import LevelList from "./upperlayer/levelselector";
-import Addstudentmodal from "./modals/addStudentModal";
-class Students extends Component {
+import queryString from "query-string";
+import PointsLevelList from "./upperlayer/pointsUpper";
+import PointList from "./lists/pointlist";
+class Points extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      students: [],
+      Points: [],
       isLoading: false,
       levelid: 1,
       displayNoDataFound: false,
       showModal: false,
-    };
+    }
+    this.params=queryString.parse(props.location.search);
   }
 
-  componentDidMount() {
-    const { levelid } = this.state;
-    this.props.getAllStudentsAction(levelid);
+  componentWillMount() {
+    const { levelid,subjectname } = this.params;
+    this.props.getAllPointsAction(levelid,subjectname);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { levelid } = this.state;
+    const { subjectName } = this.props;
 
     if (prevProps.levelid !== this.props.levelid) {
-      this.props.getAllStudentsAction(levelid);
+      this.props.getAllPointsAction(levelid,subjectName);
     }
   }
 
-  componentWillReceiveProps({ allStudents, levelid }) {
+  componentWillReceiveProps({ points, levelid }) {
     if (levelid) {
       this.setState({
         levelid,
       });
     }
-    if (allStudents) {
-      if (allStudents.length === 0) {
+    if (points) {
+      if (points.length === 0) {
         this.setState({ displayNoDataFound: true });
-        this.setState({ students: allStudents });
+        this.setState({ Points: points });
       } else {
         this.setState({ displayNoDataFound: false });
-        this.setState({ students: allStudents });
+        this.setState({ Points: points });
       }
     }
   }
@@ -61,31 +63,27 @@ class Students extends Component {
     });
   }
 
-  componentWillUnmount() {}
   handleEvent() {}
   handler = () => {
     this.setState();
   };
 
   render() {
-    const { students, levelid, displayNoDataFound, showModal } = this.state;
+    const { Points, displayNoDataFound, showModal } = this.state;
+    const { subjectname ,levelid} = this.params;
     return (
       <div className="d-block"> 
-         <Addstudentmodal
-          show={showModal}
-          onHide={() => this.setState({ showModal: false })}
-        />
-        <LevelList
+      <PointsLevelList
           handelLevelChange={this.props.handleLevelChangeAction}
           handleShowModal={this.handleShowModal.bind(this)}
         />
         <div className="breadcrumb mb-4 breadcrumb-item active message-container">
           <span className="">
-            THere are {students.length} Students in P {levelid}
+            Marks of {subjectname} in P {levelid}
           </span>
         </div>
-        <StudentList
-          students={students}
+        <PointList
+          points={Points}
           displayNoDataFound={displayNoDataFound}
         />
        
@@ -94,15 +92,15 @@ class Students extends Component {
   }
 }
 
-const mapStateToProps = ({ studentReducer }) => {
-  console.log(studentReducer);
+const mapStateToProps = ({ getPointsReducer }) => {
+    console.log(getPointsReducer.points)
+ 
   return {
-    levelid: studentReducer.payload,
-    allStudents:studentReducer.students
+    points:getPointsReducer.points
   };
 };
 
 export default connect(mapStateToProps, {
-  getAllStudentsAction,
+  getAllPointsAction,
   handleLevelChangeAction,
-})(Students);
+})(Points);

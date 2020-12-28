@@ -8,10 +8,9 @@ const getAllSubjectsAPI =
   "https://primaryims.herokuapp.com/api/subjects/all";
 const getSubjectsByLevelAPI =
   "https://primaryims.herokuapp.com/api/subjects/levels";
+  const getSubjectsByTeacherAPI =
+  "https://primaryims.herokuapp.com/api/subjects/";
 const createSubjectAPI = "https://primaryims.herokuapp.com/api/subjects/create";
-const updateStudentAPI = "https://primaryims.herokuapp.com/api/student/update";
-const getClassesAPI = "https://primaryims.herokuapp.com/api/class/classes/";
-const deleteStudentAPI = "https://primaryims.herokuapp.com/api/student/delete";
 
 dotenv.config();
 
@@ -113,6 +112,8 @@ export const createSubjectAction = (subjectData) => async (dispatch) => {
 // };
 
 export const getAllSubjectssAction = (levelid) => async (dispatch) => {
+  const {userid,role} =cookie.load("user");
+  
   const finalUrl = levelid
     ? getSubjectsByLevelAPI + "/" + levelid
     : getAllSubjectsAPI;
@@ -123,7 +124,7 @@ export const getAllSubjectssAction = (levelid) => async (dispatch) => {
   try {
  
     axios
-      .get(finalUrl, {
+      .get((role!=="TEACHER")?finalUrl:getSubjectsByTeacherAPI+userid, {
         headers: {
           "Content-Type": "application/json",
           token: cookie.load("primary-mis-token"),

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {
   Table,
@@ -12,22 +12,17 @@ import {
 } from "@material-ui/core";
 import ContentLoader from "react-content-loader";
 import { Visibility } from "@material-ui/icons";
-import { useDispatch, useSelector } from "react-redux";
 
 import { Typography } from "@material-ui/core";
-import { getAllStudentsAction } from "../../../../redux/action";
 
 import StudentMenu from "../menus/studentMenu";
-import _ from "lodash";
+
 import cookie from "react-cookies";
 
 import Updatestudentmodal from "../modals/updateStudentModal";
 import Deletestudentmodal from "../modals/deleteStudentModal";
-import AddMarksModal from "../modals/addPointsModal";
-import { Studentlistmodal } from "../modals/studentListModal";
-import SUbjectMenu from "../menus/subjectMenu";
 
-function SubjectList({ subjects, displayNoDataFound }) {
+function PointList({ points, displayNoDataFound }) {
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: "#1168ca",
@@ -37,7 +32,6 @@ function SubjectList({ subjects, displayNoDataFound }) {
       fontSize: 14,
     },
   }))(TableCell);
-  const dispatch = useDispatch();
 
   const StyledTableRow = withStyles((theme) => ({
     root: {
@@ -46,9 +40,9 @@ function SubjectList({ subjects, displayNoDataFound }) {
       },
     },
   }))(TableRow);
-  // States and their setters
+
   const [open, setOpen] = React.useState(false);
-  const [selectedSubject, setSelectedSubject] = React.useState({});
+  const [selectedStudent, setSelectedStudent] = React.useState({});
   const [options, setOptions] = React.useState([]);
   const [showUpdateStudentModal, setShowUpdateStudentModal] = React.useState(
     false
@@ -57,34 +51,8 @@ function SubjectList({ subjects, displayNoDataFound }) {
   const [showDeleteStudentModal, setShowDeleteStudentModal] = React.useState(
     false
   );
-  const [showAddMarksModal, setShowAddMarksModal] = React.useState(false);
-  const [showLoadingIndicator, setShowLoadingIndicator] = React.useState(false);
-  const [showStudentListModal, setShowStudentListModal] = React.useState(false);
-  const [subjectName, setSubjectName] = React.useState("");
-  const [students, setStudents] = React.useState([]);
-  const [marksData, setMarksData] = React.useState({});
   const role = cookie.load("user").role;
-  console.log(role);
 
-  const studentReducer = useSelector((state) => state.studentReducer);
-  //Use efffect hook
-  useEffect(() => {
-    if (studentReducer.type === "loading") {
-      setShowLoadingIndicator(true);
-    } else if (studentReducer.type === "error") {
-      setShowLoadingIndicator(false);
-      setShowStudentListModal(false);
-    } else if (studentReducer.type === "success") {
-      setShowLoadingIndicator(false);
-      if (studentReducer.students) {
-        if (studentReducer.students.length > 0) {
-          setStudents(studentReducer.students);
-        }
-      }
-    }
-  }, [studentReducer.type]);
-
-  //Styles
 
   const useStyles = makeStyles({
     table: {},
@@ -115,47 +83,28 @@ function SubjectList({ subjects, displayNoDataFound }) {
       },
     },
   });
-  //Event handlers
-  const handleClickOpen = (subject) => {
-    setSelectedSubject(subject);
+  const handleClickOpen = (point) => {
+    // console.log(student)
+    setSelectedStudent(point);
     if (role === "HEAD_MASTER") {
       setOptions([
-        ["View subject marks", "fas fa-file-invoice"],
-        ["Update subject", "fas fa-user-edit"],
-        ["Delete subject", "fas fa-trash-alt"],
-      ]);
-    } else if (role === "TEACHER") {
-      setOptions([
-        ["Add subject marks", "fas fa-plus"],
-        ["View subject marks", "fas fa-file-invoice"],
+        ["View student report", "fas fa-file-invoice"],
+        ["Send report to parent", "far fa-share-square"],
+        ["Update student", "fas fa-user-edit"],
+        ["Delete student", "fas fa-trash-alt"],
       ]);
     }
     setOpen(true);
   };
-  const handleMarksData = (student, subjectName) => {
-    const marksData = {
-      studentId: student.studentid,
-      studenName: student.studentnames,
-      levelid: student.levelid,
-      subjectName: subjectName,
-    };
-    setMarksData(marksData);
-    setShowStudentListModal(false);
-    setShowAddMarksModal(true);
-  };
-  const handleClose = async ({ subject, option }) => {
-    setActionStudent(subject);
-    console.log(subject);
+  const handleHideDeleteModal=()=>{
+   setShowDeleteStudentModal(false);
+  }
+  const handleClose = ({ student, option }) => {
+    setActionStudent(student);
     if (option === "Update student") {
       setShowUpdateStudentModal(true);
     } else if (option === "Delete student") {
       setShowDeleteStudentModal(true);
-    } else if (option === "Add subject marks") {
-      dispatch(await getAllStudentsAction(subject.levelid));
-      setSubjectName(subject.subjectname);
-      setShowStudentListModal(true);
-    } else if (option === "View subject marks") {
-      window.location.href = `/points?levelid=${subject.levelid}&subjectname=${subject.subjectname}`;
     }
     setOpen(false);
   };
@@ -167,10 +116,12 @@ function SubjectList({ subjects, displayNoDataFound }) {
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Subject name</StyledTableCell>
-              <StyledTableCell align="">CAT maximum</StyledTableCell>
-              <StyledTableCell align="">Exam maximum</StyledTableCell>
-              <StyledTableCell align="">Studied in</StyledTableCell>
+              <StyledTableCell>Student names</StyledTableCell>
+              <StyledTableCell align="">Level</StyledTableCell>
+              <StyledTableCell align="">Term</StyledTableCell>
+              <StyledTableCell align="">Cat one</StyledTableCell>
+              <StyledTableCell align="">Cat two</StyledTableCell>
+              <StyledTableCell align="">Exam </StyledTableCell>
               <StyledTableCell align="center">Options</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -182,18 +133,28 @@ function SubjectList({ subjects, displayNoDataFound }) {
                 component="h5"
                 gutterBottom
               >
-                No subjects found
+                No marks found!
               </Typography>
-            ) : subjects.length !== 0 ? (
-              subjects.map((subject, key) => (
+            ) : points.length !== 0 ? (
+              points.map((point, key) => (
                 <StyledTableRow key={key}>
                   <StyledTableCell component="th" scope="row">
-                    {subject.subjectname}
+                    {point.studentnames}
                   </StyledTableCell>
-                  <StyledTableCell align="">{subject.catmax}</StyledTableCell>
-                  <StyledTableCell align="">{subject.exammax}</StyledTableCell>
                   <StyledTableCell align="">
-                    p {subject.levelid}
+                    {point.levelname}
+                  </StyledTableCell>
+                  <StyledTableCell align="">
+                   term {point.term}
+                  </StyledTableCell>
+                  <StyledTableCell align="">
+                    {point.catone}
+                  </StyledTableCell>
+                  <StyledTableCell align="">
+                    {point.cattwo}
+                  </StyledTableCell>
+                  <StyledTableCell align="">
+                    {point.exam}
                   </StyledTableCell>
                   <StyledTableCell align="right">
                     {" "}
@@ -204,7 +165,7 @@ function SubjectList({ subjects, displayNoDataFound }) {
                       color="primary"
                       className={classes.button}
                       startIcon={<Visibility />}
-                      onClick={() => handleClickOpen(subject)}
+                      onClick={() => handleClickOpen(point)}
                     >
                       View more
                     </Button>
@@ -232,27 +193,24 @@ function SubjectList({ subjects, displayNoDataFound }) {
             )}
           </TableBody>
         </Table>
-        <SUbjectMenu
-          subject={selectedSubject}
+        <StudentMenu
+          student={selectedStudent}
           open={open}
           onClose={handleClose}
           options={options}
         />
       </TableContainer>
-      <Studentlistmodal
-        students={students}
-        subjectName={subjectName}
-        showLoading={showLoadingIndicator}
-        show={showStudentListModal}
-        handleMarksData={handleMarksData}
-        onHide={() => setShowStudentListModal(false)}
+      <Updatestudentmodal
+        show={showUpdateStudentModal}
+        onHide={() => setShowUpdateStudentModal(false)}
+        student={actionStudent}
       />
-      <AddMarksModal
-        marksData={marksData}
-        show={showAddMarksModal}
-        onHide={() => setShowAddMarksModal(false)}
+      <Deletestudentmodal
+        showDeleteWarning={showDeleteStudentModal}
+        handleHideModal={handleHideDeleteModal}
+        id={actionStudent.studentid}
       />
     </div>
   );
 }
-export default SubjectList;
+export default PointList;

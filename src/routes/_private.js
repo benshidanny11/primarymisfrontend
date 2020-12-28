@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import React from "react";
 import { Redirect } from 'react-router-dom'
-import { CreactUSer,Home,AllUSers ,Students,Subjects} from '../components/pages/mainusers'
+import { CreactUSer,Home,AllUSers ,Students,Subjects,Points} from '../components/pages/mainusers'
 import { useSelector } from "react-redux";
 import _ from 'lodash'
 import cookie from "react-cookies";
@@ -48,33 +48,18 @@ class Routes {
         component: Subjects,
         type: "navigation",
       },
+      {
+        path: "/points",
+        name: "All points",
+        icon: "icon-user",
+        component: Points,
+        type: "navigation",
+      },
       
       
       
     ];
   }
-  
-  // filter(key, value, isArray) {    
-  //   if(isArray){
-  //     this.routes = this.routes.filter((object) => object[key].includes(value));
-  //   } else {
-  //     const object = {};
-  //     object[key] = `${value}`;
-  //     this.routes = _.filter(this.routes, object);
-  //   }
-  //   return this;
-  // }
-
-  // get(args) {
-  //   const currentList = this.routes;
-  //   if (currentList.length === 0) {
-  //     return -1;
-  //   }
-  //   if (args) {
-  //     return currentList.map((item) => _.pick(item, ...args));
-  //   }
-  //   return currentList;
-  // }
 }
 
 export const model_routes = (props) => {

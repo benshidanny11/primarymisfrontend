@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import {
-  getAllTeachersAction,
-  createSubjectAction,
-} from "../../../../redux/action";
+import { createPointsAction } from "../../../../redux/action";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { Modal, Button as BtnModal } from "react-bootstrap";
@@ -10,29 +7,22 @@ import Progress from "./progressModal";
 import { $ } from "react-jquery-plugin";
 import { ToastContainer, toast } from "react-toastify";
 import { handleCreateErrorToast } from "../../../../utils/showToastUtil";
-import { withStyles, createStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+
 import { CustomButton, CustomCancelButton } from "../styledcontrols/buttons";
+import cookie from "react-cookies";
 
-const styles = (theme) =>
-  createStyles({
-    button: {
-      backgroundColor: "red",
-    },
-  });
-
-class AddSubjectModal extends Component {
+class AddMarksModal extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       levelid: 1,
-      teachers: [],
+      classes: [],
       showProgress: false,
       hideModal: false,
       showResponseModal: false,
     };
   }
+  // classes = useStyles();
 
   componentDidMount() {}
 
@@ -43,21 +33,17 @@ class AddSubjectModal extends Component {
       });
     }
     if (prevProps !== this.props) {
-      if (this.props.createStudentResponse.type === "loading-create") {
+      if (this.props.pointsResponse.type === "loading-create-point") {
         $("#dotprogress").removeClass("dotprogress");
-        console.log("Response", this.props.createStudentResponse);
-      } else if (this.props.createStudentResponse.type === "error-create") {
+      } else if (this.props.pointsResponse.type === "error-create-point") {
         $("#dotprogress").addClass("dotprogress");
-        console.log(
-          "Error",
-          this.props.createStudentResponse.payload.data.message
-        );
         handleCreateErrorToast(
-          this.props.createStudentResponse.payload.data.message,
-          toast
+          this.props.pointsResponse.data.message,
+          toast,
+          1500,
+          this.handleRedirect
         );
-      } else if (this.props.createStudentResponse.type === "success-create") {
-        console.log("Response", this.props.createStudentResponse);
+      } else if (this.props.pointsResponse.type === "success-create-point") {
         this.setState({
           showResponseModal: true,
         });
@@ -65,28 +51,27 @@ class AddSubjectModal extends Component {
       }
     }
   }
-  componentWillReceiveProps({ Teachers }) {
-    this.setState({
-      teachers: Teachers,
-    });
-  }
+  componentWillMount() {}
 
-  componentWillMount() {
-    this.props.getAllTeachersAction();
+  handleLevelChangeEvent(e) {
+    this.props.getClassesAction(e.target.value);
   }
-
-  handleLevelChangeEvent(e) {}
   handleStudentSubmit(e) {
     e.preventDefault();
+    const { marksData } = this.props;
+    const { userid } = cookie.load("user");
 
-    const subjectData = {
-      subjectName: e.target.subjectname.value,
-      catMax: e.target.catmaximum.value,
-      examMax: e.target.exammax.value,
-      levelId: e.target.subjectlevel.value,
-      teacherId: e.target.subjectteacher.value,
+    const pointsData = {
+      subjectname: marksData.subjectName,
+      catone: e.target.catonemarks.value,
+      cattwo: e.target.cattwomarks.value,
+      exam: e.target.exammarks.value,
+      term: e.target.term.value,
+      levelid: marksData.levelid,
+      studentid: marksData.studentId,
+      teacherid: userid,
     };
-    this.props.createSubjectAction(subjectData);
+    this.props.createPointsAction(pointsData);
     this.setState({
       hideModal: true,
     });
@@ -107,8 +92,8 @@ class AddSubjectModal extends Component {
     window.location.href = "/subjects";
   };
   render() {
-    const { teachers, showProgress, hideModal, showResponseModal } = this.state;
-
+    const { classes, showProgress, hideModal, showResponseModal } = this.state;
+    const { marksData } = this.props;
     return (
       <div>
         {!showResponseModal ? (
@@ -117,94 +102,98 @@ class AddSubjectModal extends Component {
             size="md"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            // onHide={() => hideModal}
           >
             <Modal.Header closeButton={true}>
               <Modal.Title id="contained-modal-title-vcenter">
-                Register new subject
+                Add subject marks
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Progress open={showProgress} />
               <form onSubmit={this.handleStudentSubmit.bind(this)}>
-                <div className="form-group ">
-                  <label htmlFor="firstname" className="col-form-label">
+                <div className="form-group">
+                  <label htmlFor="studentname" className="col-form-label">
+                    Student name:
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control selector"
+                    id="studentname"
+                    name="studentname"
+                    placeholder={marksData.studenName}
+                    value={marksData.studenName}
+                    disabled
+                    required
+                  />
+                </div>
+                <div className="form-group controlcontainer">
+                  <label htmlFor="studentname" className="col-form-label">
                     Subject name:
                   </label>
                   <input
                     type="text"
                     className="form-control selector"
-                    id="firstname"
-                    name="subjectname"
+                    id="studentname"
+                    name="studentname"
+                    value={marksData.subjectName}
+                    disabled
                     required
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-group controlcontainer">
+                  <label htmlFor="firstname" className="col-form-label">
+                    Cat one marks:
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control selector"
+                    id="catonemarks"
+                    name="catonemarks"
+                    required
+                  />
+                </div>
+                <div className="form-group controlcontainer">
                   <label htmlFor="email" className="col-form-label">
-                    Cat maximum:
+                    Cat two marks:
                   </label>
                   <input
                     type="number"
                     className="form-control"
-                    id="catmaximum"
-                    name="catmaximum"
+                    id="cattwomarks"
+                    name="cattwomarks"
                     required
                   />
                 </div>
-                <div className="form-group">
-                  <label htmlFor="exammax" className="col-form-label">
-                    Exam maximun:
+                <div className="form-group controlcontainer">
+                  <label htmlFor="phonenumber" className="col-form-label">
+                    Exam marks:
                   </label>
                   <input
                     type="number"
                     className="form-control"
-                    id="exammax"
-                    name="exammax"
+                    id="exammarks"
+                    name="exammarks"
                     required
                   />
                 </div>
-                <div className="form-group">
-                  <label htmlFor="recipient-name" className="col-form-label">
-                    Studied in:
+                <div className="form-group controlcontainer">
+                  <label for="recipient-name" className="col-form-label">
+                    Term:
                   </label>
                   <select
                     required
                     className="form-control"
-                    id="subjectlevel"
-                    name="subjectlevel"
-                    onChange={this.handleLevelChangeEvent.bind(this)}
+                    id="term"
+                    name="term"
                   >
-                    <option value="">Choose a level</option>
-                    <option value={1}>P one</option>
-                    <option value={2}>P two</option>
-                    <option value={3}>P three</option>
-                    <option value={4}>P four</option>
-                    <option value={5}>P five</option>
-                    <option value={6}>P six</option>
+                    <option value="">Choose term</option>
+                    <option value="1">Term one</option>
+                    <option value="2">Term two</option>
+                    <option value="3">Term three</option>
                   </select>
                 </div>
-                <div className="form-group">
-                  <label htmlFor="subjectteacher" className="col-form-label">
-                    Teached by:
-                  </label>
-                  <select
-                    type="text"
-                    className="form-control"
-                    id="subjectteacher"
-                    name="subjectteacher"
-                    required
-                  >
-                    <option value="">Choose a teacher</option>
-                    {teachers ? (
-                      teachers.map((teacher) => (
-                        <option value={teacher.userid} key={teacher.userid}>
-                          {teacher.names}
-                        </option>
-                      ))
-                    ) : (
-                      <option value="">No teachers found</option>
-                    )}
-                  </select>
-                </div> 
+
                 <Modal.Footer id="footer">
                   <div className="btn-container">
                     <CustomCancelButton
@@ -216,7 +205,7 @@ class AddSubjectModal extends Component {
 
                     <CustomButton
                       type="submit"
-                      label="Add subject"
+                      label="Add marks"
                       className="btn-submit"
                     />
                   </div>
@@ -230,9 +219,9 @@ class AddSubjectModal extends Component {
             onHide={this.handleHideModal.bind(this)}
           >
             <Modal.Header closeButton>
-              <Modal.Title>Subject registration</Modal.Title>
+              <Modal.Title>Marks adding</Modal.Title>
             </Modal.Header>
-            <Modal.Body> Subject is registered successfully</Modal.Body>
+            <Modal.Body> Marks is added successfully!</Modal.Body>
             <Modal.Footer>
               <CustomCancelButton
                 type="button"
@@ -255,19 +244,13 @@ class AddSubjectModal extends Component {
     );
   }
 }
-const mapStateToProps = ({
-  getAllTeachersReducer,
-  createStudentReducer,
-  createSubjectReducer,
-}) => {
-  console.log("Create subject", createSubjectReducer);
+const mapStateToProps = ({ createPointReducer }) => {
+  console.log(createPointReducer);
   return {
-    Teachers: getAllTeachersReducer.teachers,
-    createStudentResponse: createStudentReducer,
+    pointsResponse: createPointReducer,
   };
 };
 
 export default connect(mapStateToProps, {
-  getAllTeachersAction,
-  createSubjectAction,
-})(AddSubjectModal);
+  createPointsAction,
+})(AddMarksModal);

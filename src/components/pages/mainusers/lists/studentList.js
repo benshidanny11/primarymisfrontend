@@ -52,10 +52,7 @@ function Userslist({ students, displayNoDataFound }) {
     false
   );
   const role = cookie.load("user").role;
-  console.log(role);
-  /*
-  ["View student report","Update student","Delete student"]
-  */
+
 
   const useStyles = makeStyles({
     table: {},
