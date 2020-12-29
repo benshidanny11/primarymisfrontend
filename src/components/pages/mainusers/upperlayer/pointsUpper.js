@@ -8,13 +8,14 @@ import {
   Select,
   Button,
 } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
+import { ArrowBack } from "@material-ui/icons";
 import classNames from "classnames";
 
 const useStyles = makeStyles((theme) => ({
   button: {
     height: 35,
     backgroundColor: "#1168ca",
+    fontSize:10,
     color: "white",
     "&:hover": {
       background: "#2579da",
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function PointsLevelList({ handelLevelChange, handleShowModal}) {
+export default function PointsLevelList({ handelLevelChange, handleBack}) {
   const classes = useStyles();
   const [age, setAge] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -55,7 +56,14 @@ export default function PointsLevelList({ handelLevelChange, handleShowModal}) {
           <option value={6}>P six</option>
         </select>
       </FormControl>
-     
+      <Button
+        variant="contained"
+        startIcon={<ArrowBack />}
+        className={classes.button}
+        onClick={handleBack}
+      >
+        Back to subjects
+      </Button>
     </div>
   );
 }

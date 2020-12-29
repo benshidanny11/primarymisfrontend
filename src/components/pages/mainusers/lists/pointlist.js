@@ -11,7 +11,7 @@ import {
   Button,
 } from "@material-ui/core";
 import ContentLoader from "react-content-loader";
-import { Visibility } from "@material-ui/icons";
+import { Edit } from "@material-ui/icons";
 
 import { Typography } from "@material-ui/core";
 
@@ -19,8 +19,7 @@ import StudentMenu from "../menus/studentMenu";
 
 import cookie from "react-cookies";
 
-import Updatestudentmodal from "../modals/updateStudentModal";
-import Deletestudentmodal from "../modals/deleteStudentModal";
+import UpdateMarksModal from "../modals/updatePointsModal";
 
 function PointList({ points, displayNoDataFound }) {
   const StyledTableCell = withStyles((theme) => ({
@@ -44,15 +43,14 @@ function PointList({ points, displayNoDataFound }) {
   const [open, setOpen] = React.useState(false);
   const [selectedStudent, setSelectedStudent] = React.useState({});
   const [options, setOptions] = React.useState([]);
-  const [showUpdateStudentModal, setShowUpdateStudentModal] = React.useState(
+  const [showUpdatePointsModal, setShowUpdatePointsModal] = React.useState(
     false
   );
-  const [actionStudent, setActionStudent] = React.useState({});
+  const [pointsToUpdate, setPointsToUpdate] = React.useState({});
   const [showDeleteStudentModal, setShowDeleteStudentModal] = React.useState(
     false
   );
   const role = cookie.load("user").role;
-
 
   const useStyles = makeStyles({
     table: {},
@@ -84,30 +82,13 @@ function PointList({ points, displayNoDataFound }) {
     },
   });
   const handleClickOpen = (point) => {
-    // console.log(student)
-    setSelectedStudent(point);
-    if (role === "HEAD_MASTER") {
-      setOptions([
-        ["View student report", "fas fa-file-invoice"],
-        ["Send report to parent", "far fa-share-square"],
-        ["Update student", "fas fa-user-edit"],
-        ["Delete student", "fas fa-trash-alt"],
-      ]);
-    }
-    setOpen(true);
+    // console.log(student)'
+    setPointsToUpdate(point);
+    setShowUpdatePointsModal(true);
+
   };
-  const handleHideDeleteModal=()=>{
-   setShowDeleteStudentModal(false);
-  }
-  const handleClose = ({ student, option }) => {
-    setActionStudent(student);
-    if (option === "Update student") {
-      setShowUpdateStudentModal(true);
-    } else if (option === "Delete student") {
-      setShowDeleteStudentModal(true);
-    }
-    setOpen(false);
-  };
+
+
   const classes = useStyles();
 
   return (
@@ -141,34 +122,27 @@ function PointList({ points, displayNoDataFound }) {
                   <StyledTableCell component="th" scope="row">
                     {point.studentnames}
                   </StyledTableCell>
-                  <StyledTableCell align="">
-                    {point.levelname}
-                  </StyledTableCell>
-                  <StyledTableCell align="">
-                   term {point.term}
-                  </StyledTableCell>
-                  <StyledTableCell align="">
-                    {point.catone}
-                  </StyledTableCell>
-                  <StyledTableCell align="">
-                    {point.cattwo}
-                  </StyledTableCell>
-                  <StyledTableCell align="">
-                    {point.exam}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {" "}
-                    <Button
-                      aria-controls="customized-menu"
-                      aria-haspopup="true"
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      startIcon={<Visibility />}
-                      onClick={() => handleClickOpen(point)}
-                    >
-                      View more
-                    </Button>
+                  <StyledTableCell align="">{point.levelname}</StyledTableCell>
+                  <StyledTableCell align="">term {point.term}</StyledTableCell>
+                  <StyledTableCell align="">{point.catone}</StyledTableCell>
+                  <StyledTableCell align="">{point.cattwo}</StyledTableCell>
+                  <StyledTableCell align="">{point.exam}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {role === "TEACHER" ? (
+                      <Button
+                        aria-controls="customized-menu"
+                        aria-haspopup="true"
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        startIcon={<Edit />}
+                        onClick={() => handleClickOpen(point)}
+                      >
+                        Updata marks
+                      </Button>
+                    ) : (
+                      "No option"
+                    )}
                   </StyledTableCell>
                 </StyledTableRow>
               ))
@@ -193,22 +167,11 @@ function PointList({ points, displayNoDataFound }) {
             )}
           </TableBody>
         </Table>
-        <StudentMenu
-          student={selectedStudent}
-          open={open}
-          onClose={handleClose}
-          options={options}
-        />
       </TableContainer>
-      <Updatestudentmodal
-        show={showUpdateStudentModal}
-        onHide={() => setShowUpdateStudentModal(false)}
-        student={actionStudent}
-      />
-      <Deletestudentmodal
-        showDeleteWarning={showDeleteStudentModal}
-        handleHideModal={handleHideDeleteModal}
-        id={actionStudent.studentid}
+      <UpdateMarksModal
+        show={showUpdatePointsModal}
+        onHide={() => setShowUpdatePointsModal(false)}
+        points={pointsToUpdate}
       />
     </div>
   );

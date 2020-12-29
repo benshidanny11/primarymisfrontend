@@ -51,10 +51,8 @@ class Points extends Component {
       }
     }
   }
-  handleShowModal() {
-    this.setState({
-      showModal: true,
-    });
+  handleBack() {
+  window.location.href="/subjects"
   }
 
   handleHideModal() {
@@ -75,7 +73,7 @@ class Points extends Component {
       <div className="d-block"> 
       <PointsLevelList
           handelLevelChange={this.props.handleLevelChangeAction}
-          handleShowModal={this.handleShowModal.bind(this)}
+          handleBack={this.handleBack.bind(this)}
         />
         <div className="breadcrumb mb-4 breadcrumb-item active message-container">
           <span className="">

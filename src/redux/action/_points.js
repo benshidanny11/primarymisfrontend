@@ -10,6 +10,7 @@ const getSubjectsByLevelAPI =
 const getSubjectsByTeacherAPI =
   "https://primaryims.herokuapp.com/api/subjects/";
 const createPointsAPI = "https://primaryims.herokuapp.com/api/points/create";
+const updatePointsAPI = "https://primaryims.herokuapp.com/api/points/update";
 dotenv.config();
 
 export const createPointsAction = ({
@@ -54,6 +55,46 @@ export const createPointsAction = ({
   } catch (e) {
     dispatch({
       type: actionType.CREATE_POINT_ERROR_ACTION,
+      payload: e.response,
+    });
+  }
+};
+
+export const updatePointsAction = ({
+  levelid,
+  subjectname,
+  catone,
+  cattwo,
+  exam,
+  studentid
+}) => async (dispatch) => {
+  dispatch({
+    type: actionType.UPDATE_POINTS_LOADING_ACTION,
+    payload: { type: "loading-update-point" },
+  });
+  try {
+    const { data } = await axios.put(
+      `${updatePointsAPI}/${levelid}/${subjectname}/${studentid}`,
+
+      {
+        catone,
+        cattwo,
+        exam,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          token: cookie.load("primary-mis-token"),
+        },
+      }
+    );
+    dispatch({
+      type: actionType.UPDATE_POINTS_RESPONSE_ACTION,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionType.UPDATE_POINTS_ERROR_ACTION,
       payload: e.response,
     });
   }

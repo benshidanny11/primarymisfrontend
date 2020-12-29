@@ -14,7 +14,7 @@ import {
   deleteStudentAction
 } from "./_students";
 import { getAllSubjectssAction,createSubjectAction} from "./_subjects";
-import { createPointsAction,getAllPointsAction} from "./_points";
+import { createPointsAction,getAllPointsAction,updatePointsAction} from "./_points";
 import { getAllTeachersAction } from "./_teachers";
 export {
   loginAction,
@@ -32,5 +32,6 @@ export {
   getAllTeachersAction,
   createSubjectAction,
   createPointsAction,
-  getAllPointsAction
+  getAllPointsAction,
+  updatePointsAction
 };

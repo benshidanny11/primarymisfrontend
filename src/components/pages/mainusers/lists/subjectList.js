@@ -26,6 +26,7 @@ import Deletestudentmodal from "../modals/deleteStudentModal";
 import AddMarksModal from "../modals/addPointsModal";
 import { Studentlistmodal } from "../modals/studentListModal";
 import SUbjectMenu from "../menus/subjectMenu";
+import UpdateSubjectModal from "../modals/updateSubjectModal";
 
 function SubjectList({ subjects, displayNoDataFound }) {
   const StyledTableCell = withStyles((theme) => ({
@@ -50,13 +51,11 @@ function SubjectList({ subjects, displayNoDataFound }) {
   const [open, setOpen] = React.useState(false);
   const [selectedSubject, setSelectedSubject] = React.useState({});
   const [options, setOptions] = React.useState([]);
-  const [showUpdateStudentModal, setShowUpdateStudentModal] = React.useState(
+  const [showUpdateSubjectModal, setShowUpdateSubjectModal] = React.useState(
     false
   );
-  const [actionStudent, setActionStudent] = React.useState({});
-  const [showDeleteStudentModal, setShowDeleteStudentModal] = React.useState(
-    false
-  );
+  const [actionSubject, setActionSubject] = React.useState({});
+  
   const [showAddMarksModal, setShowAddMarksModal] = React.useState(false);
   const [showLoadingIndicator, setShowLoadingIndicator] = React.useState(false);
   const [showStudentListModal, setShowStudentListModal] = React.useState(false);
@@ -122,7 +121,7 @@ function SubjectList({ subjects, displayNoDataFound }) {
       setOptions([
         ["View subject marks", "fas fa-file-invoice"],
         ["Update subject", "fas fa-user-edit"],
-        ["Delete subject", "fas fa-trash-alt"],
+        ["Disactivate subject", "fas fa-trash-alt"],
       ]);
     } else if (role === "TEACHER") {
       setOptions([
@@ -144,12 +143,10 @@ function SubjectList({ subjects, displayNoDataFound }) {
     setShowAddMarksModal(true);
   };
   const handleClose = async ({ subject, option }) => {
-    setActionStudent(subject);
-    console.log(subject);
-    if (option === "Update student") {
-      setShowUpdateStudentModal(true);
-    } else if (option === "Delete student") {
-      setShowDeleteStudentModal(true);
+    setActionSubject(subject);
+
+    if (option === "Update subject") {
+      setShowUpdateSubjectModal(true);
     } else if (option === "Add subject marks") {
       dispatch(await getAllStudentsAction(subject.levelid));
       setSubjectName(subject.subjectname);
@@ -251,6 +248,11 @@ function SubjectList({ subjects, displayNoDataFound }) {
         marksData={marksData}
         show={showAddMarksModal}
         onHide={() => setShowAddMarksModal(false)}
+      />
+      <UpdateSubjectModal
+        show={showUpdateSubjectModal}
+        onHide={() => setShowUpdateSubjectModal(false)}
+        subject={actionSubject}
       />
     </div>
   );

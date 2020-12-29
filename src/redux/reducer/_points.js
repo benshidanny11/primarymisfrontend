@@ -27,6 +27,30 @@ const initialState = {
         return state;
     }
   };
+  export const updatePointReducer = (state = initialState, action) => {
+    const { type, payload } = action;
+    switch (type) {
+      case actionTypes.UPDATE_POINTS_RESPONSE_ACTION:
+        return {
+          ...state,
+          ...payload,
+          type: "success-update-point",
+        };
+      case actionTypes.UPDATE_POINTS_ERROR_ACTION:
+        return {
+          ...state,
+          ...payload,
+          type: "error-update-point",
+        };
+      case actionTypes.UPDATE_POINTS_LOADING_ACTION:
+        return {
+          ...state,
+         type:"loading-update-point",
+        };
+      default:
+        return state;
+    }
+  };
   export const getPointsReducer = (state = initialState, action) => {
     const { type, payload } = action;
     switch (type) {
