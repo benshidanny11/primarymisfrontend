@@ -11,6 +11,7 @@ const getSubjectsByLevelAPI =
   const getSubjectsByTeacherAPI =
   "https://primaryims.herokuapp.com/api/subjects/";
 const createSubjectAPI = "https://primaryims.herokuapp.com/api/subjects/create";
+const updateSubjectAPI = "https://primaryims.herokuapp.com/api/subjects/update";
 
 dotenv.config();
 
@@ -49,67 +50,48 @@ export const createSubjectAction = (subjectData) => async (dispatch) => {
   }
 };
 
-// export const updateStudentAction = (studentData) => async (dispatch) => {
-//   dispatch({
-//     type: actionType.UPDATE_STUDENT_LOADING_ACTION,
-//     payload: { type: "loading-update" },
-//   });
-//   try {
-//     const { data } = await axios.put(
-//       `${updateStudentAPI}/${studentData.id}`,
+export const updateSubjectAction = ({
+  levelid,
+  catmax,
+  exammax,
+  teacherid,
+  subjectname,
+  subjectNameToUpdate
+  
+}) => async (dispatch) => {
+  dispatch({
+    type: actionType.UPDATE_SUBJECT_LOADING_ACTION,
+    payload: { type: "loading-update-subject" },
+  });
+  try {
+    const { data } = await axios.put(
+      `${updateSubjectAPI}/${subjectname}/${levelid}`,
 
-//       {
-//         studentnames: studentData.studentsNames,
-//         parentsemail: studentData.parentsEmail,
-//         parentsphonenumber: studentData.parentsPhone,
-//         levelid: studentData.studentClass,
-//         classid: studentData.studentLevel,
-//       },
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//           token: cookie.load("primary-mis-token"),
-//         },
-//       }
-//     );
-//     dispatch({
-//       type: actionType.UPDATE_STUDENT_RESPONSE_ACTION,
-//       payload: data,
-//     });
-//   } catch (e) {
-//     dispatch({
-//       type: actionType.UPDATE_STUDENT_ERROR_ACTION,
-//       payload: e.response,
-//     });
-//   }
-// };
-
-// export const deleteStudentAction = (id) => async (dispatch) => {
-//   dispatch({
-//     type: actionType.DELETE_STUDENT_LOADING_ACTION,
-//     payload: { type: "loading-delete" },
-//   });
-//   try {
-//     const { data } = await axios.delete(
-//       `${deleteStudentAPI}/${id}`,
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//           token: cookie.load("primary-mis-token"),
-//         },
-//       }
-//     );
-//     dispatch({
-//       type: actionType.DELETE_STUDENT_RESPONSE_ACTION,
-//       payload: data,
-//     });
-//   } catch (e) {
-//     dispatch({
-//       type: actionType.DELETE_STUDENT_ERROR_ACTION,
-//       payload: e.response,
-//     });
-//   }
-// };
+      {
+        catmax,
+        exammax,
+        teacherid,
+        subjectname:subjectNameToUpdate,
+        
+    },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          token: cookie.load("primary-mis-token"),
+        },
+      }
+    );
+    dispatch({
+      type: actionType.UPDATE_SUBJECT_RESPONSE_ACTION,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionType.UPDATE_SUBJECT_ERROR_ACTION,
+      payload: e.response,
+    });
+  }
+};
 
 export const getAllSubjectssAction = (levelid) => async (dispatch) => {
   const {userid,role} =cookie.load("user");

@@ -13,7 +13,7 @@ import {
   updateStudentAction,
   deleteStudentAction
 } from "./_students";
-import { getAllSubjectssAction,createSubjectAction} from "./_subjects";
+import { getAllSubjectssAction,createSubjectAction,updateSubjectAction} from "./_subjects";
 import { createPointsAction,getAllPointsAction,updatePointsAction} from "./_points";
 import { getAllTeachersAction } from "./_teachers";
 export {
@@ -33,5 +33,6 @@ export {
   createSubjectAction,
   createPointsAction,
   getAllPointsAction,
-  updatePointsAction
+  updatePointsAction,
+  updateSubjectAction
 };

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
   getAllTeachersAction,
-  createSubjectAction,
+  updateSubjectAction,
 } from "../../../../redux/action";
 import { connect } from "react-redux";
 import _ from "lodash";
@@ -27,6 +27,7 @@ class UpdateSubjectModal extends Component {
 
     this.state = {
       levelid: 1,
+      teachers: [],
       showProgress: false,
       hideModal: false,
       showResponseModal: false,
@@ -36,39 +37,37 @@ class UpdateSubjectModal extends Component {
     };
   }
 
-
-
-
-
   componentDidUpdate(prevProps, prevState, snapshot) {
-    // if (!_.isEqual(prevProps.allClasses, this.props.allClasses)) {
-    //   this.setState({
-    //     classes: this.props.allClasses,
-    //   });
-    // }
-    // if (prevProps !== this.props) {
-    //   if (this.props.createStudentResponse.type === "loading-create") {
-    //     $("#dotprogress").removeClass("dotprogress");
-    //     console.log("Response", this.props.createStudentResponse);
-    //   } else if (this.props.createStudentResponse.type === "error-create") {
-    //     $("#dotprogress").addClass("dotprogress");
-    //     console.log(
-    //       "Error",
-    //       this.props.createStudentResponse.payload.data.message
-    //     );
-    //     handleCreateErrorToast(
-    //       this.props.createStudentResponse.payload.data.message,
-    //       toast
-    //     );
-    //   } else if (this.props.createStudentResponse.type === "success-create") {
-    //     console.log("Response", this.props.createStudentResponse);
-    //     this.setState({
-    //       showResponseModal: true,
-    //     });
-    //     $("#dotprogress").addClass("dotprogress");
-    //   }
-    // }
+
+    if (prevProps !== this.props) {
+      if (this.props.subjectResponse.type === "loading-update-subject") {
+        $("#dotprogress").removeClass("dotprogress");
+        console.log("Response", this.props.subjectResponse);
+      } else if (this.props.subjectResponse.type === "error-update-subject") {
+        $("#dotprogress").addClass("dotprogress");
+        console.log(
+          "Error",
+          this.props.subjectResponse.payload
+        );
+        handleCreateErrorToast(
+          this.props.subjectResponse.payload.data.message,
+          toast
+        );
+      } else if (this.props.subjectResponse.type === "success-update-subject") {
+        console.log("Response", this.props.createStudentResponse);
+        this.setState({
+          showResponseModal: true,
+        });
+        $("#dotprogress").addClass("dotprogress");
+      }
+    }
   }
+  componentWillReceiveProps({ Teachers }) {
+    this.setState({
+      teachers: Teachers,
+    });
+  }
+
  
  
 
@@ -93,18 +92,18 @@ handleCatMaxEvent(e){
   handleLevelChangeEvent(e) {}
   handleStudentSubmit(e) {
     e.preventDefault();
-
+  const {subject}=this.props;
     const subjectData = {
-      subjectName: e.target.subjectname.value,
-      catMax: e.target.catmaximum.value,
-      examMax: e.target.exammax.value,
-      levelId: e.target.subjectlevel.value,
-      teacherId: e.target.subjectteacher.value,
+      subjectname:subject.subjectname,
+      catmax: e.target.catmaximum.value,
+      exammax: e.target.exammax.value,
+      levelid: subject.levelid,
+      teacherid: e.target.subjectteacher.value,
+      subjectNameToUpdate: e.target.subjectname.value
     };
-    this.props.createSubjectAction(subjectData);
-    this.setState({
-      hideModal: true,
-    });
+   
+     this.props.updateSubjectAction(subjectData);
+   
   }
 
   handler = () => {
@@ -121,10 +120,12 @@ handleCatMaxEvent(e){
   handleRedirect = () => {
     window.location.href = "/subjects";
   };
+  componentWillMount() {
+    this.props.getAllTeachersAction();
+  }
   render() {
-    const { showProgress, hideModal, showResponseModal ,subjectName,catMaximum,examMaximum} = this.state;
+    const { showProgress, teachers, showResponseModal ,subjectName,catMaximum,examMaximum} = this.state;
     const {subject}=this.props;
-    /*{subjectname: "SOCIAL STUDIES", catmax: 60, exammax: 40, levelid: 2, status: "1"}*/
     return (
       <div>
         {!showResponseModal ? (
@@ -185,7 +186,31 @@ handleCatMaxEvent(e){
                   />
                 </div>
               
-              
+                <div className="form-group">
+                  <label htmlFor="subjectteacher" className="col-form-label">
+                    Teached by:
+                  </label>
+                  <select
+                    type="text"
+                    className="form-control"
+                    id="subjectteacher"
+                    name="subjectteacher"
+                    required
+                  >
+                    <option value={subject.teacherid}>
+                      {subject.names}
+                    </option>
+                    {teachers ? (
+                      teachers.map((teacher) => (
+                        <option value={teacher.userid} key={teacher.userid}>
+                          {teacher.names}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">No teachers found</option>
+                    )}
+                  </select>
+                </div> 
                 <Modal.Footer id="footer">
                   <div className="btn-container">
                     <CustomCancelButton
@@ -211,9 +236,9 @@ handleCatMaxEvent(e){
             onHide={this.handleHideModal.bind(this)}
           >
             <Modal.Header closeButton>
-              <Modal.Title>Subject registration</Modal.Title>
+              <Modal.Title>Subject update</Modal.Title>
             </Modal.Header>
-            <Modal.Body> Subject is registered successfully</Modal.Body>
+            <Modal.Body> Subject is updated successfully</Modal.Body>
             <Modal.Footer>
               <CustomCancelButton
                 type="button"
@@ -221,12 +246,6 @@ handleCatMaxEvent(e){
                 handleHide={this.handleRedirect.bind(this)}
                 label="Okay"
               />
-              {/* <BtnModal
-                variant="primary"
-                onClick={this.handleRedirect.bind(this)}
-              >
-                Okay
-              </BtnModal> */}
             </Modal.Footer>
           </Modal>
         )}
@@ -237,14 +256,16 @@ handleCatMaxEvent(e){
   }
 }
 const mapStateToProps = ({
-  createSubjectReducer,
+  getAllTeachersReducer,
+  updateSubjectReducer,
 }) => {
-
   return {
-
+    Teachers: getAllTeachersReducer.teachers,
+    subjectResponse:updateSubjectReducer
   };
 };
 
 export default connect(mapStateToProps, {
-  createSubjectAction,
+  updateSubjectAction,
+  getAllTeachersAction
 })(UpdateSubjectModal);

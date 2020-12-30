@@ -51,4 +51,27 @@ export const getAllSubjectsReducer = (state = initialState, action) => {
         return state;
     }
   };
-  
+  export const updateSubjectReducer = (state = initialState, action) => {
+    const { type, payload } = action;
+    switch (type) {
+      case actionTypes.UPDATE_SUBJECT_RESPONSE_ACTION:
+        return {
+          ...state,
+          ...payload,
+          type: "success-update-subject",
+        };
+      case actionTypes.UPDATE_SUBJECT_ERROR_ACTION:
+        return {
+          ...state,
+          ...payload,
+          type: "error-update-subject",
+        };
+      case actionTypes.UPDATE_SUBJECT_LOADING_ACTION:
+        return {
+          ...state,
+         type:"loading-update-subject",
+        };
+      default:
+        return state;
+    }
+  };
