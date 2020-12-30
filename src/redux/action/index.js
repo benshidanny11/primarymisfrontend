@@ -13,6 +13,9 @@ import {
   updateStudentAction,
   deleteStudentAction
 } from "./_students";
+import { getAllSubjectssAction,createSubjectAction,updateSubjectAction} from "./_subjects";
+import { createPointsAction,getAllPointsAction,updatePointsAction} from "./_points";
+import { getAllTeachersAction } from "./_teachers";
 export {
   loginAction,
   decodeToken,
@@ -24,5 +27,12 @@ export {
   getClassesAction,
   createStudentAction,
   updateStudentAction,
-  deleteStudentAction
+  deleteStudentAction,
+  getAllSubjectssAction,
+  getAllTeachersAction,
+  createSubjectAction,
+  createPointsAction,
+  getAllPointsAction,
+  updatePointsAction,
+  updateSubjectAction
 };

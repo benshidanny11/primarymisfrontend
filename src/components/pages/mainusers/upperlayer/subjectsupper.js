@@ -26,18 +26,9 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 120,
   },
 }));
-const addStudent = () => {
- 
-  $("#exampleModal").on("show.bs.modal", function (event) {
-    var button = $(event.relatedTarget);
-    var recipient = button.data("whatever");
-    var modal = $(this);
-    modal.find(".modal-title").text("New message to " + recipient);
-    modal.find(".modal-body input").val(recipient);
-  });
-};
 
-export default function LevelList({ handelLevelChange, handleShowModal}) {
+
+export default function SubjectsUpper({ handelLevelChange, handleShowModal}) {
   const classes = useStyles();
   const [age, setAge] = React.useState(0);
   const [open, setOpen] = React.useState(false);
@@ -70,7 +61,7 @@ export default function LevelList({ handelLevelChange, handleShowModal}) {
         className={classes.button}
         onClick={handleShowModal}
       >
-        Add student
+        Add subject
       </Button>
     </div>
   );
