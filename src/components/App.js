@@ -22,12 +22,7 @@ import jwt from "jsonwebtoken";
 
 import { publicRoutes, model_routes } from "../routes";
 function App(props) {
-  //const dispatch = useDispatch();
- //dispatch(decodeToken(cookie.load("primary-mis-token")));
-//   const user=useSelector((state) => state.loginReducer);
-//  const state=useSelector((state) => state);
-//  console.log("USer in app",user)
-//   cookie.save("user",JSON.stringify(user))
+
   return (
     <BrowserRouter>
       <Switch>

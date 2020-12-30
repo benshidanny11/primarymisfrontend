@@ -76,10 +76,14 @@
   padding-right: 0px;
 }
 
-input[type=text], input[type=email], input[type=password], input[type=tel], select {
+input[type=text], input[type=email], input[type=password], input[type=tel], input[type=number], select {
   outline: none;
   box-shadow: none !important;
   border: 1px solid #ccc !important;
+}
+
+.controlcontainer {
+  margin-bottom: 0px !important;
 }
 
 /*# sourceMappingURL=style.css.map */

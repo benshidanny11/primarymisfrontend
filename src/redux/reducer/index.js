@@ -6,6 +6,9 @@ import {
   updateStudentReducer,
   deleteStudentReducer
 } from "./_students";
+import { getAllSubjectsReducer, createSubjectReducer,updateSubjectReducer} from "./_subjects";
+import { getAllTeachersReducer } from "./_teachers";
+import {createPointReducer,getPointsReducer,updatePointReducer} from "./_points";
 
 export default combineReducers({
   loginReducer,
@@ -14,5 +17,12 @@ export default combineReducers({
   studentReducer,
   createStudentReducer,
   updateStudentReducer,
-  deleteStudentReducer
+  deleteStudentReducer,
+  getAllSubjectsReducer,
+  getAllTeachersReducer,
+  createSubjectReducer,
+  createPointReducer,
+  getPointsReducer,
+  updatePointReducer,
+  updateSubjectReducer
 });
