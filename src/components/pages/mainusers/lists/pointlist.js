@@ -55,7 +55,8 @@ function PointList({ points, displayNoDataFound }) {
   const useStyles = makeStyles({
     table: {},
     container: {
-      margin: 20,
+      width: 1000,
+      margin:"auto",
       overflow: "auto",
       padding: 10,
     },
@@ -98,11 +99,10 @@ function PointList({ points, displayNoDataFound }) {
           <TableHead>
             <TableRow>
               <StyledTableCell>Student names</StyledTableCell>
-              <StyledTableCell align="">Level</StyledTableCell>
-              <StyledTableCell align="">Term</StyledTableCell>
-              <StyledTableCell align="">Cat one</StyledTableCell>
-              <StyledTableCell align="">Cat two</StyledTableCell>
-              <StyledTableCell align="">Exam </StyledTableCell>
+              <StyledTableCell align="" width="1px">Class</StyledTableCell>
+              <StyledTableCell align="" width="1px">CatOne</StyledTableCell>
+              <StyledTableCell align="" width="1px">CatTwo</StyledTableCell>
+              <StyledTableCell align="" width="1px">Exam </StyledTableCell>
               <StyledTableCell align="center">Options</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -123,7 +123,6 @@ function PointList({ points, displayNoDataFound }) {
                     {point.studentnames}
                   </StyledTableCell>
                   <StyledTableCell align="">{point.levelname}</StyledTableCell>
-                  <StyledTableCell align="">term {point.term}</StyledTableCell>
                   <StyledTableCell align="">{point.catone}</StyledTableCell>
                   <StyledTableCell align="">{point.cattwo}</StyledTableCell>
                   <StyledTableCell align="">{point.exam}</StyledTableCell>
