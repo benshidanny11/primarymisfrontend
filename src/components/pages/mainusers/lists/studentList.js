@@ -106,6 +106,9 @@ function Userslist({ students, displayNoDataFound }) {
     } else if (option === "Delete student") {
       setShowDeleteStudentModal(true);
     }
+    else if (option === "View student report") {
+      setShowDeleteStudentModal(true);
+    }
     setOpen(false);
   };
   const classes = useStyles();
