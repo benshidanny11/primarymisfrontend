@@ -119,7 +119,7 @@ export const getAllStudentsAction = (levelid) => async (dispatch) => {
   try {
     // const { data } = await
     axios
-      .get(`${getStudentssAPI}/${levelid}`, {
+      .get(`${getStudentssAPI}/${levelid}/2021`, {
         headers: {
           "Content-Type": "application/json",
           token: cookie.load("primary-mis-token"),

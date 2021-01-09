@@ -25,8 +25,8 @@ class Subjects extends Component {
   }
 
   componentDidMount() {
-
-   
+    const { levelid } = this.state;
+    this.props.getAllSubjectssAction(levelid);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -50,7 +50,7 @@ class Subjects extends Component {
         this.setState({ Subjects: subjects });
       } else {
         this.setState({ displayNoDataFound: false });
-        this.setState({ Subjects: subjects,levelid});
+        this.setState({ Subjects: subjects});
       }
     }
    if(students){
@@ -61,9 +61,7 @@ class Subjects extends Component {
     }
    }
   }
-  componentWillMount() {
-    this.props.getAllSubjectssAction();
-  }
+
 
   handleEvent() {}
   handler = () => {
@@ -76,9 +74,9 @@ class Subjects extends Component {
   }
 
   render() {
-    const { Subjects, displayNoDataFound, showModal,students } = this.state;
+    const { Subjects, displayNoDataFound, showModal,students ,levelid} = this.state;
+    console.log(levelid)
     const { role } = cookie.load("user");
-    const subject = Subjects[0];
     return (
       <div className="d-block">
         <AddSubjectModal
@@ -94,7 +92,7 @@ class Subjects extends Component {
           ""
         )}
         <div className="breadcrumb mb-4 breadcrumb-item active message-container">
-          <span className="">THere are {Subjects.length} subects.</span>
+          <span className="">There are {Subjects.length} subects P {levelid} </span>
         </div>
         <SubjectList
           subjects={Subjects}

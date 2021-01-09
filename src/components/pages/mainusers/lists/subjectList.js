@@ -63,7 +63,7 @@ function SubjectList({ subjects, displayNoDataFound }) {
   const [students, setStudents] = React.useState([]);
   const [marksData, setMarksData] = React.useState({});
   const role = cookie.load("user").role;
-  console.log(role);
+  // console.log(subjects);
 
   const studentReducer = useSelector((state) => state.studentReducer);
   //Use efffect hook
@@ -86,9 +86,11 @@ function SubjectList({ subjects, displayNoDataFound }) {
   //Styles
 
   const useStyles = makeStyles({
-    table: {},
+    table: {
+    },
     container: {
-      margin: 20,
+      width: 1000,
+      margin:"auto",
       overflow: "auto",
       padding: 10,
     },
@@ -164,11 +166,11 @@ function SubjectList({ subjects, displayNoDataFound }) {
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Subject name</StyledTableCell>
-              <StyledTableCell align="">CAT maximum</StyledTableCell>
-              <StyledTableCell align="">Exam maximum</StyledTableCell>
-              <StyledTableCell align="">Studied in</StyledTableCell>
-              <StyledTableCell align="center">Options</StyledTableCell>
+              <StyledTableCell >Subject name</StyledTableCell>
+              <StyledTableCell align="" width="1px">CATMax</StyledTableCell>
+              <StyledTableCell align="" width="1px">ExamMax</StyledTableCell>
+              <StyledTableCell align="" >Teacher</StyledTableCell>
+              <StyledTableCell align="" >Options</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -190,9 +192,9 @@ function SubjectList({ subjects, displayNoDataFound }) {
                   <StyledTableCell align="">{subject.catmax}</StyledTableCell>
                   <StyledTableCell align="">{subject.exammax}</StyledTableCell>
                   <StyledTableCell align="">
-                    p {subject.levelid}
+                    {subject.names}
                   </StyledTableCell>
-                  <StyledTableCell align="right">
+                  <StyledTableCell align="">
                     {" "}
                     <Button
                       aria-controls="customized-menu"

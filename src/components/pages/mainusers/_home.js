@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import cookie from "react-cookies";
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -30,7 +30,7 @@ class Home extends Component {
       <div>
         <main>
           <div className="container-fluid">
-            <h1 className="mt-4">Dashboard</h1>
+            <h1 className="mt-4">{cookie.load("user").role}s Dashboard</h1>
             <ol className="breadcrumb mb-4">
               <li className="breadcrumb-item active">School over view</li>
             </ol>

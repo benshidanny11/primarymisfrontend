@@ -137,7 +137,7 @@ handleCatMaxEvent(e){
           >
             <Modal.Header closeButton={true}>
               <Modal.Title id="contained-modal-title-vcenter">
-                Register new subject
+                Update subject Information
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -222,7 +222,7 @@ handleCatMaxEvent(e){
 
                     <CustomButton
                       type="submit"
-                      label="Add subject"
+                      label="Update subject"
                       className="btn-submit"
                     />
                   </div>

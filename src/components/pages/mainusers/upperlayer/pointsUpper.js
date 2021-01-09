@@ -48,12 +48,9 @@ export default function PointsLevelList({ handelLevelChange, handleBack}) {
           id="selector"
           className=" form-control"
         >
-          <option value={1}>P one</option>
-          <option value={2}>P two</option>
-          <option value={3}>P three</option>
-          <option value={4}>P four</option>
-          <option value={5}>P five</option>
-          <option value={6}>P six</option>
+          <option value={'1'}>term one</option>
+          <option value={'2'}>term two</option>
+          <option value={'2'}>term three</option>
         </select>
       </FormControl>
       <Button
