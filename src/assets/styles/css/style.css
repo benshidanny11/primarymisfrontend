@@ -17,6 +17,7 @@
   padding-right: 5px;
   padding-left: 5px;
   padding-top: 10px;
+  width: 100%;
 }
 
 .message-container {
@@ -74,6 +75,7 @@
 #footer {
   padding-left: 0px;
   padding-right: 0px;
+  margin-top: 0.5rem;
 }
 
 input[type=text], input[type=email], input[type=password], input[type=tel], input[type=number], select {
@@ -84,6 +86,20 @@ input[type=text], input[type=email], input[type=password], input[type=tel], inpu
 
 .controlcontainer {
   margin-bottom: 0px !important;
+}
+
+.modalb {
+  padding: 0.5rem;
+}
+
+.selectorinner {
+  min-width: 500px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#year {
+  margin-left: 10px;
 }
 
 /*# sourceMappingURL=style.css.map */

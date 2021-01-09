@@ -67,7 +67,7 @@ class Updatestudentmodal extends Component {
   //On update action
   handleStudentSubmit(e) {
     e.preventDefault();
-
+    const {student}=this.props;
     const studentData = {
       id: this.props.student.studentid,
       studentsNames: e.target.studentnames.value,
@@ -75,6 +75,8 @@ class Updatestudentmodal extends Component {
       parentsPhone: e.target.parentsphone.value,
       studentClass: e.target.studentclass.value,
       studentLevel: e.target.studentslevel.value,
+      currentYear:student.year,
+      year:e.target.year.value
     };
 
     this.props.updateStudentAction(studentData);
@@ -158,7 +160,7 @@ class Updatestudentmodal extends Component {
             <Modal.Body>
               <Progress open={showProgress} />
               <form onSubmit={this.handleStudentSubmit.bind(this)}>
-                <div className="form-group">
+                <div className="form-group controlcontainer">
                   <label htmlFor="firstname" className="col-form-label">
                     Student names:
                   </label>
@@ -176,7 +178,7 @@ class Updatestudentmodal extends Component {
                     onChange={this.handleNamesChange.bind(this)}
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-group controlcontainer">
                   <label htmlFor="email" className="col-form-label">
                     Parent's email:
                   </label>
@@ -194,7 +196,7 @@ class Updatestudentmodal extends Component {
                     onChange={this.handleEmailChange.bind(this)}
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-group controlcontainer">
                   <label htmlFor="phonenumber" className="col-form-label">
                     Parent's phone:
                   </label>
@@ -212,7 +214,7 @@ class Updatestudentmodal extends Component {
                     onChange={this.handlePhoneChange.bind(this)}
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-group controlcontainer">
                   <label for="recipient-name" className="col-form-label">
                     Student's level:
                   </label>
@@ -232,7 +234,7 @@ class Updatestudentmodal extends Component {
                     <option value={6}>P 6</option>
                   </select>
                 </div>
-                <div className="form-group">
+                <div className="form-group controlcontainer">
                   <label for="recipient-name" className="col-form-label">
                     Student's class:
                   </label>
@@ -256,6 +258,29 @@ class Updatestudentmodal extends Component {
                     ) : (
                       <option value="">No classes found</option>
                     )}
+                  </select>
+                </div>
+                <div className="form-group controlcontainer">
+                  <label for="recipient-name" className="col-form-label">
+                    Academic year:
+                  </label>
+                  <select
+                    required
+                    className="form-control"
+                    id="year"
+                    name="year"
+                  >
+                    <option value={student.year}>{student.year}</option>
+                    <option value="2020-2021">2020-2021</option>
+                    <option value="2021-2022">2021-2022</option>
+                    <option value="2022-2023">2022-2023</option>
+                    <option value="2023-2024">2023-2024</option>
+                    <option value="2024-2025">2024-2025</option>
+                    <option value="2025-2026">2025-2026</option>
+                    <option value="2026-2027">2026-2027</option>
+                    <option value="2027-2028">2027-2028</option>
+                    <option value="2028-2029">2028-2029</option>
+                    <option value="2029-2023">2029-2030</option>
                   </select>
                 </div>
                 <Modal.Footer id="footer">

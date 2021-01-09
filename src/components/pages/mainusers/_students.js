@@ -17,19 +17,23 @@ class Students extends Component {
       levelid: 1,
       displayNoDataFound: false,
       showModal: false,
+      academicYear:"2020-2021"
     };
   }
 
   componentDidMount() {
-    const { levelid } = this.state;
-    this.props.getAllStudentsAction(levelid);
+    const { levelid,academicYear } = this.state;
+    this.props.getAllStudentsAction({levelid,academicYear})
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { levelid } = this.state;
+    const { levelid,academicYear } = this.state;
 
     if (prevProps.levelid !== this.props.levelid) {
-      this.props.getAllStudentsAction(levelid);
+      this.props.getAllStudentsAction({levelid,academicYear});
+    }
+    if (prevState.academicYear !== this.state.academicYear) {
+      this.props.getAllStudentsAction({levelid,academicYear});
     }
   }
 
@@ -66,6 +70,12 @@ class Students extends Component {
   handler = () => {
     this.setState();
   };
+  handleYearChange=(academicYear)=>{
+    console.log(academicYear)
+    this.setState({
+      academicYear
+    })
+  }
 
   render() {
     const { students, levelid, displayNoDataFound, showModal } = this.state;
@@ -78,6 +88,7 @@ class Students extends Component {
         <LevelList
           handelLevelChange={this.props.handleLevelChangeAction}
           handleShowModal={this.handleShowModal.bind(this)}
+          handleYearChange={this.handleYearChange.bind(this)}
         />
         <div className="breadcrumb mb-4 breadcrumb-item active message-container">
           <span className="">
