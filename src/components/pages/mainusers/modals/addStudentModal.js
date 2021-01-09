@@ -82,6 +82,7 @@ class Addstudentmodal extends Component {
       parentsPhone: e.target.parentsphone.value,
       studentClass: e.target.studentclass.value,
       studentLevel: e.target.studentslevel.value,
+      year:e.target.year.value
     };
     this.props.createStudentAction(studentData);
     this.setState({
@@ -115,16 +116,17 @@ class Addstudentmodal extends Component {
             aria-labelledby="contained-modal-title-vcenter"
             centered
             // onHide={() => hideModal}
+           
           >
             <Modal.Header closeButton={true}>
               <Modal.Title id="contained-modal-title-vcenter">
                 Register new student
               </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body  className="modalb">
               <Progress open={showProgress} />
               <form onSubmit={this.handleStudentSubmit.bind(this)}>
-                <div className="form-group">
+                <div className="form-group controlcontainer">
                   <label htmlFor="firstname" className="col-form-label">
                     Student names:
                   </label>
@@ -136,7 +138,7 @@ class Addstudentmodal extends Component {
                     required
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-group controlcontainer">
                   <label htmlFor="email" className="col-form-label">
                     Parent's email:
                   </label>
@@ -148,7 +150,7 @@ class Addstudentmodal extends Component {
                     required
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-group controlcontainer">
                   <label htmlFor="phonenumber" className="col-form-label">
                     Parent's phone:
                   </label>
@@ -160,7 +162,7 @@ class Addstudentmodal extends Component {
                     required
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-group controlcontainer">
                   <label for="recipient-name" className="col-form-label">
                     Student's level:
                   </label>
@@ -180,7 +182,7 @@ class Addstudentmodal extends Component {
                     <option value={6}>P six</option>
                   </select>
                 </div>
-                <div className="form-group">
+                <div className="form-group controlcontainer">
                   <label for="recipient-name" className="col-form-label">
                     Student's class:
                   </label>
@@ -204,6 +206,29 @@ class Addstudentmodal extends Component {
                     ) : (
                       <option value="">No classes found</option>
                     )}
+                  </select>
+                </div>
+                <div className="form-group controlcontainer">
+                  <label for="recipient-name" className="col-form-label">
+                    Academic year:
+                  </label>
+                  <select
+                    required
+                    className="form-control"
+                    id="year"
+                    name="year"
+                  >
+                    <option value="">Choose academic year</option>
+                    <option value="2020-2021">2020-2021</option>
+                    <option value="2021-2022">2021-2022</option>
+                    <option value="2022-2023">2022-2023</option>
+                    <option value="2023-2024">2023-2024</option>
+                    <option value="2024-2025">2024-2025</option>
+                    <option value="2025-2026">2025-2026</option>
+                    <option value="2026-2027">2026-2027</option>
+                    <option value="2027-2028">2027-2028</option>
+                    <option value="2028-2029">2028-2029</option>
+                    <option value="2029-2023">2029-2030</option>
                   </select>
                 </div>
                 <Modal.Footer id="footer">

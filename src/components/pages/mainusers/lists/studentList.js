@@ -107,7 +107,7 @@ function Userslist({ students, displayNoDataFound }) {
       setShowDeleteStudentModal(true);
     }
     else if (option === "View student report") {
-      setShowDeleteStudentModal(true);
+     // setShowDeleteStudentModal(true);
     }
     setOpen(false);
   };
@@ -151,7 +151,7 @@ function Userslist({ students, displayNoDataFound }) {
                   <StyledTableCell align="">
                     {student.classname}
                   </StyledTableCell>
-                  <StyledTableCell align="right">
+                  <StyledTableCell align="center">
                     {" "}
                     <Button
                       aria-controls="customized-menu"

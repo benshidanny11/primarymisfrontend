@@ -29,6 +29,7 @@ export const createStudentAction = (studentData) => async (dispatch) => {
         parentsphonenumber: studentData.parentsPhone,
         levelid: studentData.studentLevel,
         classid: studentData.studentClass,
+        year:studentData.year
       },
       {
         headers: {
@@ -56,7 +57,7 @@ export const updateStudentAction = (studentData) => async (dispatch) => {
   });
   try {
     const { data } = await axios.put(
-      `${updateStudentAPI}/${studentData.id}`,
+      `${updateStudentAPI}/${studentData.id}/${studentData.currentYear}`,
 
       {
         studentnames: studentData.studentsNames,
@@ -64,6 +65,7 @@ export const updateStudentAction = (studentData) => async (dispatch) => {
         parentsphonenumber: studentData.parentsPhone,
         levelid: studentData.studentClass,
         classid: studentData.studentLevel,
+        year:studentData.year,
       },
       {
         headers: {
@@ -111,15 +113,15 @@ export const deleteStudentAction = (id) => async (dispatch) => {
   }
 };
 
-export const getAllStudentsAction = (levelid) => async (dispatch) => {
+export const getAllStudentsAction = ({levelid,academicYear}) => async (dispatch) => {
   dispatch({
     type: actionType.GET_ALL_STUDENTS_LOADING_ACTION,
     payload: { type: "loading" },
   });
   try {
-    // const { data } = await
+    // const { data } = await/students/:levelid/:year
     axios
-      .get(`${getStudentssAPI}/${levelid}/2021`, {
+      .get(`${getStudentssAPI}/${levelid}/${academicYear}`, {
         headers: {
           "Content-Type": "application/json",
           token: cookie.load("primary-mis-token"),

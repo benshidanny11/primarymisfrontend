@@ -89,7 +89,7 @@ function SubjectList({ subjects, displayNoDataFound }) {
     table: {
     },
     container: {
-      width: 1000,
+      width: 1120,
       margin:"auto",
       overflow: "auto",
       padding: 10,
@@ -167,10 +167,10 @@ function SubjectList({ subjects, displayNoDataFound }) {
           <TableHead>
             <TableRow>
               <StyledTableCell >Subject name</StyledTableCell>
-              <StyledTableCell align="" width="1px">CATMax</StyledTableCell>
-              <StyledTableCell align="" width="1px">ExamMax</StyledTableCell>
+              <StyledTableCell align="" >CATMax</StyledTableCell>
+              <StyledTableCell align="" >ExamMax</StyledTableCell>
               <StyledTableCell align="" >Teacher</StyledTableCell>
-              <StyledTableCell align="" >Options</StyledTableCell>
+              <StyledTableCell align="center" >Options</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -194,7 +194,7 @@ function SubjectList({ subjects, displayNoDataFound }) {
                   <StyledTableCell align="">
                     {subject.names}
                   </StyledTableCell>
-                  <StyledTableCell align="">
+                  <StyledTableCell align="center">
                     {" "}
                     <Button
                       aria-controls="customized-menu"
