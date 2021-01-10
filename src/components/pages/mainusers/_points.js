@@ -16,45 +16,45 @@ class Points extends Component {
       isLoading: false,
       displayNoDataFound: false,
       showModal: false,
-      academicYear:"2020-2021",
-      term:"1"
-    }
-    this.params=queryString.parse(props.location.search);
+      academicYear: "2020-2021",
+      term: "1",
+    };
+    this.params = queryString.parse(props.location.search);
   }
 
   componentWillMount() {
-    const { levelid,subjectname } = this.params;
-    const {term,academicYear}=this.state;
-    this.props.getAllPointsAction(levelid,subjectname,term,academicYear);
+    const { levelid, subjectname } = this.params;
+    const { term, academicYear } = this.state;
+    this.props.getAllPointsAction(levelid, subjectname, term, academicYear);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const {term,academicYear } = this.state;
-    const { levelid,subjectname } = this.params;
+    const { term, academicYear } = this.state;
+    const { levelid, subjectname } = this.params;
 
     if (prevState.term !== term) {
-      this.props.getAllPointsAction(levelid,subjectname,term,academicYear);
+      this.props.getAllPointsAction(levelid, subjectname, term, academicYear);
     }
 
     if (prevState.academicYear !== academicYear) {
-      this.props.getAllPointsAction(levelid,subjectname,term,academicYear);
+      this.props.getAllPointsAction(levelid, subjectname, term, academicYear);
     }
   }
 
-  componentWillReceiveProps({ points }) {
-   console.log(points)
-    if (points) {
-      if (points.length === 0) {
-        this.setState({ displayNoDataFound: true });
-        this.setState({ Points: points });
-      } else {
+  componentWillReceiveProps({ points, type }) {
+    console.log(points);
+    if (type === "error-get-point") {
+      this.setState({ displayNoDataFound: true });
+      this.setState({ Points: [] });
+    } else {
+      if (points.length > 0) {
         this.setState({ displayNoDataFound: false });
         this.setState({ Points: points });
       }
     }
   }
   handleBack() {
-  window.location.href="/subjects"
+    window.location.href = "/subjects";
   }
 
   handleHideModal() {
@@ -63,24 +63,23 @@ class Points extends Component {
     });
   }
 
-
-  handleyearChange(year){
-   this.setState({
-     academicYear:year
-   })
-  }
-  handleTermChange(selectedTerm){
+  handleyearChange(year) {
     this.setState({
-      term:selectedTerm
-    })
+      academicYear: year,
+    });
+  }
+  handleTermChange(selectedTerm) {
+    this.setState({
+      term: selectedTerm,
+    });
   }
 
   render() {
-    const { Points, displayNoDataFound, showModal,term } = this.state;
-    const { subjectname ,levelid} = this.params;
+    const { Points, displayNoDataFound, showModal, term } = this.state;
+    const { subjectname, levelid } = this.params;
     return (
-      <div className="d-block"> 
-      <PointsLevelList
+      <div className="d-block">
+        <PointsLevelList
           handleTermChangeEvent={this.handleTermChange.bind(this)}
           handleBack={this.handleBack.bind(this)}
           handleYearChange={this.handleyearChange.bind(this)}
@@ -90,20 +89,17 @@ class Points extends Component {
             Marks of {subjectname} in P {levelid} for Term {term}
           </span>
         </div>
-        <PointList
-          points={Points}
-          displayNoDataFound={displayNoDataFound}
-        />
-       
+        <PointList points={Points} displayNoDataFound={displayNoDataFound} />
       </div>
     );
   }
 }
 
 const mapStateToProps = ({ getPointsReducer }) => {
- console.log(getPointsReducer);
+  console.log(getPointsReducer);
   return {
-    points:getPointsReducer.points
+    points: getPointsReducer.points,
+    type: getPointsReducer.type,
   };
 };
 
