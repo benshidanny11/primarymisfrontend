@@ -3,8 +3,8 @@ import actionType from "./_actionTypes";
 import cookie from "react-cookies";
 import dotenv from "dotenv";
 
-
-const getAllSUbjectPointsAPI = "https://primaryims.herokuapp.com/api/points/all";
+const getAllSUbjectPointsInTermAPI =
+  "https://primaryims.herokuapp.com/api/points/AllInterm";
 const getSubjectsByLevelAPI =
   "https://primaryims.herokuapp.com/api/subjects/levels";
 const getSubjectsByTeacherAPI =
@@ -22,6 +22,7 @@ export const createPointsAction = ({
   studentid,
   teacherid,
   term,
+  year
 }) => async (dispatch) => {
   dispatch({
     type: actionType.CREATE_POINT_LOADING_ACTION,
@@ -40,6 +41,7 @@ export const createPointsAction = ({
         term,
         levelid,
         teacherid,
+        year
       },
       {
         headers: {
@@ -66,7 +68,7 @@ export const updatePointsAction = ({
   catone,
   cattwo,
   exam,
-  studentid
+  studentid,
 }) => async (dispatch) => {
   dispatch({
     type: actionType.UPDATE_POINTS_LOADING_ACTION,
@@ -100,16 +102,16 @@ export const updatePointsAction = ({
   }
 };
 
-export const getAllPointsAction = (levelid,subjectname) => async (dispatch) => {
-
+export const getAllPointsAction = (levelid, subjectname,term,academicYear) => async (
+  dispatch
+) => {
   dispatch({
     type: actionType.GET_ALL_POINTS_LOADING_ACTION,
     payload: { type: "loading-get-points" },
   });
   try {
- 
     axios
-      .get(`${getAllSUbjectPointsAPI}/${levelid}/${subjectname}`, {
+      .get(`${getAllSUbjectPointsInTermAPI}/${levelid}/${subjectname}/${term}/${academicYear}`, {
         headers: {
           "Content-Type": "application/json",
           token: cookie.load("primary-mis-token"),
@@ -125,7 +127,7 @@ export const getAllPointsAction = (levelid,subjectname) => async (dispatch) => {
       .catch((e) => {
         dispatch({
           type: actionType.GET_ALL_POINTS_ERROR_ACTION,
-          payload: e.response,
+          payload: e,
         });
       });
   } catch (e) {

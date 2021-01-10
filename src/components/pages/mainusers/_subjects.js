@@ -38,7 +38,7 @@ class Subjects extends Component {
   }
 
   componentWillReceiveProps({ levelid, subjects, type, students }) {
-    console.log("students",students)
+    
     if (levelid) {
       this.setState({
         levelid: levelid,

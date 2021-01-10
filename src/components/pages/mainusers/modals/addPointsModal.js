@@ -37,6 +37,7 @@ class AddMarksModal extends Component {
         $("#dotprogress").removeClass("dotprogress");
       } else if (this.props.pointsResponse.type === "error-create-point") {
         $("#dotprogress").addClass("dotprogress");
+      
         handleCreateErrorToast(
           this.props.pointsResponse.data.message,
           toast,
@@ -58,15 +59,16 @@ class AddMarksModal extends Component {
   }
   handleStudentSubmit(e) {
     e.preventDefault();
-    const { marksData } = this.props;
+    const { marksData, academicYear } = this.props;
     const { userid } = cookie.load("user");
-
+ 
     const pointsData = {
       subjectname: marksData.subjectName,
       catone: e.target.catonemarks.value,
       cattwo: e.target.cattwomarks.value,
       exam: e.target.exammarks.value,
       term: e.target.term.value,
+      year: academicYear,
       levelid: marksData.levelid,
       studentid: marksData.studentId,
       teacherid: userid,
@@ -112,35 +114,6 @@ class AddMarksModal extends Component {
             <Modal.Body>
               <Progress open={showProgress} />
               <form onSubmit={this.handleStudentSubmit.bind(this)}>
-                <div className="form-group">
-                  <label htmlFor="studentname" className="col-form-label">
-                    Student name:
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control selector"
-                    id="studentname"
-                    name="studentname"
-                    placeholder={marksData.studenName}
-                    value={marksData.studenName}
-                    disabled
-                    required
-                  />
-                </div>
-                <div className="form-group controlcontainer">
-                  <label htmlFor="studentname" className="col-form-label">
-                    Subject name:
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control selector"
-                    id="studentname"
-                    name="studentname"
-                    value={marksData.subjectName}
-                    disabled
-                    required
-                  />
-                </div>
                 <div className="form-group controlcontainer">
                   <label htmlFor="firstname" className="col-form-label">
                     Cat one marks:
@@ -193,7 +166,7 @@ class AddMarksModal extends Component {
                     <option value="3">Term three</option>
                   </select>
                 </div>
-
+                
                 <Modal.Footer id="footer">
                   <div className="btn-container">
                     <CustomCancelButton
@@ -245,7 +218,7 @@ class AddMarksModal extends Component {
   }
 }
 const mapStateToProps = ({ createPointReducer }) => {
-  console.log(createPointReducer);
+  // console.log(createPointReducer);
   return {
     pointsResponse: createPointReducer,
   };

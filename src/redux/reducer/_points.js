@@ -63,7 +63,7 @@ const initialState = {
       case actionTypes.GET_ALL_POINTS_ERROR_ACTION:
         return {
           ...state,
-          ...payload,
+          points:[],
           type: "error-get-point",
         };
       case actionTypes.GET_ALL_POINTS_LOADING_ACTION:

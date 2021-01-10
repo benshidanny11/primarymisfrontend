@@ -204,7 +204,7 @@ class AddSubjectModal extends Component {
                       <option value="">No teachers found</option>
                     )}
                   </select>
-                </div> 
+                </div>
                 <Modal.Footer id="footer">
                   <div className="btn-container">
                     <CustomCancelButton
