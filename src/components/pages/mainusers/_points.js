@@ -14,33 +14,35 @@ class Points extends Component {
     this.state = {
       Points: [],
       isLoading: false,
-      levelid: 1,
       displayNoDataFound: false,
       showModal: false,
+      academicYear:"2020-2021",
+      term:"1"
     }
     this.params=queryString.parse(props.location.search);
   }
 
   componentWillMount() {
     const { levelid,subjectname } = this.params;
-    this.props.getAllPointsAction(levelid,subjectname);
+    const {term,academicYear}=this.state;
+    this.props.getAllPointsAction(levelid,subjectname,term,academicYear);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { levelid } = this.state;
-    const { subjectName } = this.props;
+    const {term,academicYear } = this.state;
+    const { levelid,subjectname } = this.params;
 
-    if (prevProps.levelid !== this.props.levelid) {
-      this.props.getAllPointsAction(levelid,subjectName);
+    if (prevState.term !== term) {
+      this.props.getAllPointsAction(levelid,subjectname,term,academicYear);
+    }
+
+    if (prevState.academicYear !== academicYear) {
+      this.props.getAllPointsAction(levelid,subjectname,term,academicYear);
     }
   }
 
-  componentWillReceiveProps({ points, levelid }) {
-    if (levelid) {
-      this.setState({
-        levelid,
-      });
-    }
+  componentWillReceiveProps({ points }) {
+   console.log(points)
     if (points) {
       if (points.length === 0) {
         this.setState({ displayNoDataFound: true });
@@ -61,23 +63,31 @@ class Points extends Component {
     });
   }
 
-  handleEvent() {}
-  handler = () => {
-    this.setState();
-  };
+
+  handleyearChange(year){
+   this.setState({
+     academicYear:year
+   })
+  }
+  handleTermChange(selectedTerm){
+    this.setState({
+      term:selectedTerm
+    })
+  }
 
   render() {
-    const { Points, displayNoDataFound, showModal } = this.state;
+    const { Points, displayNoDataFound, showModal,term } = this.state;
     const { subjectname ,levelid} = this.params;
     return (
       <div className="d-block"> 
       <PointsLevelList
-          handelLevelChange={this.props.handleLevelChangeAction}
+          handleTermChangeEvent={this.handleTermChange.bind(this)}
           handleBack={this.handleBack.bind(this)}
+          handleYearChange={this.handleyearChange.bind(this)}
         />
         <div className="breadcrumb mb-4 breadcrumb-item active message-container">
           <span className="">
-            Marks of {subjectname} in P {levelid} for Term {}
+            Marks of {subjectname} in P {levelid} for Term {term}
           </span>
         </div>
         <PointList
@@ -91,8 +101,7 @@ class Points extends Component {
 }
 
 const mapStateToProps = ({ getPointsReducer }) => {
-    console.log(getPointsReducer.points)
- 
+ console.log(getPointsReducer);
   return {
     points:getPointsReducer.points
   };

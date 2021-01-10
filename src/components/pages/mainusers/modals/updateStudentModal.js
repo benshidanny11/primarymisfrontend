@@ -67,7 +67,7 @@ class Updatestudentmodal extends Component {
   //On update action
   handleStudentSubmit(e) {
     e.preventDefault();
-    const {student}=this.props;
+    const { student } = this.props;
     const studentData = {
       id: this.props.student.studentid,
       studentsNames: e.target.studentnames.value,
@@ -75,8 +75,8 @@ class Updatestudentmodal extends Component {
       parentsPhone: e.target.parentsphone.value,
       studentClass: e.target.studentclass.value,
       studentLevel: e.target.studentslevel.value,
-      currentYear:student.year,
-      year:e.target.year.value
+      currentYear: student.year,
+      year: e.target.year.value,
     };
 
     this.props.updateStudentAction(studentData);
@@ -284,16 +284,19 @@ class Updatestudentmodal extends Component {
                   </select>
                 </div>
                 <Modal.Footer id="footer">
-                <div className="btn-container">
+                  <div className="btn-container">
                     <CustomCancelButton
                       type="button"
                       className="btn-cancel"
                       handleHide={this.props.onHide}
                       label="Cancel"
                     />
-                      
-                    <CustomButton type="submit" label="Update student" className="btn-submit"/>
-                    
+
+                    <CustomButton
+                      type="submit"
+                      label="Update student"
+                      className="btn-submit"
+                    />
                   </div>
                   {/* <button
                     type="button"
@@ -328,11 +331,11 @@ class Updatestudentmodal extends Component {
                 Okay
               </BtnModal> */}
               <CustomCancelButton
-                      type="button"
-                      className="btn-cancel"
-                      handleHide={this.handleRedirect.bind(this)}
-                      label="Okay"
-                    />
+                type="button"
+                className="btn-cancel"
+                handleHide={this.handleRedirect.bind(this)}
+                label="Okay"
+              />
             </Modal.Footer>
           </Modal>
         )}
