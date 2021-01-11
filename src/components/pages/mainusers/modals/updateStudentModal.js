@@ -324,12 +324,6 @@ class Updatestudentmodal extends Component {
             </Modal.Header>
             <Modal.Body> Student is upated successfully!</Modal.Body>
             <Modal.Footer>
-              {/* <BtnModal
-                variant="primary"
-                onClick={this.handleRedirect.bind(this)}
-              >
-                Okay
-              </BtnModal> */}
               <CustomCancelButton
                 type="button"
                 className="btn-cancel"

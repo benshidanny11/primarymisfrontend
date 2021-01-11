@@ -43,3 +43,11 @@ export const CustomCancelButton = ({ type, label, className, handleHide }) => {
     </StyledButton>
   );
 };
+
+export const CustomClickableButton = ({ type, label, className ,handleClickEvent}) => {
+  return (
+    <StyledButton size="medium" type={type} className={className} onClick={handleClickEvent}>
+      {label}
+    </StyledButton>
+  );
+};
