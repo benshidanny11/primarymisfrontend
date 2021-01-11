@@ -202,12 +202,6 @@ class AddMarksModal extends Component {
                 handleHide={this.handleRedirect.bind(this)}
                 label="Okay"
               />
-              {/* <BtnModal
-                variant="primary"
-                onClick={this.handleRedirect.bind(this)}
-              >
-                Okay
-              </BtnModal> */}
             </Modal.Footer>
           </Modal>
         )}

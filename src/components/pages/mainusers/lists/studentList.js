@@ -21,6 +21,7 @@ import cookie from "react-cookies";
 
 import Updatestudentmodal from "../modals/updateStudentModal";
 import Deletestudentmodal from "../modals/deleteStudentModal";
+import ReportDataChooserModal from "../modals/reportDataChooserModal"
 
 function Userslist({ students, displayNoDataFound }) {
   const StyledTableCell = withStyles((theme) => ({
@@ -51,6 +52,7 @@ function Userslist({ students, displayNoDataFound }) {
   const [showDeleteStudentModal, setShowDeleteStudentModal] = React.useState(
     false
   );
+  const [showReportDataChooser,setShowReportDataChooser]=React.useState(false);
   const role = cookie.load("user").role;
 
 
@@ -107,7 +109,7 @@ function Userslist({ students, displayNoDataFound }) {
       setShowDeleteStudentModal(true);
     }
     else if (option === "View student report") {
-     // setShowDeleteStudentModal(true);
+      setShowReportDataChooser(true);
     }
     setOpen(false);
   };
@@ -205,6 +207,7 @@ function Userslist({ students, displayNoDataFound }) {
         handleHideModal={handleHideDeleteModal}
         id={actionStudent.studentid}
       />
+      <ReportDataChooserModal show={showReportDataChooser}    onHide={() => setShowReportDataChooser(false)} handleHideModal={() => setShowReportDataChooser(false)}/>
     </div>
   );
 }
