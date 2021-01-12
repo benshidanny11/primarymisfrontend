@@ -53,6 +53,7 @@ function Userslist({ students, displayNoDataFound }) {
     false
   );
   const [showReportDataChooser,setShowReportDataChooser]=React.useState(false);
+  const [resetReportData,setResetReportData]=React.useState(false);
   const role = cookie.load("user").role;
 
 
@@ -113,6 +114,10 @@ function Userslist({ students, displayNoDataFound }) {
     }
     setOpen(false);
   };
+  const handleCancelEvent=()=>{
+    setResetReportData(true);
+     setShowReportDataChooser(false)
+  }
   const classes = useStyles();
 
   return (
@@ -207,7 +212,7 @@ function Userslist({ students, displayNoDataFound }) {
         handleHideModal={handleHideDeleteModal}
         id={actionStudent.studentid}
       />
-      <ReportDataChooserModal show={showReportDataChooser}    onHide={() => setShowReportDataChooser(false)} handleHideModal={() => setShowReportDataChooser(false)}/>
+      <ReportDataChooserModal show={showReportDataChooser} resetData={resetReportData}   onHide={() => setShowReportDataChooser(false)} handleHideModal={handleCancelEvent}/>
     </div>
   );
 }
