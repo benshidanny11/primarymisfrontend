@@ -75,4 +75,30 @@ const initialState = {
         return state;
     }
   };
+  export const getStudentReportDataInTermReducer = (state = initialState, action) => {
+    const { type, payload } = action;
+    switch (type) {
+      case actionTypes.GET_STUDENT_REPORT_RESPONSE_ACTION:
+        return {
+          ...state,
+          ...payload,
+          type: "success-get-report-data",
+        };
+      case actionTypes.GET_STUDENT_REPORT_ERROR_ACTION:
+        return {
+          ...state,
+          ...payload,
+          reportdata:[],
+          type: "error-get-report-data",
+        };
+      case actionTypes.GET_STUDENT_REPORT_LOADING_ACTION:
+        return {
+          ...state,
+         type:"loading-get-report-data",
+        };
+      default:
+        return state;
+    }
+  };
+  
   

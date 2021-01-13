@@ -1,4 +1,5 @@
-import React from "react";
+import React,{useEffect} from "react";
+import {useSelector} from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {
   Table,
@@ -118,6 +119,17 @@ function Userslist({ students, displayNoDataFound }) {
     setResetReportData(true);
      setShowReportDataChooser(false)
   }
+
+  const getStudentReportDataInTermReducer=useSelector((state)=>state.getStudentReportDataInTermReducer);
+  useEffect(()=>{
+   //Report data is in report data array constant, you can now call report pdf here
+   if(getStudentReportDataInTermReducer.type==="success-get-report-data"){
+    const reportData=getStudentReportDataInTermReducer.points;
+    
+   }
+  },[getStudentReportDataInTermReducer.type])
+
+
   const classes = useStyles();
 
   return (
@@ -212,7 +224,7 @@ function Userslist({ students, displayNoDataFound }) {
         handleHideModal={handleHideDeleteModal}
         id={actionStudent.studentid}
       />
-      <ReportDataChooserModal show={showReportDataChooser} resetData={resetReportData}   onHide={() => setShowReportDataChooser(false)} handleHideModal={handleCancelEvent}/>
+      <ReportDataChooserModal show={showReportDataChooser} resetData={resetReportData}   onHide={() => setShowReportDataChooser(false)} handleHideModal={handleCancelEvent} studentdata={{studentid:actionStudent.studentid,levelid:actionStudent.levelid}}/>
     </div>
   );
 }

@@ -8,7 +8,7 @@ import {
 } from "./_students";
 import { getAllSubjectsReducer, createSubjectReducer,updateSubjectReducer} from "./_subjects";
 import { getAllTeachersReducer } from "./_teachers";
-import {createPointReducer,getPointsReducer,updatePointReducer} from "./_points";
+import {createPointReducer,getPointsReducer,updatePointReducer,getStudentReportDataInTermReducer} from "./_points";
 
 export default combineReducers({
   loginReducer,
@@ -24,5 +24,6 @@ export default combineReducers({
   createPointReducer,
   getPointsReducer,
   updatePointReducer,
-  updateSubjectReducer
+  updateSubjectReducer,
+  getStudentReportDataInTermReducer
 });
