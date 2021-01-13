@@ -5,12 +5,9 @@ import dotenv from "dotenv";
 
 const getAllSUbjectPointsInTermAPI =
   "https://primaryims.herokuapp.com/api/points/AllInterm";
-const getSubjectsByLevelAPI =
-  "https://primaryims.herokuapp.com/api/subjects/levels";
-const getSubjectsByTeacherAPI =
-  "https://primaryims.herokuapp.com/api/subjects/";
 const createPointsAPI = "https://primaryims.herokuapp.com/api/points/create";
 const updatePointsAPI = "https://primaryims.herokuapp.com/api/points/update";
+const getStudentReportDataInTermAPI="https://primaryims.herokuapp.com/api/points/studentspoints";
 dotenv.config();
 
 export const createPointsAction = ({
@@ -137,3 +134,40 @@ export const getAllPointsAction = (levelid, subjectname,term,academicYear) => as
     });
   }
 };
+//84/2/1/2020-2021
+export const getStudentReportDataInTermAction = (studentId, levelid,term,academicYear) => async (
+  dispatch
+) => {
+  dispatch({
+    type: actionType.GET_STUDENT_REPORT_ERROR_ACTION,
+    payload: { type: "loading-get-report-data" },
+  });
+  try {
+    axios
+      .get(`${getStudentReportDataInTermAPI}/${studentId}/${levelid}/${term}/${academicYear}`, {
+        headers: {
+          "Content-Type": "application/json",
+          token: cookie.load("primary-mis-token"),
+        },
+      })
+      .then((response) => {
+        //  console.log(response)
+        dispatch({
+          type: actionType.GET_STUDENT_REPORT_RESPONSE_ACTION,
+          payload: response.data,
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: actionType.GET_STUDENT_REPORT_ERROR_ACTION,
+          payload: e,
+        });
+      });
+  } catch (e) {
+    dispatch({
+      type: actionType.GET,
+      payload: e.response.data,
+    });
+  }
+};
+
