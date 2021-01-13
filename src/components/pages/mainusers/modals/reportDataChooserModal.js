@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import {useDispatch} from "react-redux";
-
 import { Modal } from "react-bootstrap";
 import {
   CustomClickableButton,
   CustomCancelButton,
 } from "../styledcontrols/buttons";
 import {
-  getStudentReportDataInTermAction
+  getStudentReportDataInTermAction,
+  hideModalAction,
 } from "../../../../redux/action";
 
 function ReportDataChooserModal(props) {
@@ -15,7 +15,6 @@ function ReportDataChooserModal(props) {
   const [chosenReportType, setChosenReportType] = useState("");
   const [chosenReportYear, setChosenReportYear] = useState("");
   const [choosenReporTerm, setChosenReportTerm] = useState("");
-  const [reportData, setReportData] = useState([]);
   const {studentid,levelid}=props.studentdata;
   const handleChooseReportType = (e) => {
     setChosenReportType(e.target.value);
@@ -31,7 +30,12 @@ function ReportDataChooserModal(props) {
   const dispatch=useDispatch();
   const handleContinueEvent = async() => {
     if (chosenReportType === "term") {
-     dispatch(await getStudentReportDataInTermAction(studentid,levelid,choosenReporTerm,chosenReportYear));
+     dispatch(await getStudentReportDataInTermAction(studentid,levelid,
+      choosenReporTerm,chosenReportYear));
+     setChosenReportTerm("");
+     setChosenReportType("");
+     setChosenReportYear("");
+     dispatch(hideModalAction(false))
     } else if (chosenReportType === "year") {
       alert(
         "Choosen ReportType: " +
@@ -45,7 +49,12 @@ function ReportDataChooserModal(props) {
   };
 
   const handleRedirect=()=>{
-    window.location.href="/students"
+    // window.location.href="/students"
+    setChosenReportTerm("");
+    setChosenReportType("");
+    setChosenReportYear("");
+    dispatch(hideModalAction(false))
+
   }
  
  

@@ -1,5 +1,5 @@
 import React,{useEffect} from "react";
-import {useSelector} from "react-redux";
+import {useSelector,useDispatch} from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {
   Table,
@@ -19,10 +19,12 @@ import { Typography } from "@material-ui/core";
 import StudentMenu from "../menus/studentMenu";
 
 import cookie from "react-cookies";
+import generatePDF from '../report/reportGenerator'
+import {hideModalAction} from '../../../../redux/action'
 
 import Updatestudentmodal from "../modals/updateStudentModal";
 import Deletestudentmodal from "../modals/deleteStudentModal";
-import ReportDataChooserModal from "../modals/reportDataChooserModal"
+import ReportDataChooserModal from "../modals/reportDataChooserModal";
 
 function Userslist({ students, displayNoDataFound }) {
   const StyledTableCell = withStyles((theme) => ({
@@ -54,8 +56,10 @@ function Userslist({ students, displayNoDataFound }) {
     false
   );
   const [showReportDataChooser,setShowReportDataChooser]=React.useState(false);
+
   const [resetReportData,setResetReportData]=React.useState(false);
   const role = cookie.load("user").role;
+  console.log()
 
 
   const useStyles = makeStyles({
@@ -103,6 +107,7 @@ function Userslist({ students, displayNoDataFound }) {
   const handleHideDeleteModal=()=>{
    setShowDeleteStudentModal(false);
   }
+  const dispatch = useDispatch();
   const handleClose = ({ student, option }) => {
     setActionStudent(student);
     if (option === "Update student") {
@@ -111,7 +116,8 @@ function Userslist({ students, displayNoDataFound }) {
       setShowDeleteStudentModal(true);
     }
     else if (option === "View student report") {
-      setShowReportDataChooser(true);
+      // setShowReportDataChooser(true);
+      dispatch(hideModalAction(true))
     }
     setOpen(false);
   };
@@ -121,11 +127,13 @@ function Userslist({ students, displayNoDataFound }) {
   }
 
   const getStudentReportDataInTermReducer=useSelector((state)=>state.getStudentReportDataInTermReducer);
+  const hideModalReducer=useSelector((state)=>state.hideModalReducer);
   useEffect(()=>{
    //Report data is in report data array constant, you can now call report pdf here
    if(getStudentReportDataInTermReducer.type==="success-get-report-data"){
     const reportData=getStudentReportDataInTermReducer.points;
-    
+    // console.log(reportData)
+    generatePDF(reportData);
    }
   },[getStudentReportDataInTermReducer.type])
 
@@ -224,7 +232,7 @@ function Userslist({ students, displayNoDataFound }) {
         handleHideModal={handleHideDeleteModal}
         id={actionStudent.studentid}
       />
-      <ReportDataChooserModal show={showReportDataChooser} resetData={resetReportData}   onHide={() => setShowReportDataChooser(false)} handleHideModal={handleCancelEvent} studentdata={{studentid:actionStudent.studentid,levelid:actionStudent.levelid}}/>
+      <ReportDataChooserModal show={hideModalReducer.showModal} resetData={resetReportData}   onHide={() => dispatch(hideModalAction(false))} handleHideModal={handleCancelEvent} studentdata={{studentid:actionStudent.studentid,levelid:actionStudent.levelid}}/>
     </div>
   );
 }

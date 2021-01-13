@@ -2,7 +2,9 @@ import actionTypes from "./../action/_actionTypes";
 const initialState = {
   points: [],
   };
-
+const hideinitialState = {
+  showModal: false,
+}
   export const createPointReducer = (state = initialState, action) => {
     const { type, payload } = action;
     switch (type) {
@@ -101,4 +103,15 @@ const initialState = {
     }
   };
   
+  export const hideModalReducer = (state = hideinitialState, action) => {
+    const { type, payload } = action;
+    switch (type) {
+      case actionTypes.HIDE_MODAL_ACTION:
+        return {
+          showModal: payload,
+        };
+      default:
+        return state;
+    }
+  };
   

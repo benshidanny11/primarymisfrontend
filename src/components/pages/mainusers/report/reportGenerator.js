@@ -7,22 +7,20 @@ const generatePDF = (tickets) => {
     var img = new Image;
     img.crossOrigin = "";  // for demo as we are at different origin than image
     img.src =report;
-    doc.text('NU-VISION HIGH SCHOOL', 200, 50)
+    doc.text('SOURCE DEV HIGH SCHOOL', 200, 50)
     doc.setFontSize(8);
     doc.text('P.O Box: 2681 Kigali, Rwanda',220,70)
     doc.text('Tel: 078-835-4848',240,90)
-    doc.text('Website: www.nuvisionhighschool.com',210,100)
-    doc.text('Email: nuvision.school@yahoo.com',205,110)
+    doc.text('Website: www.sourcedev.org',210,100)
+    doc.text('Email: info@sourcedev.org',205,110)
     doc.setFontSize(18);
     doc.text('STUDENT REPORT', 200, 140)
    doc.line(530, 150, 60, 150);
-  
     let raw = tickets
     let body = []
     let foot = []
     let foot2 = []
     let footer = []
-    console.log(raw)
     for (let i = 0; i < raw.length-1; i++) {
       let row = []
       row.push(raw[i].subjectname,
@@ -35,7 +33,8 @@ const generatePDF = (tickets) => {
         raw[i].catone+raw[i].cattwo+raw[i].exam)
        body.push(row)
     }
-  // console.log(raw[raw.length-1])
+    // doc.setFontSize(8);
+    doc.text('TERM '+raw[raw.length-2].term, 370, 140)
      foot.push('Total',raw[raw.length-1].report.maxMarks.catmax,
       raw[raw.length-1].report.maxMarks.exammax,
       raw[raw.length-1].report.maxMarks.totalmax,
@@ -77,7 +76,7 @@ const generatePDF = (tickets) => {
           styles: {textColor:[65,74,76] },
         },
         {
-          content: raw[raw.length-2].levelname,
+          content: raw[raw.length-1].report.classname,
            styles: {textColor:[65,74,76]  },
         },
         {
@@ -85,7 +84,7 @@ const generatePDF = (tickets) => {
           styles: {textColor:[65,74,76] },
         },
         {
-          content: '2020-2021',
+          content: raw[raw.length-2].year,
           styles: {textColor:[65,74,76] },
         },
       ],
@@ -174,13 +173,24 @@ const generatePDF = (tickets) => {
     doc.autoTable({
       startY:doc.lastAutoTable.finalY+10,
       head: [[
-      'Position', raw[raw.length-1].report.position]
+        {
+          content: 'Position',
+          colSpan:7,
+          rowSpan:2,
+          styles: {halign: 'left'},
+        },
+        {
+          content: raw[raw.length-1].report.position+'/'+raw[raw.length-1].report.studentsInClass,
+          // rowSpan:2,
+          styles: {halign: 'right'},
+        },
+      ],
       ],
       headerStyles: {
         lineWidth: 0.5,
         lineColor: [65,74,76]
     },
-     tableWidth: 'auto',
+     tableWidth: '300',
       theme: "plain",
     })
     doc.autoTable({
