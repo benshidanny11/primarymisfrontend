@@ -143,6 +143,7 @@ export const getStudentReportDataInTermAction = (studentId, levelid,term,academi
     payload: { type: "loading-get-report-data" },
   });
   try {
+
     axios
       .get(`${getStudentReportDataInTermAPI}/${studentId}/${levelid}/${term}/${academicYear}`, {
         headers: {
@@ -151,7 +152,7 @@ export const getStudentReportDataInTermAction = (studentId, levelid,term,academi
         },
       })
       .then((response) => {
-        //  console.log(response)
+          // console.log(`here is report response ${response}`)
         dispatch({
           type: actionType.GET_STUDENT_REPORT_RESPONSE_ACTION,
           payload: response.data,
@@ -170,4 +171,9 @@ export const getStudentReportDataInTermAction = (studentId, levelid,term,academi
     });
   }
 };
-
+export const hideModalAction = (hideModal)=>(dispatch)=>{
+  dispatch({
+    type: actionType.HIDE_MODAL_ACTION,
+    payload: hideModal,
+  })
+}

@@ -4,11 +4,21 @@ import {
   studentReducer,
   createStudentReducer,
   updateStudentReducer,
-  deleteStudentReducer
+  deleteStudentReducer,
 } from "./_students";
-import { getAllSubjectsReducer, createSubjectReducer,updateSubjectReducer} from "./_subjects";
+import {
+  getAllSubjectsReducer,
+  createSubjectReducer,
+  updateSubjectReducer,
+} from "./_subjects";
 import { getAllTeachersReducer } from "./_teachers";
-import {createPointReducer,getPointsReducer,updatePointReducer,getStudentReportDataInTermReducer} from "./_points";
+import {
+  createPointReducer,
+  getPointsReducer,
+  updatePointReducer,
+  getStudentReportDataInTermReducer,
+  hideModalReducer,
+} from "./_points";
 
 export default combineReducers({
   loginReducer,
@@ -23,7 +33,8 @@ export default combineReducers({
   createSubjectReducer,
   createPointReducer,
   getPointsReducer,
+  hideModalReducer,
   updatePointReducer,
   updateSubjectReducer,
-  getStudentReportDataInTermReducer
+  getStudentReportDataInTermReducer,
 });

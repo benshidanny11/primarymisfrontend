@@ -11,10 +11,20 @@ import {
   getClassesAction,
   createStudentAction,
   updateStudentAction,
-  deleteStudentAction
+  deleteStudentAction,
 } from "./_students";
-import { getAllSubjectssAction,createSubjectAction,updateSubjectAction} from "./_subjects";
-import { createPointsAction,getAllPointsAction,updatePointsAction,getStudentReportDataInTermAction} from "./_points";
+import {
+  getAllSubjectssAction,
+  createSubjectAction,
+  updateSubjectAction,
+} from "./_subjects";
+import {
+  createPointsAction,
+  getAllPointsAction,
+  updatePointsAction,
+  getStudentReportDataInTermAction,
+  hideModalAction,
+} from "./_points";
 import { getAllTeachersAction } from "./_teachers";
 export {
   loginAction,
@@ -35,5 +45,6 @@ export {
   getAllPointsAction,
   updatePointsAction,
   updateSubjectAction,
-  getStudentReportDataInTermAction
+  getStudentReportDataInTermAction,
+  hideModalAction,
 };
