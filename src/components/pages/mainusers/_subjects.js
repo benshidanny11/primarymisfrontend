@@ -4,6 +4,7 @@ import {
   handleLevelChangeAction,
   getAllSubjectssAction,
   getAllStudentsAction,
+  getOneStudentAction
 } from "../../../redux/action";
 import { connect } from "react-redux";
 import _ from "lodash";
@@ -62,6 +63,13 @@ class Subjects extends Component {
    }
   }
 
+  handleSearchStudent=(queryString)=>{
+    const {levelid,academicYear}=this.state;   
+    this.setState({
+      students:[],
+    })
+    this.props.getOneStudentAction(levelid,"2020-2021",queryString);
+   }
 
   handleEvent() {}
   handler = () => {
@@ -98,6 +106,7 @@ class Subjects extends Component {
           subjects={Subjects}
           displayNoDataFound={displayNoDataFound}
           students={students}
+          handleSearchStudent={this.handleSearchStudent}
         />
       </div>
     );
@@ -118,4 +127,5 @@ export default connect(mapStateToProps, {
   handleLevelChangeAction,
   getAllSubjectssAction,
   getAllStudentsAction,
+  getOneStudentAction
 })(Subjects);

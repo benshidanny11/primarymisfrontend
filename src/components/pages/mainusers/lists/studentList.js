@@ -1,5 +1,5 @@
-import React,{useEffect} from "react";
-import {useSelector,useDispatch} from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {
   Table,
@@ -12,21 +12,31 @@ import {
   Button,
 } from "@material-ui/core";
 import ContentLoader from "react-content-loader";
-import { Visibility } from "@material-ui/icons";
+import { Visibility,ArrowBack } from "@material-ui/icons";
 
 import { Typography } from "@material-ui/core";
 
 import StudentMenu from "../menus/studentMenu";
 
 import cookie from "react-cookies";
-import generatePDF from '../report/reportGenerator'
-import {hideModalAction} from '../../../../redux/action'
+import generatePDF from "../report/reportGenerator";
+import { hideModalAction } from "../../../../redux/action";
 
 import Updatestudentmodal from "../modals/updateStudentModal";
 import Deletestudentmodal from "../modals/deleteStudentModal";
 import ReportDataChooserModal from "../modals/reportDataChooserModal";
+import SearchBox from "../filterers/searchBox";
+import { CustomClickableButton } from "../styledcontrols/buttons";
+import ProgressFull from "../modals/progressFullModal";
 
-function Userslist({ students, displayNoDataFound }) {
+
+function Userslist({
+  students,
+  displayNoDataFound,
+  handleSearchStudent,
+  showBackToStudents,
+  handleBackToStudentList,
+}) {
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: "#1168ca",
@@ -55,12 +65,13 @@ function Userslist({ students, displayNoDataFound }) {
   const [showDeleteStudentModal, setShowDeleteStudentModal] = React.useState(
     false
   );
-  const [showReportDataChooser,setShowReportDataChooser]=React.useState(false);
+  const [showReportDataChooser, setShowReportDataChooser] = React.useState(
+    false
+  );
 
-  const [resetReportData,setResetReportData]=React.useState(false);
+  const [resetReportData, setResetReportData] = React.useState(false);
   const role = cookie.load("user").role;
-  console.log()
-
+  console.log();
 
   const useStyles = makeStyles({
     table: {},
@@ -104,9 +115,9 @@ function Userslist({ students, displayNoDataFound }) {
     }
     setOpen(true);
   };
-  const handleHideDeleteModal=()=>{
-   setShowDeleteStudentModal(false);
-  }
+  const handleHideDeleteModal = () => {
+    setShowDeleteStudentModal(false);
+  };
   const dispatch = useDispatch();
   const handleClose = ({ student, option }) => {
     setActionStudent(student);
@@ -114,29 +125,34 @@ function Userslist({ students, displayNoDataFound }) {
       setShowUpdateStudentModal(true);
     } else if (option === "Delete student") {
       setShowDeleteStudentModal(true);
-    }
-    else if (option === "View student report") {
+    } else if (option === "View student report") {
       // setShowReportDataChooser(true);
-      dispatch(hideModalAction(true))
+      dispatch(hideModalAction(true));
     }
     setOpen(false);
   };
-  const handleCancelEvent=()=>{
+  const handleCancelEvent = () => {
     setResetReportData(true);
-     setShowReportDataChooser(false)
+    setShowReportDataChooser(false);
+  };
+
+  const handleBackEvent=()=>{
+  window.location.href="/students"
+ // handleBackToStudentList()
   }
 
-  const getStudentReportDataInTermReducer=useSelector((state)=>state.getStudentReportDataInTermReducer);
-  const hideModalReducer=useSelector((state)=>state.hideModalReducer);
-  useEffect(()=>{
-   //Report data is in report data array constant, you can now call report pdf here
-   if(getStudentReportDataInTermReducer.type==="success-get-report-data"){
-    const reportData=getStudentReportDataInTermReducer.points;
-    // console.log(reportData)
-    generatePDF(reportData);
-   }
-  },[getStudentReportDataInTermReducer.type])
-
+  const getStudentReportDataInTermReducer = useSelector(
+    (state) => state.getStudentReportDataInTermReducer
+  );
+  const hideModalReducer = useSelector((state) => state.hideModalReducer);
+  useEffect(() => {
+    //Report data is in report data array constant, you can now call report pdf here
+    if (getStudentReportDataInTermReducer.type === "success-get-report-data") {
+      const reportData = getStudentReportDataInTermReducer.points;
+      // console.log(reportData)
+      generatePDF(reportData);
+    }
+  }, [getStudentReportDataInTermReducer.type]);
 
   const classes = useStyles();
 
@@ -154,6 +170,19 @@ function Userslist({ students, displayNoDataFound }) {
             </TableRow>
           </TableHead>
           <TableBody>
+            <StyledTableRow>
+              <StyledTableCell component="th" scope="row"></StyledTableCell>
+              <StyledTableCell align=""></StyledTableCell>
+              <StyledTableCell align=""></StyledTableCell>
+              <StyledTableCell align=""></StyledTableCell>
+              <StyledTableCell align="center">
+                <SearchBox
+                  handleSearchQuery={handleSearchStudent}
+                  placeholder="Type student name/ Reg number"
+                />
+              </StyledTableCell>
+            </StyledTableRow>
+
             {displayNoDataFound ? (
               <Typography
                 variant="h5"
@@ -213,6 +242,35 @@ function Userslist({ students, displayNoDataFound }) {
                 </ContentLoader>
               </TableRow>
             )}
+            {showBackToStudents ? (
+              <StyledTableRow>
+                <StyledTableCell component="th" scope="row"></StyledTableCell>
+                <StyledTableCell align=""></StyledTableCell>
+                <StyledTableCell align=""></StyledTableCell>
+                <StyledTableCell align=""></StyledTableCell>
+                <StyledTableCell align="center">
+                  {/* <CustomClickableButton
+                    type="submit"
+                    label="Continue"
+                    className="btn-submit"
+                    handleClickEvent={handleBackToStudents}
+                  /> */}
+                   <Button
+                      aria-controls="customized-menu"
+                      aria-haspopup="true"
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      startIcon={<ArrowBack />}
+                      onClick={handleBackEvent}
+                    >
+                      Back to list
+                    </Button>
+                </StyledTableCell>
+              </StyledTableRow>
+            ) : (
+              ""
+            )}
           </TableBody>
         </Table>
         <StudentMenu
@@ -232,7 +290,17 @@ function Userslist({ students, displayNoDataFound }) {
         handleHideModal={handleHideDeleteModal}
         id={actionStudent.studentid}
       />
-      <ReportDataChooserModal show={hideModalReducer.showModal} resetData={resetReportData}   onHide={() => dispatch(hideModalAction(false))} handleHideModal={handleCancelEvent} studentdata={{studentid:actionStudent.studentid,levelid:actionStudent.levelid}}/>
+      <ReportDataChooserModal
+        show={hideModalReducer.showModal}
+        resetData={resetReportData}
+        onHide={() => dispatch(hideModalAction(false))}
+        handleHideModal={handleCancelEvent}
+        studentdata={{
+          studentid: actionStudent.studentid,
+          levelid: actionStudent.levelid,
+        }}
+      />
+      <ProgressFull/>
     </div>
   );
 }

@@ -102,4 +102,58 @@ input[type=text], input[type=email], input[type=password], input[type=tel], inpu
   margin-left: 10px;
 }
 
+#custom-search-input {
+  border: solid 1px #E4E4E4;
+  border-radius: 6px;
+  background-color: #fff;
+}
+
+#custom-search-input {
+  margin: 0 0 0 0;
+  background: none;
+  box-shadow: none;
+  border: 0;
+  color: #666666;
+}
+
+#custom-search-input {
+  border: 0;
+  box-shadow: none;
+  box-shadow: 2px 2px 2px 2px #dfdfdf;
+}
+
+#custom-search-input .glyphicon-search {
+  font-size: 13px;
+}
+
+.fa-search:hover {
+  color: #3787e2;
+}
+
+#btn-search {
+  margin: 0 0 0 0;
+  box-shadow: none;
+  border: 0;
+  color: #1168ca;
+  border: solid 1px #E4E4E4;
+  background-color: #fff;
+}
+
+.progresssdotfull {
+  display: block;
+  background-color: rgba(255, 255, 255, 0.863);
+  position: absolute;
+  margin-top: -42%;
+  width: 85%;
+  height: 100%;
+}
+
+.progressdothide {
+  visibility: hidden;
+}
+
+.divsearchcontainer {
+  width: 100%;
+}
+
 /*# sourceMappingURL=style.css.map */

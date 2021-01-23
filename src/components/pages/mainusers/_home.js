@@ -30,7 +30,7 @@ class Home extends Component {
       <div>
         <main>
           <div className="container-fluid">
-            <h1 className="mt-4">{cookie.load("user").role}s Dashboard</h1>
+            <h1 className="mt-4">{(cookie.load("user").role==="HEAD_MASTER")?"Head master's":(cookie.load("user").role==="TEACHER")?"Teacher's":"Hod"} Dashboard</h1>
             <ol className="breadcrumb mb-4">
               <li className="breadcrumb-item active">School over view</li>
             </ol>

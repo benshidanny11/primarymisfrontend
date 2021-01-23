@@ -29,7 +29,7 @@ import { Studentlistmodal } from "../modals/studentListModal";
 import SUbjectMenu from "../menus/subjectMenu";
 import UpdateSubjectModal from "../modals/updateSubjectModal";
 
-function SubjectList({ subjects, displayNoDataFound }) {
+function SubjectList({ subjects, displayNoDataFound,handleSearchStudent }) {
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: "#1168ca",
@@ -68,16 +68,16 @@ function SubjectList({ subjects, displayNoDataFound }) {
   const role = cookie.load("user").role;
   // console.log(subjects);
 
-  const studentReducer = useSelector((state) => state.studentReducer);
+  const studentReducer = useSelector((state) => state.getOneStudentReducer);
   //Use efffect hook
   useEffect(() => {
-    if (studentReducer.type === "loading") {
+    if (studentReducer.type === "loading-get-one-student") {
       setShowLoadingIndicator(true);
-    } else if (studentReducer.type === "error") {
-      console.log(studentReducer);
+    } else if (studentReducer.type === "error-get-one-student") {
       setShowLoadingIndicator(false);
-      setShowStudentListModal(false);
-    } else if (studentReducer.type === "success") {
+      //setShowStudentListModal(false);
+      console.log(studentReducer.data.data.message)
+    } else if (studentReducer.type === "success-get-one-student") {
       setShowLoadingIndicator(false);
       if (studentReducer.students) {
         if (studentReducer.students.length > 0) {
@@ -258,6 +258,7 @@ function SubjectList({ subjects, displayNoDataFound }) {
         show={showStudentListModal}
         handleMarksData={handleMarksData}
         onHide={() => setShowStudentListModal(false)}
+        handleSearchStudent={handleSearchStudent}
       />
       <AddMarksModal
         marksData={marksData}

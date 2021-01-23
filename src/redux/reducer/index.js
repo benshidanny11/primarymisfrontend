@@ -5,6 +5,7 @@ import {
   createStudentReducer,
   updateStudentReducer,
   deleteStudentReducer,
+  getOneStudentReducer
 } from "./_students";
 import {
   getAllSubjectsReducer,
@@ -19,6 +20,7 @@ import {
   getStudentReportDataInTermReducer,
   hideModalReducer,
 } from "./_points";
+import {disableSearchReducer} from "./_globalReducers";
 
 export default combineReducers({
   loginReducer,
@@ -37,4 +39,6 @@ export default combineReducers({
   updatePointReducer,
   updateSubjectReducer,
   getStudentReportDataInTermReducer,
+  disableSearchReducer,
+  getOneStudentReducer
 });
