@@ -4,7 +4,8 @@ import {
   handleLevelChangeAction,
   getAllSubjectssAction,
   getAllStudentsAction,
-  getOneStudentAction
+  getOneStudentAction,
+  setStudnetFilterData
 } from "../../../redux/action";
 import { connect } from "react-redux";
 import _ from "lodash";
@@ -64,11 +65,11 @@ class Subjects extends Component {
   }
 
   handleSearchStudent=(queryString)=>{
-    const {levelid,academicYear}=this.state;   
+    const {levelid,academicYear}=this.props.filterData;   
     this.setState({
       students:[],
     })
-    this.props.getOneStudentAction(levelid,"2020-2021",queryString);
+    this.props.getOneStudentAction(levelid,academicYear,queryString);
    }
 
   handleEvent() {}
@@ -113,13 +114,14 @@ class Subjects extends Component {
   }
 }
 
-const mapStateToProps = ({ studentReducer, getAllSubjectsReducer }) => {
-  console.log("students",studentReducer.students)
+const mapStateToProps = ({ studentReducer, getAllSubjectsReducer ,setFilterStudentDataReducer}) => {
+
   return {
     levelid: studentReducer.payload,
     subjects: getAllSubjectsReducer.Subjects,
     type: getAllSubjectsReducer.type,
     students: studentReducer.students,
+    filterData:setFilterStudentDataReducer.data
   };
 };
 
@@ -127,5 +129,6 @@ export default connect(mapStateToProps, {
   handleLevelChangeAction,
   getAllSubjectssAction,
   getAllStudentsAction,
-  getOneStudentAction
+  getOneStudentAction,
+  setStudnetFilterData
 })(Subjects);

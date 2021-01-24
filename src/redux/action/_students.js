@@ -142,7 +142,7 @@ export const getAllStudentsAction = ({levelid,academicYear}) => async (dispatch)
     });
   }
 };
-//:levelid/:year/:searchData
+
 export const getOneStudentAction = (levelid,academicYear,seachQuery) => async (dispatch) => {
   dispatch({
     type: actionType.GET_ONE_STUDENT_LOADING_ACTION,

@@ -49,7 +49,7 @@ function Userslist({
 
   const StyledTableRow = withStyles((theme) => ({
     root: {
-      "&:nth-of-type(odd)": {
+      "&:nth-of-type(even)": {
         backgroundColor: theme.palette.action.hover,
       },
     },

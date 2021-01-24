@@ -15,7 +15,7 @@ import { Visibility } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Typography } from "@material-ui/core";
-import { getAllStudentsAction } from "../../../../redux/action";
+import { setStudnetFilterData } from "../../../../redux/action";
 
 import StudentMenu from "../menus/studentMenu";
 import YearChooserMenu from "../menus/yearChooserMenu";
@@ -65,6 +65,7 @@ function SubjectList({ subjects, displayNoDataFound,handleSearchStudent }) {
   const [marksData, setMarksData] = React.useState({});
   const [openYearChooser,setOpenYearChooser]=React.useState(false);
    const [marksAdacemicYear,setMarksAcademicYear]=React.useState("");
+
   const role = cookie.load("user").role;
   // console.log(subjects);
 
@@ -167,7 +168,7 @@ function SubjectList({ subjects, displayNoDataFound,handleSearchStudent }) {
     const levelid=actionSubject.levelid;
     const academicYear=year;
      setMarksAcademicYear(academicYear);
-    dispatch(await getAllStudentsAction({levelid,academicYear}));
+    dispatch(setStudnetFilterData(levelid,academicYear));
     setShowStudentListModal(true);
     setOpenYearChooser(false);
   }
