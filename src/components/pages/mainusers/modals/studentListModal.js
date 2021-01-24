@@ -3,6 +3,7 @@ import _ from "lodash";
 import { Modal } from "react-bootstrap";
 
 import { makeStyles } from "@material-ui/core/styles";
+import SearchBox from "../filterers/searchBox";
 
 import {
   List,
@@ -14,16 +15,22 @@ import {
 import classNames from "classnames";
 
 export function Studentlistmodal(props) {
-  const { students, subjectName,showLoading ,handleMarksData} = props;
+  const {
+    students,
+    subjectName,
+    showLoading,
+    handleMarksData,
+    handleSearchStudent,
+  } = props;
   const useStyles = makeStyles({
     avatar: {
       color: "#1168ca",
     },
   });
   const classes = useStyles();
-  const handleChooseSudent=(student)=>{
-    handleMarksData(student,subjectName)
-  }
+  const handleChooseSudent = (student) => {
+    handleMarksData(student, subjectName);
+  };
   return (
     <Modal
       {...props}
@@ -37,14 +44,17 @@ export function Studentlistmodal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {
-        (!showLoading)?(<List>
+        {!showLoading ? (
+          <List>
+            <ListItem divider alignItems="right">
+            <div className="divsearchcontainer"><SearchBox handleSearchQuery={handleSearchStudent} placeholder="Type student name/ Reg number"/></div>
+            </ListItem>
             {students.map((student) => (
               <ListItem
                 autoFocus
                 button
                 divider
-                 onClick={() => handleChooseSudent(student)}
+                onClick={() => handleChooseSudent(student)}
                 key={student.studentid}
               >
                 {" "}
@@ -59,9 +69,10 @@ export function Studentlistmodal(props) {
                 <ListItemText primary={student.studentnames} />
               </ListItem>
             ))}
-          </List>):("Loading...")
-        }
-      
+          </List>
+        ) : (
+          "Loading..."
+        )}
       </Modal.Body>
     </Modal>
   );

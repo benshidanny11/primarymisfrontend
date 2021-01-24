@@ -70,6 +70,34 @@ export const studentReducer = (state = initialState, action) => {
   }
 };
 
+export const getOneStudentReducer=(state=initialState,action)=>{
+  const { type, payload } = action;
+ switch(type){
+  case actionTypes.GET_ONE_STUDENT_RESPONSE_ACTION:
+    return {
+      ...state,
+      ...payload,
+      isFound: true,
+      type: "success-get-one-student",
+    };
+
+  case actionTypes.GET_ONE_STUDENT_ERROR_ACTION:
+    return {
+      students: [],
+      data: payload,
+      type: "error-get-one-student",
+    };
+
+  case actionTypes.GET_ONE_STUDENT_LOADING_ACTION:
+    return {
+      ...state,
+      type:payload.type,
+    };
+default:
+  return state;
+ }
+}
+
 export const createStudentReducer = (state = createInitialState, action) => {
   const { type, payload } = action;
   switch (type) {

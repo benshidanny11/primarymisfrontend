@@ -108,7 +108,7 @@ class AddMarksModal extends Component {
           >
             <Modal.Header closeButton={true}>
               <Modal.Title id="contained-modal-title-vcenter">
-                Add subject marks
+                Add subject marks for {marksData.studenName}
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>

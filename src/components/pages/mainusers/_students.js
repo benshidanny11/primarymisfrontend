@@ -2,11 +2,14 @@ import React, { Component } from "react";
 import {
   getAllStudentsAction,
   handleLevelChangeAction,
+  getOneStudentAction,
+  disableSearchBox
 } from "../../../redux/action";
 import { connect } from "react-redux";
 import StudentList from "./lists/studentList";
 import LevelList from "./upperlayer/levelselector";
 import Addstudentmodal from "./modals/addStudentModal";
+import {$} from "react-jquery-plugin";
 class Students extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +20,9 @@ class Students extends Component {
       levelid: 1,
       displayNoDataFound: false,
       showModal: false,
-      academicYear:"2020-2021"
+      academicYear:"2020-2021",
+      showBackToStudents:false,
+      showProgress:false,
     };
   }
 
@@ -37,7 +42,9 @@ class Students extends Component {
     }
   }
 
-  componentWillReceiveProps({ allStudents, levelid }) {
+  componentWillReceiveProps({ allStudents, levelid ,type,getOneType,foundStudent}) {
+    console.log("Action type===>",getOneType)
+    console.log("Action type===>",foundStudent)
     if (levelid) {
       this.setState({
         levelid,
@@ -50,7 +57,30 @@ class Students extends Component {
       } else {
         this.setState({ displayNoDataFound: false });
         this.setState({ students: allStudents });
+        // (()=>{this.props.disableSearchBox(false);})
       }
+    }
+    if(getOneType==="success-get-one-student"){
+      $("#progresssdotfull").addClass("progressdothide")
+      this.setState({ students: foundStudent });
+      this.setState(
+        {
+          showBackToStudents:true
+        }
+      )
+    }else if(getOneType==="error-get-one-student"){
+
+     
+      $("#progresssdotfull").addClass("progressdothide")
+      this.setState(
+        {
+          showBackToStudents:true,
+        }
+      )
+      this.setState({ displayNoDataFound: true });
+      this.setState({ students: foundStudent });
+    }else if(getOneType==="loading-get-one-student"){
+      $("#progresssdotfull").removeClass("progressdothide")
     }
   }
   handleShowModal() {
@@ -71,14 +101,31 @@ class Students extends Component {
     this.setState();
   };
   handleYearChange=(academicYear)=>{
-    console.log(academicYear)
+    this.props.disableSearchBox(false);
     this.setState({
       academicYear
     })
   }
+  handleSearchStudent=(queryString)=>{
+   const {levelid,academicYear}=this.state;   
+   this.setState({
+     students:[],
+   })
+   this.props.getOneStudentAction(levelid,academicYear,queryString);
+   this.props.disableSearchBox(true);
+  }
+
+
+  handleBackToStudentList=()=>{
+    const {levelid,academicYear}=this.state;   
+   this.setState({
+     students:[],
+   })
+   this.props.getAllStudentsAction(levelid,academicYear);
+  }
 
   render() {
-    const { students, levelid, displayNoDataFound, showModal } = this.state;
+    const { students, levelid, displayNoDataFound, showModal,showBackToStudents } = this.state;
     return (
       <div className="d-block"> 
          <Addstudentmodal
@@ -87,6 +134,7 @@ class Students extends Component {
         />
         <LevelList
           handelLevelChange={this.props.handleLevelChangeAction}
+          handleDisableSearch={this.props.disableSearchBox}
           handleShowModal={this.handleShowModal.bind(this)}
           handleYearChange={this.handleYearChange.bind(this)}
         />
@@ -98,6 +146,9 @@ class Students extends Component {
         <StudentList
           students={students}
           displayNoDataFound={displayNoDataFound}
+          handleSearchStudent={this.handleSearchStudent}
+          showBackToStudents={showBackToStudents}
+          handleBackToStudentList={this.handleBackToStudentList}
         />
        
       </div>
@@ -105,15 +156,21 @@ class Students extends Component {
   }
 }
 
-const mapStateToProps = ({ studentReducer }) => {
-  console.log(studentReducer);
+const mapStateToProps = ({ studentReducer,disableSearchReducer,getOneStudentReducer }) => {
+
   return {
     levelid: studentReducer.payload,
-    allStudents:studentReducer.students
+    allStudents:studentReducer.students,
+    type:studentReducer.type,
+    getOneType:getOneStudentReducer.type,
+    foundStudent:getOneStudentReducer.students
+    //  disableSearch:disableSearchReducer.disableSearch
   };
 };
 
 export default connect(mapStateToProps, {
   getAllStudentsAction,
   handleLevelChangeAction,
+  getOneStudentAction,
+  disableSearchBox
 })(Students);

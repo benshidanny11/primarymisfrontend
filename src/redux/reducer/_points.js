@@ -115,3 +115,30 @@ const hideinitialState = {
     }
   };
   
+  export const getMarksByStudentReducer=(state=initialState,action)=>{
+    const { type, payload } = action;
+   switch(type){
+    case actionTypes.GET_ONE_STUDENT_IN_MARKS_RESPONSE_ACTION:
+      return {
+        ...state,
+        ...payload,
+        isFound: true,
+        type: "success-get-marks-by-student",
+      };
+  
+    case actionTypes.GET_ONE_STUDENT_IN_MARKS_ERROR_ACTION:
+      return {
+        students: [],
+        data: payload,
+        type: "error-get-marks-by-student",
+      };
+  
+    case actionTypes.GET_ONE_STUDENT_IN_MARKS_LOADING_ACTION:
+      return {
+        ...state,
+        type:payload.type,
+      };
+  default:
+    return state;
+   }
+  }

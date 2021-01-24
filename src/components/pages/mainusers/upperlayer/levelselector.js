@@ -31,13 +31,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function LevelList({ handelLevelChange,handleYearChange, handleShowModal }) {
+export default function LevelList({ handelLevelChange,handleYearChange, handleShowModal,handleDisableSearch }) {
   const classes = useStyles();
   const [level, setLevel] = React.useState(0);
   const [open, setOpen] = React.useState(false);
 
   const handleChange = (event) => {
     setLevel(event.target.value);
+    handleDisableSearch(false)
     handelLevelChange(event.target.value);
   };
   const handleYearChangeEvent=(e)=>{

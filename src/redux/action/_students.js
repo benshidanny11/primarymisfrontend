@@ -7,6 +7,7 @@ const createStudentAPI = "https://primaryims.herokuapp.com/api/student/create";
 const updateStudentAPI = "https://primaryims.herokuapp.com/api/student/update";
 const getClassesAPI = "https://primaryims.herokuapp.com/api/class/classes/";
 const deleteStudentAPI="https://primaryims.herokuapp.com/api/student/delete";
+const searchStudentApI="https://primaryims.herokuapp.com/api/student/search";
 
 dotenv.config();
 
@@ -115,7 +116,6 @@ export const getAllStudentsAction = ({levelid,academicYear}) => async (dispatch)
     payload: { type: "loading" },
   });
   try {
-    // const { data } = await/students/:levelid/:year
     axios
       .get(`${getStudentssAPI}/${levelid}/${academicYear}`, {
         headers: {
@@ -124,7 +124,6 @@ export const getAllStudentsAction = ({levelid,academicYear}) => async (dispatch)
         },
       })
       .then((response) => {
-        //  console.log(response)
         dispatch({
           type: actionType.GET_ALL_STUDENTS_RESPONSE_ACTION,
           payload: response.data,
@@ -140,6 +139,39 @@ export const getAllStudentsAction = ({levelid,academicYear}) => async (dispatch)
     dispatch({
       type: actionType.GET_ALL_STUDENTS_ERROR_ACTION,
       payload: e.response.data,
+    });
+  }
+};
+
+export const getOneStudentAction = (levelid,academicYear,seachQuery) => async (dispatch) => {
+  dispatch({
+    type: actionType.GET_ONE_STUDENT_LOADING_ACTION,
+    payload: { type: "loading-get-one-student" },
+  });
+  try {
+    axios
+      .get(`${searchStudentApI}/${levelid}/${academicYear}/${seachQuery}`, {
+        headers: {
+          "Content-Type": "application/json",
+          token: cookie.load("primary-mis-token"),
+        },
+      })
+      .then((response) => {
+        dispatch({
+          type: actionType.GET_ONE_STUDENT_RESPONSE_ACTION,
+          payload: response.data,
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: actionType.GET_ONE_STUDENT_ERROR_ACTION,
+          payload: e.response,
+        });
+      });
+  } catch (e) {
+    dispatch({
+      type: actionType.GET_ONE_STUDENT_ERROR_ACTION,
+      payload: e,
     });
   }
 };

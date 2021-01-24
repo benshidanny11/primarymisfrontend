@@ -12,6 +12,7 @@ import {
   createStudentAction,
   updateStudentAction,
   deleteStudentAction,
+  getOneStudentAction
 } from "./_students";
 import {
   getAllSubjectssAction,
@@ -24,8 +25,10 @@ import {
   updatePointsAction,
   getStudentReportDataInTermAction,
   hideModalAction,
+  getPointsByStudentAction
 } from "./_points";
 import { getAllTeachersAction } from "./_teachers";
+import {disableSearchBox,setStudnetFilterData} from "./_globalActions";
 export {
   loginAction,
   decodeToken,
@@ -47,4 +50,8 @@ export {
   updateSubjectAction,
   getStudentReportDataInTermAction,
   hideModalAction,
+  getOneStudentAction,
+  disableSearchBox,
+  setStudnetFilterData,
+  getPointsByStudentAction
 };

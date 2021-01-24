@@ -8,6 +8,7 @@ const getAllSUbjectPointsInTermAPI =
 const createPointsAPI = "https://primaryims.herokuapp.com/api/points/create";
 const updatePointsAPI = "https://primaryims.herokuapp.com/api/points/update";
 const getStudentReportDataInTermAPI="https://primaryims.herokuapp.com/api/points/studentspoints";
+const getPointsByStudentAPI="https://primaryims.herokuapp.com/api/points/search"
 dotenv.config();
 
 export const createPointsAction = ({
@@ -95,6 +96,41 @@ export const updatePointsAction = ({
     dispatch({
       type: actionType.UPDATE_POINTS_ERROR_ACTION,
       payload: e.response,
+    });
+  }
+};
+
+export const getPointsByStudentAction = (levelid,subjectName,term,academicYear,seachQuery) => async (dispatch) => {
+  dispatch({
+    type: actionType.GET_ONE_STUDENT_IN_MARKS_LOADING_ACTION,
+    payload: { type: "loading-get-marks-by-student" },
+  });
+  try {
+
+    ///:levelid/:subjectname/:term/:year/:searchData
+    axios
+      .get(`${getPointsByStudentAPI}/${levelid}/${subjectName}/${term}/${academicYear}/${seachQuery}`, {
+        headers: {
+          "Content-Type": "application/json",
+          token: cookie.load("primary-mis-token"),
+        },
+      })
+      .then((response) => {
+        dispatch({
+          type: actionType.GET_ONE_STUDENT_IN_MARKS_RESPONSE_ACTION,
+          payload: response.data,
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: actionType.GET_ONE_STUDENT_IN_MARKS_ERROR_ACTION,
+          payload: e.response,
+        });
+      });
+  } catch (e) {
+    dispatch({
+      type: actionType.GET_ONE_STUDENT_IN_MARKS_ERROR_ACTION,
+      payload: e,
     });
   }
 };
