@@ -167,6 +167,7 @@ class UpdateMarksModal extends Component {
                   </label>
                   <input
                     type="number"
+                    step="any"
                     className="form-control selector"
                     id="catonemarks"
                     name="catonemarks"
@@ -181,6 +182,7 @@ class UpdateMarksModal extends Component {
                   </label>
                   <input
                     type="number"
+                    step="any"
                     className="form-control"
                     id="cattwomarks"
                     name="cattwomarks"
@@ -195,6 +197,7 @@ class UpdateMarksModal extends Component {
                   </label>
                   <input
                     type="number"
+                    step="any"
                     className="form-control"
                     id="exammarks"
                     name="exammarks"

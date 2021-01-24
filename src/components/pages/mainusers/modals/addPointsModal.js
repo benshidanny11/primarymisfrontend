@@ -37,7 +37,7 @@ class AddMarksModal extends Component {
         $("#dotprogress").removeClass("dotprogress");
       } else if (this.props.pointsResponse.type === "error-create-point") {
         $("#dotprogress").addClass("dotprogress");
-      
+
         handleCreateErrorToast(
           this.props.pointsResponse.data.message,
           toast,
@@ -61,7 +61,7 @@ class AddMarksModal extends Component {
     e.preventDefault();
     const { marksData, academicYear } = this.props;
     const { userid } = cookie.load("user");
- 
+
     const pointsData = {
       subjectname: marksData.subjectName,
       catone: e.target.catonemarks.value,
@@ -132,6 +132,7 @@ class AddMarksModal extends Component {
                   </label>
                   <input
                     type="number"
+                    step="any"
                     className="form-control"
                     id="cattwomarks"
                     name="cattwomarks"
@@ -144,6 +145,7 @@ class AddMarksModal extends Component {
                   </label>
                   <input
                     type="number"
+                    step="any"
                     className="form-control"
                     id="exammarks"
                     name="exammarks"
@@ -166,7 +168,7 @@ class AddMarksModal extends Component {
                     <option value="3">Term three</option>
                   </select>
                 </div>
-                
+
                 <Modal.Footer id="footer">
                   <div className="btn-container">
                     <CustomCancelButton

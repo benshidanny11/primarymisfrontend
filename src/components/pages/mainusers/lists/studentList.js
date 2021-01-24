@@ -213,7 +213,6 @@ function Userslist({
                       aria-controls="customized-menu"
                       aria-haspopup="true"
                       variant="contained"
-                      color="primary"
                       className={classes.button}
                       startIcon={<Visibility />}
                       onClick={() => handleClickOpen(student)}

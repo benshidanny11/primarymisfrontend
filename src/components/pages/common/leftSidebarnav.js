@@ -49,15 +49,13 @@ function Leftsidebarnav(props) {
                   data-parent="#sidenavAccordion"
                 >
                   <nav className="sb-sidenav-menu-nested nav">
-                    <div className="nav-link">
-                      <Link to="createuser">Add user</Link>
-                    </div>
+                    
                     <Link
-                      to="/allusers"
+                      to="/users"
                       className="nav-link"
                       onClick={handleGetUSers}
                     >
-                      All users
+                      Users
                     </Link>
                   </nav>
                 </div>
