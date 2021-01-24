@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {
   Table,
@@ -11,8 +12,19 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import ContentLoader from "react-content-loader";
+import { Visibility, ArrowBack } from "@material-ui/icons";
+import cookies from "react-cookies";
+
+import UserMenu from "../menus/userMenu";
 
 function Userslist({ users, isLoading }) {
+  const [openUserMenu, setOpenUserMenu] = useState(false);
+  const [selectedUser, setSelectedUser] = useState({});
+  const [actionUser,setActionUser]=useState({})
+  const [userOptions, setUserOptions] =useState([]);
+
+  const { role } = cookies.load("user");
+
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: "#1168ca",
@@ -41,71 +53,120 @@ function Userslist({ users, isLoading }) {
       width: 1100,
       margin: 20,
       overflow: "auto",
+      padding: 10
     },
     progressContainer: {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      marginTop:20
-    
+      marginTop: 20
+
+    },
+    button: {
+      height: 35,
+      backgroundColor: "#1168ca",
+      color: "white",
+      "&:hover": {
+        background: "#2579da",
+        color: "#fff",
+      },
     },
   });
 
   const classes = useStyles();
 
+  //Event handlers
+
+  const handleClickOpenUserMenu = (user) => {
+    // console.log(student)
+    setSelectedUser(user);
+    if (role === "HEAD_MASTER") {
+      setUserOptions([
+        ["Update user", "fas fa-user-edit"],
+        ["Delete user", "fas fa-trash-alt"],
+      ]);
+    }
+    setOpenUserMenu(true);
+  };
+  const handleOnSelectedOption = ({ user, option }) => {
+    setActionUser(user);
+    if (option === "Update user") {
+     // setShowUpdateStudentModal(true);
+    } else if (option === "Delete user") {
+    //  setShowDeleteStudentModal(true);
+    }
+    setOpenUserMenu(false);
+  };
+
   return (
-    <TableContainer component={Paper} className={classes.container}>
-      <Table className={classes.table} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Full name</StyledTableCell>
-            <StyledTableCell align="">Email address</StyledTableCell>
-            <StyledTableCell align="">Phone number</StyledTableCell>
-            <StyledTableCell align="">User role</StyledTableCell>
-            <StyledTableCell align="center">Option 1</StyledTableCell>
-            <StyledTableCell align="center">Option 2</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users.length !== 0 ? (
-            users.map((user, key) => (
-              <StyledTableRow key={key}>
-                <StyledTableCell component="th" scope="row">
-                  {user.names}
-                </StyledTableCell>
-                <StyledTableCell align="">{user.email}</StyledTableCell>
-                <StyledTableCell align="">{user.phonenumber}</StyledTableCell>
-                <StyledTableCell align="">{user.role}</StyledTableCell>
-                <StyledTableCell align="">
-                  <Button>Update user</Button>
-                </StyledTableCell>
-                <StyledTableCell align="">
-                  <Button color="primary">Remove user</Button>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))
-          ) : (
-            <TableRow className={classes.progressContainer}>
-              <ContentLoader>
-                <rect x="0" y="0" rx="5" ry="5" width="70" height="70" />
-                <rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
-                <rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
-              </ContentLoader>
-              <ContentLoader>
-                <rect x="0" y="0" rx="5" ry="5" width="70" height="70" />
-                <rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
-                <rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
-              </ContentLoader>
-              <ContentLoader>
-                <rect x="0" y="0" rx="5" ry="5" width="70" height="70" />
-                <rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
-                <rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
-              </ContentLoader>
+    <div>
+      <TableContainer component={Paper} className={classes.container}>
+        <Table className={classes.table} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Full name</StyledTableCell>
+              <StyledTableCell align="">Email address</StyledTableCell>
+              <StyledTableCell align="">Phone number</StyledTableCell>
+              <StyledTableCell align="">User role</StyledTableCell>
+              <StyledTableCell align="center">Options</StyledTableCell>
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {users.length !== 0 ? (
+              users.map((user, key) => (
+                user.role !== role ? <StyledTableRow key={key}>
+                  <StyledTableCell component="th" scope="row">
+                    {user.names}
+                  </StyledTableCell>
+                  <StyledTableCell align="">{user.email}</StyledTableCell>
+                  <StyledTableCell align="">{user.phonenumber}</StyledTableCell>
+                  <StyledTableCell align="">{user.role === "TEACHER" ? "Teacher" : "Dos"}</StyledTableCell>
+                  <StyledTableCell align="">
+                    {" "}
+                    <Button
+                      aria-controls="customized-menu"
+                      aria-haspopup="true"
+                      variant="contained"
+                      className={classes.button}
+                      startIcon={<Visibility />}
+                      onClick={handleClickOpenUserMenu}
+                    >
+                      View more
+                  </Button>
+                  </StyledTableCell>
+                </StyledTableRow> : ""
+
+              ))
+            ) : (
+                <TableRow className={classes.progressContainer}>
+                  <ContentLoader>
+                    <rect x="0" y="0" rx="5" ry="5" width="70" height="70" />
+                    <rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
+                    <rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
+                  </ContentLoader>
+                  <ContentLoader>
+                    <rect x="0" y="0" rx="5" ry="5" width="70" height="70" />
+                    <rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
+                    <rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
+                  </ContentLoader>
+                  <ContentLoader>
+                    <rect x="0" y="0" rx="5" ry="5" width="70" height="70" />
+                    <rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
+                    <rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
+                  </ContentLoader>
+                </TableRow>
+              )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <UserMenu
+        user={selectedUser}
+        open={openUserMenu}
+        onClose={handleOnSelectedOption}
+        options={userOptions} />
+    </div>
+
+
   );
 }
 export default Userslist;

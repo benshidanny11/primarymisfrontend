@@ -65,7 +65,7 @@ export const createUserAction = (userData) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: actionType.CREATE_USER_ERROR_ACTION,
-      payload: e.response.data,
+      payload: e.response,
     });
   }
 };

@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import React from "react";
 import { Redirect } from 'react-router-dom'
-import { CreactUSer,Home,AllUSers ,Students,Subjects,Points} from '../components/pages/mainusers'
+import { CreactUSer,Home,Users ,Students,Subjects,Points} from '../components/pages/mainusers'
 import { useSelector } from "react-redux";
 import _ from 'lodash'
 import cookie from "react-cookies";
@@ -21,17 +21,10 @@ class Routes {
         type: "application",
       },
       {
-        path: "/createuser",
-        name: "Create User",
-        icon: "icon-user",
-        component: CreactUSer,
-        type: "navigation",
-      },
-      {
-        path: "/allusers",
+        path: "/users",
         name: "All users",
         icon: "icon-user",
-        component: AllUSers,
+        component: Users,
         type: "navigation",
       },
       {
