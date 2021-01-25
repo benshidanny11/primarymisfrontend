@@ -17,13 +17,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Typography } from "@material-ui/core";
 import { setStudnetFilterData } from "../../../../redux/action";
 
-import StudentMenu from "../menus/studentMenu";
 import YearChooserMenu from "../menus/yearChooserMenu";
 import _ from "lodash";
 import cookie from "react-cookies";
 
-import Updatestudentmodal from "../modals/updateStudentModal";
-import Deletestudentmodal from "../modals/deleteStudentModal";
+
+import DeleteUsermodal from "../modals/deleteUSerModal";
 import AddMarksModal from "../modals/addPointsModal";
 import { Studentlistmodal } from "../modals/studentListModal";
 import SUbjectMenu from "../menus/subjectMenu";

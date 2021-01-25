@@ -1,7 +1,6 @@
 import actionTypes from "./../action/_actionTypes";
 const initialState = {
   user: null,
-  data:{},
 };
 const createUserInitialState = {
   user: null,
@@ -115,6 +114,55 @@ export const getAllUsersReducer = (state = getUSersInitialState, action) => {
 
      
 
+    default:
+      return state;
+  }
+};
+
+export const updateUserReducer = (state = initialState, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case actionTypes.UPDATE_USER_RESPONSE_ACTION:
+      return {
+        ...state,
+        updatedUser:payload,
+        type: "success-update-user",
+      };
+    case actionTypes.UPDATE_USER_ERROR_ACTION:
+      return {
+        ...state,
+        payload,
+        type: "error-update-user",
+      };
+    case actionTypes.UPDATE_USER_LOADING_ACTION:
+      return {
+        ...state,
+       type:"loading-update-user",
+      };
+    default:
+      return state;
+  }
+};
+export const deleteUSerReducer = (state = initialState, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case actionTypes.DELETE_USER_RESPONSE_ACTION:
+      return {
+        ...state,
+        ...payload,
+        type: "success-delete-user",
+      };
+    case actionTypes.DELETE_USER_ERROR_ACTION:
+      return {
+        ...state,
+        payload,
+        type: "error-delete-user",
+      };
+    case actionTypes.DELETE_USER_LOADING_ACTION:
+      return {
+        ...state,
+       type:"loading-delete-user",
+      };
     default:
       return state;
   }
