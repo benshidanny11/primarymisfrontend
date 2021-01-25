@@ -4,6 +4,8 @@ import {
   createUserAction,
   createRefresh,
   getAllUsersAction,
+  updateUserAction,
+  deleteUserAction
 } from "./_user";
 import {
   getAllStudentsAction,
@@ -53,5 +55,7 @@ export {
   getOneStudentAction,
   disableSearchBox,
   setStudnetFilterData,
-  getPointsByStudentAction
+  getPointsByStudentAction,
+  updateUserAction,
+  deleteUserAction
 };

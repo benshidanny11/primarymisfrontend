@@ -1,11 +1,17 @@
 import { combineReducers } from "redux";
-import { loginReducer, createUserReducer, getAllUsersReducer } from "./_user";
+import {
+  loginReducer,
+  createUserReducer,
+  getAllUsersReducer,
+  updateUserReducer,
+  deleteUSerReducer,
+} from "./_user";
 import {
   studentReducer,
   createStudentReducer,
   updateStudentReducer,
   deleteStudentReducer,
-  getOneStudentReducer
+  getOneStudentReducer,
 } from "./_students";
 import {
   getAllSubjectsReducer,
@@ -19,9 +25,12 @@ import {
   updatePointReducer,
   getStudentReportDataInTermReducer,
   hideModalReducer,
-  getMarksByStudentReducer
+  getMarksByStudentReducer,
 } from "./_points";
-import {disableSearchReducer,setFilterStudentDataReducer} from "./_globalReducers";
+import {
+  disableSearchReducer,
+  setFilterStudentDataReducer,
+} from "./_globalReducers";
 
 export default combineReducers({
   loginReducer,
@@ -43,5 +52,7 @@ export default combineReducers({
   disableSearchReducer,
   getOneStudentReducer,
   setFilterStudentDataReducer,
-  getMarksByStudentReducer
+  getMarksByStudentReducer,
+  updateUserReducer,
+  deleteUSerReducer,
 });
