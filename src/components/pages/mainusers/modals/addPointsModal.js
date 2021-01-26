@@ -91,7 +91,8 @@ class AddMarksModal extends Component {
   };
 
   handleRedirect = () => {
-    window.location.href = "/subjects";
+    const { marksData } = this.props;
+    window.location.href = `/points?levelid=${marksData.levelid}&subjectname=${marksData.subjectName}`;
   };
   render() {
     const { classes, showProgress, hideModal, showResponseModal } = this.state;

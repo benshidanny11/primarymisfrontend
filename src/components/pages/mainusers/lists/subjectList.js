@@ -21,14 +21,13 @@ import YearChooserMenu from "../menus/yearChooserMenu";
 import _ from "lodash";
 import cookie from "react-cookies";
 
-
 import DeleteUsermodal from "../modals/deleteUSerModal";
 import AddMarksModal from "../modals/addPointsModal";
 import { Studentlistmodal } from "../modals/studentListModal";
 import SUbjectMenu from "../menus/subjectMenu";
 import UpdateSubjectModal from "../modals/updateSubjectModal";
 
-function SubjectList({ subjects, displayNoDataFound,handleSearchStudent }) {
+function SubjectList({ subjects, displayNoDataFound, handleSearchStudent }) {
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: "#1168ca",
@@ -62,8 +61,9 @@ function SubjectList({ subjects, displayNoDataFound,handleSearchStudent }) {
   const [subjectName, setSubjectName] = React.useState("");
   const [students, setStudents] = React.useState([]);
   const [marksData, setMarksData] = React.useState({});
-  const [openYearChooser,setOpenYearChooser]=React.useState(false);
-   const [marksAdacemicYear,setMarksAcademicYear]=React.useState("");
+  const [openYearChooser, setOpenYearChooser] = React.useState(false);
+  const [marksAdacemicYear, setMarksAcademicYear] = React.useState("");
+  const [displayNoStudentFound, setDisplayNoStudentFound] = React.useState(false);
 
   const role = cookie.load("user").role;
   // console.log(subjects);
@@ -72,13 +72,16 @@ function SubjectList({ subjects, displayNoDataFound,handleSearchStudent }) {
   //Use efffect hook
   useEffect(() => {
     if (studentReducer.type === "loading-get-one-student") {
+      setDisplayNoStudentFound(false);
       setShowLoadingIndicator(true);
     } else if (studentReducer.type === "error-get-one-student") {
       setShowLoadingIndicator(false);
+      setDisplayNoStudentFound(true);
       //setShowStudentListModal(false);
-      console.log(studentReducer.data.data.message)
+      console.log(studentReducer.data.data.message);
     } else if (studentReducer.type === "success-get-one-student") {
       setShowLoadingIndicator(false);
+      setDisplayNoStudentFound(false);
       if (studentReducer.students) {
         if (studentReducer.students.length > 0) {
           setStudents(studentReducer.students);
@@ -153,7 +156,6 @@ function SubjectList({ subjects, displayNoDataFound,handleSearchStudent }) {
     if (option === "Update subject") {
       setShowUpdateSubjectModal(true);
     } else if (option === "Add subject marks") {
-    
       setSubjectName(subject.subjectname);
       setOpenYearChooser(true);
     } else if (option === "View subject marks") {
@@ -163,13 +165,18 @@ function SubjectList({ subjects, displayNoDataFound,handleSearchStudent }) {
   };
   const classes = useStyles();
 
-  const onChooseYear=async(year)=>{
-    const levelid=actionSubject.levelid;
-    const academicYear=year;
-     setMarksAcademicYear(academicYear);
-    dispatch(setStudnetFilterData(levelid,academicYear));
+  const onChooseYear = async (year) => {
+    const levelid = actionSubject.levelid;
+    const academicYear = year;
+    setMarksAcademicYear(academicYear);
+    dispatch(setStudnetFilterData(levelid, academicYear));
     setShowStudentListModal(true);
     setOpenYearChooser(false);
+  };
+  const handleHideStudentModal=()=>{
+     setShowLoadingIndicator(false);
+     setDisplayNoStudentFound(false);
+     setShowStudentListModal(false)
   }
   return (
     <div className="main-container">
@@ -180,7 +187,11 @@ function SubjectList({ subjects, displayNoDataFound,handleSearchStudent }) {
               <StyledTableCell>Subject name</StyledTableCell>
               <StyledTableCell align="">CATMax</StyledTableCell>
               <StyledTableCell align="">ExamMax</StyledTableCell>
-              {role!=="TEACHER"?<StyledTableCell align="">Teacher</StyledTableCell>:""}
+              {role !== "TEACHER" ? (
+                <StyledTableCell align="">Teacher</StyledTableCell>
+              ) : (
+                <StyledTableCell align="">Level</StyledTableCell>
+              )}
               <StyledTableCell align="center">Options</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -202,7 +213,11 @@ function SubjectList({ subjects, displayNoDataFound,handleSearchStudent }) {
                   </StyledTableCell>
                   <StyledTableCell align="">{subject.catmax}</StyledTableCell>
                   <StyledTableCell align="">{subject.exammax}</StyledTableCell>
-                  {role!=="TEACHER"?<StyledTableCell align="">{subject.names}</StyledTableCell>:""}
+                  {role !== "TEACHER" ? (
+                    <StyledTableCell align="">{subject.names}</StyledTableCell>
+                  ) : (
+                    <StyledTableCell align="">P {subject.levelid}</StyledTableCell> 
+                  )}
                   <StyledTableCell align="center">
                     {" "}
                     <Button
@@ -246,10 +261,7 @@ function SubjectList({ subjects, displayNoDataFound,handleSearchStudent }) {
           onClose={handleClose}
           options={options}
         />
-        <YearChooserMenu
-          open={openYearChooser}
-          onChooseYear={onChooseYear}
-        />
+        <YearChooserMenu open={openYearChooser} onChooseYear={onChooseYear} />
       </TableContainer>
       <Studentlistmodal
         students={students}
@@ -257,8 +269,9 @@ function SubjectList({ subjects, displayNoDataFound,handleSearchStudent }) {
         showLoading={showLoadingIndicator}
         show={showStudentListModal}
         handleMarksData={handleMarksData}
-        onHide={() => setShowStudentListModal(false)}
+        onHide={handleHideStudentModal}
         handleSearchStudent={handleSearchStudent}
+        displayNoStudentFound={displayNoStudentFound}
       />
       <AddMarksModal
         marksData={marksData}

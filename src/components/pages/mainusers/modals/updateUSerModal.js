@@ -76,7 +76,6 @@ class UpdateUser extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-     console.log("Update user =====>",this.props.updateUserResponse.type)
     if (prevProps !== this.props) {
       if (this.props.updateUserResponse.type === "loading-update-user") {
         $("#dotprogress").removeClass("dotprogress");
@@ -137,7 +136,6 @@ class UpdateUser extends Component {
       phonenumber,
     } = this.state;
     const { user } = this.props;
-    console.log("User===>",user);
 
     return (
       <div>

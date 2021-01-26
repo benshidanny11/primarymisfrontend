@@ -5,6 +5,7 @@ import {
   getAllUsersReducer,
   updateUserReducer,
   deleteUSerReducer,
+  getOneUserReducer
 } from "./_user";
 import {
   studentReducer,
@@ -55,4 +56,5 @@ export default combineReducers({
   getMarksByStudentReducer,
   updateUserReducer,
   deleteUSerReducer,
+  getOneUserReducer
 });

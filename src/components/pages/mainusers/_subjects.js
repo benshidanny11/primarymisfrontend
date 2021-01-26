@@ -5,7 +5,7 @@ import {
   getAllSubjectssAction,
   getAllStudentsAction,
   getOneStudentAction,
-  setStudnetFilterData
+  setStudnetFilterData,
 } from "../../../redux/action";
 import { connect } from "react-redux";
 import _ from "lodash";
@@ -21,7 +21,7 @@ class Subjects extends Component {
       displayNoDataFound: false,
       showModal: false,
       students: [],
-      levelid:1
+      levelid: 1,
     };
     this.handleEvent = this.handleEvent.bind(this);
   }
@@ -40,7 +40,6 @@ class Subjects extends Component {
   }
 
   componentWillReceiveProps({ levelid, subjects, type, students }) {
-    
     if (levelid) {
       this.setState({
         levelid: levelid,
@@ -52,25 +51,25 @@ class Subjects extends Component {
         this.setState({ Subjects: subjects });
       } else {
         this.setState({ displayNoDataFound: false });
-        this.setState({ Subjects: subjects});
+        this.setState({ Subjects: subjects });
       }
     }
-   if(students){
-    if (students.length > 0) {
-      this.setState({
-        students,
-      });
+    if (students) {
+      if (students.length > 0) {
+        this.setState({
+          students,
+        });
+      }
     }
-   }
   }
 
-  handleSearchStudent=(queryString)=>{
-    const {levelid,academicYear}=this.props.filterData;   
+  handleSearchStudent = (queryString) => {
+    const { levelid, academicYear } = this.props.filterData;
     this.setState({
-      students:[],
-    })
-    this.props.getOneStudentAction(levelid,academicYear,queryString);
-   }
+      students: [],
+    });
+    this.props.getOneStudentAction(levelid, academicYear, queryString);
+  };
 
   handleEvent() {}
   handler = () => {
@@ -83,8 +82,14 @@ class Subjects extends Component {
   }
 
   render() {
-    const { Subjects, displayNoDataFound, showModal,students ,levelid} = this.state;
-    console.log(levelid)
+    const {
+      Subjects,
+      displayNoDataFound,
+      showModal,
+      students,
+      levelid,
+    } = this.state;
+    console.log(levelid);
     const { role } = cookie.load("user");
     return (
       <div className="d-block">
@@ -101,7 +106,15 @@ class Subjects extends Component {
           ""
         )}
         <div className="breadcrumb mb-4 breadcrumb-item active message-container">
-          <span className="">There are {Subjects.length} subects P {levelid} </span>
+          {role !== "TEACHER" ? (
+            <span className="">
+              There are {Subjects.length} subects P {levelid}{" "}
+            </span>
+          ) : (
+            <span className="">
+              Your subjects
+            </span>
+          )}
         </div>
         <SubjectList
           subjects={Subjects}
@@ -114,14 +127,17 @@ class Subjects extends Component {
   }
 }
 
-const mapStateToProps = ({ studentReducer, getAllSubjectsReducer ,setFilterStudentDataReducer}) => {
-
+const mapStateToProps = ({
+  studentReducer,
+  getAllSubjectsReducer,
+  setFilterStudentDataReducer,
+}) => {
   return {
     levelid: studentReducer.payload,
     subjects: getAllSubjectsReducer.Subjects,
     type: getAllSubjectsReducer.type,
     students: studentReducer.students,
-    filterData:setFilterStudentDataReducer.data
+    filterData: setFilterStudentDataReducer.data,
   };
 };
 
@@ -130,5 +146,5 @@ export default connect(mapStateToProps, {
   getAllSubjectssAction,
   getAllStudentsAction,
   getOneStudentAction,
-  setStudnetFilterData
+  setStudnetFilterData,
 })(Subjects);

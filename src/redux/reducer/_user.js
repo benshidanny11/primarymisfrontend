@@ -167,3 +167,30 @@ export const deleteUSerReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export const getOneUserReducer=(state=initialState,action)=>{
+  const { type, payload } = action;
+ switch(type){
+  case actionTypes.GET_ONE_USER_RESPONSE_ACTION:
+    return {
+      ...state,
+      ...payload,
+      type: "success-get-one-user",
+    };
+
+  case actionTypes.GET_ONE_USER_ERROR_ACTION:
+    return {
+      user: [],
+      data: payload,
+      type: "error-get-one-user",
+    };
+
+  case actionTypes.GET_ONE_USER_LOADING_ACTION:
+    return {
+      ...state,
+      type:payload.type,
+    };
+default:
+  return state;
+ }
+}

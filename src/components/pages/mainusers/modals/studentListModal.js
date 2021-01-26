@@ -21,6 +21,7 @@ export function Studentlistmodal(props) {
     showLoading,
     handleMarksData,
     handleSearchStudent,
+    displayNoStudentFound
   } = props;
   const useStyles = makeStyles({
     avatar: {
@@ -44,7 +45,10 @@ export function Studentlistmodal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {!showLoading ? (
+        {
+        !displayNoStudentFound?        
+        
+        !showLoading ? (
           <List>
             <ListItem divider alignItems="right">
             <div className="divsearchcontainer"><SearchBox handleSearchQuery={handleSearchStudent} placeholder="Type student name/ Reg number"/></div>
@@ -72,6 +76,8 @@ export function Studentlistmodal(props) {
           </List>
         ) : (
           "Loading..."
+        ): (
+          "No student found"
         )}
       </Modal.Body>
     </Modal>
