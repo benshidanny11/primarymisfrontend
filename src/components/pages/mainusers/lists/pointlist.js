@@ -177,7 +177,7 @@ term: "1"
                         startIcon={<Edit />}
                         onClick={() => handleClickOpen(point)}
                       >
-                        Updata marks
+                        Update marks
                       </Button>
                     ) : (
                       "No option"

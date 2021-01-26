@@ -9,7 +9,7 @@ import {
   TableRow,
   Paper,
   Button,
-  CircularProgress,
+  Typography
 } from "@material-ui/core";
 import ContentLoader from "react-content-loader";
 import { Visibility, ArrowBack } from "@material-ui/icons";
@@ -17,18 +17,23 @@ import cookies from "react-cookies";
 import UpdateUser from "./../modals/updateUSerModal";
 
 import UserMenu from "../menus/userMenu";
-import Deletestudentmodal from "../modals/deleteStudentModal";
 import DeleteUser from "../modals/deleteUSerModal";
+import SearchBox from "../filterers/searchBox";
+import { CustomClickableButton } from "../styledcontrols/buttons";
+import ProgressFull from "../modals/progressFullModal";
 
-function Userslist({ users, isLoading }) {
+function Userslist({
+  users,
+  handleSearchUser,
+  showBackToUsers,
+  displayNoDataFound,
+}) {
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
   const [actionUser, setActionUser] = useState({});
   const [userOptions, setUserOptions] = useState([]);
   const [showUpdateUserModal, setShowUpdateUserModal] = useState(false);
-  const [showDeleteUserModal, setShowDeleteUserModal] = React.useState(
-    false
-  );
+  const [showDeleteUserModal, setShowDeleteUserModal] = React.useState(false);
 
   const { role } = cookies.load("user");
 
@@ -57,7 +62,6 @@ function Userslist({ users, isLoading }) {
   const useStyles = makeStyles({
     table: {},
     container: {
-      width: 1100,
       margin: 20,
       overflow: "auto",
       padding: 10,
@@ -118,7 +122,32 @@ function Userslist({ users, isLoading }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.length !== 0 ? (
+            <StyledTableRow>
+              <StyledTableCell component="th" scope="row"></StyledTableCell>
+              <StyledTableCell align=""></StyledTableCell>
+              <StyledTableCell align=""></StyledTableCell>
+              <StyledTableCell align=""></StyledTableCell>
+              <StyledTableCell align="right">
+                <SearchBox
+                  handleSearchQuery={handleSearchUser}
+                  placeholder="Type name of user"
+                />
+              </StyledTableCell>
+            </StyledTableRow>
+            {
+          
+          displayNoDataFound ? (
+            <Typography
+              variant="h5"
+              align="center"
+              component="h5"
+              gutterBottom
+            >
+              No users found
+            </Typography>
+          ) :
+          
+             users.length !== 0 ? (
               users.map((user, key) =>
                 user.role !== role ? (
                   <StyledTableRow key={key}>
@@ -132,7 +161,7 @@ function Userslist({ users, isLoading }) {
                     <StyledTableCell align="">
                       {user.role === "TEACHER" ? "Teacher" : "Dos"}
                     </StyledTableCell>
-                    <StyledTableCell align="">
+                    <StyledTableCell align="center">
                       {" "}
                       <Button
                         aria-controls="customized-menu"
@@ -140,7 +169,7 @@ function Userslist({ users, isLoading }) {
                         variant="contained"
                         className={classes.button}
                         startIcon={<Visibility />}
-                        onClick={()=>handleClickOpenUserMenu(user)}
+                        onClick={() => handleClickOpenUserMenu(user)}
                       >
                         View more
                       </Button>
@@ -169,6 +198,35 @@ function Userslist({ users, isLoading }) {
                 </ContentLoader>
               </TableRow>
             )}
+            {showBackToUsers ? (
+              <StyledTableRow>
+                <StyledTableCell component="th" scope="row"></StyledTableCell>
+                <StyledTableCell align=""></StyledTableCell>
+                <StyledTableCell align=""></StyledTableCell>
+                <StyledTableCell align=""></StyledTableCell>
+                <StyledTableCell align="center">
+                  {/* <CustomClickableButton
+                    type="submit"
+                    label="Continue"
+                    className="btn-submit"
+                    handleClickEvent={handleBackToStudents}
+                  /> */}
+                  <Button
+                    aria-controls="customized-menu"
+                    aria-haspopup="true"
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    startIcon={<ArrowBack />}
+                    onClick={() => (window.location.href = "/users")}
+                  >
+                    Back to list
+                  </Button>
+                </StyledTableCell>
+              </StyledTableRow>
+            ) : (
+              ""
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -186,11 +244,12 @@ function Userslist({ users, isLoading }) {
       />
       <DeleteUser
         showDeleteWarning={showDeleteUserModal}
-        handleHideModal={()=>setShowDeleteUserModal(false)}
+        handleHideModal={() => setShowDeleteUserModal(false)}
         userid={actionUser.userid}
         name={actionUser.names}
       />
+      <ProgressFull />
     </div>
-  );
+  )
 }
 export default Userslist;

@@ -7,7 +7,8 @@ const loginAPI = "https://primaryims.herokuapp.com/api/user/login";
 const createUserAPI = "https://primaryims.herokuapp.com/api/user/users/create";
 const getUsersAPI = "https://primaryims.herokuapp.com/api/user/users/all";
 const updateUserAPI="https://primaryims.herokuapp.com/api/user/users/update";
-const deleteUserAPI="https://primaryims.herokuapp.com/api/user/users/delete"
+const deleteUserAPI="https://primaryims.herokuapp.com/api/user/users/disactivate"
+const searchUserAPI="https://primaryims.herokuapp.com/api/user/search"
 
 dotenv.config();
 
@@ -104,7 +105,7 @@ export const getAllUsersAction = () => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: actionType.GET_ALL_USERS_ERROR_ACTION,
-      payload: e.response.data,
+      payload: e.response,
     });
   }
 };
@@ -172,7 +173,7 @@ export const deleteUserAction = (userid) => async (dispatch) => {
     payload: { type: "loading-delete" },
   });
   try {
-    const { data } = await axios.delete(
+    const { data } = await axios.put(
       `${deleteUserAPI}/${userid}`,
       {
         headers: {
@@ -189,6 +190,42 @@ export const deleteUserAction = (userid) => async (dispatch) => {
     dispatch({
       type: actionType.DELETE_USER_ERROR_ACTION,
       payload: e.response,
+    });
+  }
+};
+
+
+
+
+export const getOneUserAction = (seachQuery) => async (dispatch) => {
+  dispatch({
+    type: actionType.GET_ONE_USER_LOADING_ACTION,
+    payload: { type: "loading-get-one-user" },
+  });
+  try {
+    axios
+      .get(`${searchUserAPI}/${seachQuery}`, {
+        headers: {
+          "Content-Type": "application/json",
+          token: cookie.load("primary-mis-token"),
+        },
+      })
+      .then((response) => {
+        dispatch({
+          type: actionType.GET_ONE_USER_RESPONSE_ACTION,
+          payload: response.data,
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: actionType.GET_ONE_USER_ERROR_ACTION,
+          payload: e.response,
+        });
+      });
+  } catch (e) {
+    dispatch({
+      type: actionType.GET_ONE_USER_ERROR_ACTION,
+      payload: e,
     });
   }
 };

@@ -16,6 +16,16 @@ function SearchBox({handleSearchQuery,placeholder}) {
        handleSearchQuery(queryStrying);
       }
   };
+  const handleEnterEvent=(e)=>{
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      if(queryStrying.length===0){
+        handleCreateErrorToast("Please type some thing",toast,1000)
+       }else{
+        handleSearchQuery(queryStrying);
+       }
+     }
+  }
   return (
     <div>
       <div id="custom-search-input">
@@ -27,6 +37,7 @@ function SearchBox({handleSearchQuery,placeholder}) {
             placeholder={placeholder}
             id="inputquery"
             onChange={handleTextChange}
+            onKeyUp={handleEnterEvent}
           />
 
           <button

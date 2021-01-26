@@ -48,7 +48,7 @@ function Leftsidebarnav(props) {
                   aria-labelledby="headingOne"
                   data-parent="#sidenavAccordion"
                 >
-                  <nav className="sb-sidenav-menu-nested nav">
+                  <nav className="sb-sidenav-menu-nested nav"  id="sidenavAccordionPages">
                     
                     <Link
                       to="/users"
@@ -58,6 +58,7 @@ function Leftsidebarnav(props) {
                       Users
                     </Link>
                   </nav>
+            
                 </div>
               </div>
             ) : (
