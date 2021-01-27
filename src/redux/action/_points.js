@@ -166,7 +166,7 @@ export const getAllPointsAction = (levelid, subjectname,term,academicYear) => as
       });
   } catch (e) {
     dispatch({
-      type: actionType.GET_ALL_STUDENTS_ERROR_ACTION,
+      type: actionType.GET_ALL_POINTS_ERROR_ACTION,
       payload: e.response.data,
     });
   }
