@@ -24,10 +24,10 @@ const useStyles = makeStyles({
 
 export default function UserMenu({
   onClose,
-  selectedValue,
   open,
   user,
   options,
+  handleOnDismiss
 }) {
   const classes = useStyles(); 
  
@@ -40,7 +40,8 @@ export default function UserMenu({
   return (
     <div>
     <Dialog
-      onClose={handleClose}
+      
+      onClose={handleOnDismiss}
       aria-labelledby="simple-dialog-title"
       open={open}
     >

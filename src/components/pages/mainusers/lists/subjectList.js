@@ -78,7 +78,6 @@ function SubjectList({ subjects, displayNoDataFound, handleSearchStudent }) {
       setShowLoadingIndicator(false);
       setDisplayNoStudentFound(true);
       //setShowStudentListModal(false);
-      console.log(studentReducer.data.data.message);
     } else if (studentReducer.type === "success-get-one-student") {
       setShowLoadingIndicator(false);
       setDisplayNoStudentFound(false);
@@ -260,8 +259,9 @@ function SubjectList({ subjects, displayNoDataFound, handleSearchStudent }) {
           open={open}
           onClose={handleClose}
           options={options}
+          handleOnClose={()=>setOpen(false)}
         />
-        <YearChooserMenu open={openYearChooser} onChooseYear={onChooseYear} />
+        <YearChooserMenu open={openYearChooser} onChooseYear={onChooseYear} handleOnClose={()=>setOpenYearChooser(false)}/>
       </TableContainer>
       <Studentlistmodal
         students={students}

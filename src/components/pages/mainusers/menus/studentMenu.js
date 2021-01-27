@@ -28,6 +28,7 @@ export default function StudentMenu({
   open,
   student,
   options,
+  handleOnDismis
 }) {
   const classes = useStyles(); 
  
@@ -40,7 +41,7 @@ export default function StudentMenu({
   return (
     <div>
     <Dialog
-      onClose={handleClose}
+      onClose={handleOnDismis}
       aria-labelledby="simple-dialog-title"
       open={open}
     >

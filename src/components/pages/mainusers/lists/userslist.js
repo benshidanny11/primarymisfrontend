@@ -235,6 +235,7 @@ function Userslist({
         open={openUserMenu}
         onClose={handleOnSelectedOption}
         options={userOptions}
+        handleOnDismiss={()=>setOpenUserMenu(false)}
       />
 
       <UpdateUser

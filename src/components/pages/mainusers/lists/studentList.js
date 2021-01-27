@@ -277,6 +277,7 @@ function Userslist({
           open={open}
           onClose={handleClose}
           options={options}
+          handleOnDismis={()=>setOpen(false)}
         />
       </TableContainer>
       <Updatestudentmodal

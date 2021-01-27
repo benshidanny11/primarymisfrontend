@@ -156,4 +156,9 @@ input[type=text], input[type=email], input[type=password], input[type=tel], inpu
   width: 100%;
 }
 
+.yearchoosercontainer {
+  justify-content: space-between;
+  display: flex;
+}
+
 /*# sourceMappingURL=style.css.map */
