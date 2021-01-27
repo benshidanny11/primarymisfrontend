@@ -28,6 +28,7 @@ export default function SUbjectMenu({
   open,
   subject,
   options,
+  handleOnClose
 }) {
   const classes = useStyles(); 
  
@@ -40,7 +41,7 @@ export default function SUbjectMenu({
   return (
     <div>
     <Dialog
-      onClose={handleClose}
+      onClose={handleOnClose}
       aria-labelledby="simple-dialog-title"
       open={open}
     >

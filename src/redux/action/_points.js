@@ -9,6 +9,7 @@ const createPointsAPI = "https://primaryims.herokuapp.com/api/points/create";
 const updatePointsAPI = "https://primaryims.herokuapp.com/api/points/update";
 const getStudentReportDataInTermAPI="https://primaryims.herokuapp.com/api/points/studentspoints";
 const getPointsByStudentAPI="https://primaryims.herokuapp.com/api/points/search"
+const getStudentReportInYearApi="/studentsAll/:studentid/:year";
 dotenv.config();
 
 export const createPointsAction = ({
