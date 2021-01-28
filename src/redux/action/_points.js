@@ -8,8 +8,8 @@ const getAllSUbjectPointsInTermAPI =
 const createPointsAPI = "https://primaryims.herokuapp.com/api/points/create";
 const updatePointsAPI = "https://primaryims.herokuapp.com/api/points/update";
 const getStudentReportDataInTermAPI="https://primaryims.herokuapp.com/api/points/studentspoints";
+const getStudentAnualReportDataAPI="https://primaryims.herokuapp.com/api/points/studentsAll";
 const getPointsByStudentAPI="https://primaryims.herokuapp.com/api/points/search"
-const getStudentReportInYearApi="/studentsAll/:studentid/:year";
 dotenv.config();
 
 export const createPointsAction = ({
@@ -198,6 +198,43 @@ export const getStudentReportDataInTermAction = (studentId, levelid,term,academi
       .catch((e) => {
         dispatch({
           type: actionType.GET_STUDENT_REPORT_ERROR_ACTION,
+          payload: e,
+        });
+      });
+  } catch (e) {
+    dispatch({
+      type: actionType.GET,
+      payload: e.response.data,
+    });
+  }
+};
+//generating annual report action
+export const getStudentAnualReportDataAction = (studentId,academicYear) => async (
+  dispatch
+) => {
+  dispatch({
+    type: actionType. GET_STUDENT_ANUAL_REPORT_LOADING_ACTION,
+    payload: { type: "loading-get-report-data" },
+  });
+  try {
+
+    axios
+      .get(`${getStudentAnualReportDataAPI}/${studentId}/${academicYear}`, {
+        headers: {
+          "Content-Type": "application/json",
+          token: cookie.load("primary-mis-token"),
+        },
+      })
+      .then((response) => {
+          // console.log(`here is report response ${response}`)
+        dispatch({
+          type: actionType.GET_STUDENT_ANUAL_REPORT_RESPONSE_ACTION,
+          payload: response.data,
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: actionType.GET_STUDENT_ANUAL_REPORT_ERROR_ACTION,
           payload: e,
         });
       });

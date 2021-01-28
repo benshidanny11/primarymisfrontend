@@ -20,13 +20,13 @@ import StudentMenu from "../menus/studentMenu";
 
 import cookie from "react-cookies";
 import generatePDF from "../report/reportGenerator";
+import generateReport from "../report/anualReport";
 import { hideModalAction } from "../../../../redux/action";
 
 import Updatestudentmodal from "../modals/updateStudentModal";
 import Deletestudentmodal from "../modals/deleteStudentModal";
 import ReportDataChooserModal from "../modals/reportDataChooserModal";
 import SearchBox from "../filterers/searchBox";
-import { CustomClickableButton } from "../styledcontrols/buttons";
 import ProgressFull from "../modals/progressFullModal";
 
 
@@ -144,6 +144,9 @@ function Userslist({
   const getStudentReportDataInTermReducer = useSelector(
     (state) => state.getStudentReportDataInTermReducer
   );
+  const getStudentAnualReportDataReducer = useSelector(
+    (state) => state.getStudentAnualReportDataReducer
+  );
   const hideModalReducer = useSelector((state) => state.hideModalReducer);
   useEffect(() => {
     //Report data is in report data array constant, you can now call report pdf here
@@ -153,6 +156,15 @@ function Userslist({
       generatePDF(reportData);
     }
   }, [getStudentReportDataInTermReducer.type]);
+  //anual report
+  useEffect(() => {
+    //Report data is in report data array constant, you can now call report pdf here
+    if (getStudentAnualReportDataReducer.type === "success-get-anual-report-data") {
+      const report = getStudentAnualReportDataReducer.points;
+      // console.log(reportData)
+      generateReport(report);
+    }
+  },[getStudentAnualReportDataReducer.type]);
 
   const classes = useStyles();
 

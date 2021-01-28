@@ -28,7 +28,8 @@ import {
   updatePointsAction,
   getStudentReportDataInTermAction,
   hideModalAction,
-  getPointsByStudentAction
+  getPointsByStudentAction,
+  getStudentAnualReportDataAction
 } from "./_points";
 import { getAllTeachersAction } from "./_teachers";
 import {disableSearchBox,setStudnetFilterData} from "./_globalActions";
@@ -59,5 +60,6 @@ export {
   getPointsByStudentAction,
   updateUserAction,
   deleteUserAction,
-  getOneUserAction
+  getOneUserAction,
+  getStudentAnualReportDataAction,
 };
