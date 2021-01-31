@@ -27,6 +27,7 @@ import {
   getStudentReportDataInTermReducer,
   hideModalReducer,
   getMarksByStudentReducer,
+  getStudentAnualReportDataReducer
 } from "./_points";
 import {
   disableSearchReducer,
@@ -45,6 +46,7 @@ export default combineReducers({
   getAllTeachersReducer,
   createSubjectReducer,
   createPointReducer,
+  getStudentAnualReportDataReducer,
   getPointsReducer,
   hideModalReducer,
   updatePointReducer,

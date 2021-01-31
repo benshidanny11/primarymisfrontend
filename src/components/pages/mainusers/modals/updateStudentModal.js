@@ -87,7 +87,6 @@ class Updatestudentmodal extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log(this.props.updateStudentResponse.type);
     if (!_.isEqual(prevProps.allClasses, this.props.allClasses)) {
       this.setState({
         classes: this.props.allClasses,

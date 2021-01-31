@@ -102,6 +102,31 @@ const hideinitialState = {
         return state;
     }
   };
+  export const getStudentAnualReportDataReducer = (state = initialState, action) => {
+    const { type, payload } = action;
+    switch (type) {
+      case actionTypes.GET_STUDENT_ANUAL_REPORT_RESPONSE_ACTION:
+        return {
+          ...state,
+          ...payload,
+          type: "success-get-anual-report-data",
+        };
+      case actionTypes.GET_STUDENT_ANUAL_REPORT_ERROR_ACTION:
+        return {
+          ...state,
+          ...payload,
+          reportdata:[],
+          type: "error-get-anual-report-data",
+        };
+      case actionTypes.GET_STUDENT_ANUAL_REPORT_LOADING_ACTION:
+        return {
+          ...state,
+         type:"loading-get-anual-report-data",
+        };
+      default:
+        return state;
+    }
+  };
   
   export const hideModalReducer = (state = hideinitialState, action) => {
     const { type, payload } = action;
@@ -141,4 +166,6 @@ const hideinitialState = {
   default:
     return state;
    }
+
+   
   }

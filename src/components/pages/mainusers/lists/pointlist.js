@@ -23,22 +23,6 @@ import UpdateMarksModal from "../modals/updatePointsModal";
 import ProgressFull from "../modals/progressFullModal";
 
 function PointList({ points, displayNoDataFound ,handleSearchByStudent,showBackToPoints,redirectData}) {
-  console.log("Points object",points[0])
-  /**
-   * {levelid: 2, subjectname: "English", catone: 19, cattwo: 37, exam: 36, …}
-catmax: 60
-catone: 19
-cattwo: 37
-exam: 36
-exammax: 40
-levelid: 2
-levelname: "P 2"
-studentid: 84
-studentnames: "King David"
-subjectname: "English"
-teacherid: 7
-term: "1"
-   */
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: "#1168ca",

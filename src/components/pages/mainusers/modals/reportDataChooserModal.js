@@ -7,6 +7,7 @@ import {
 } from "../styledcontrols/buttons";
 import {
   getStudentReportDataInTermAction,
+  getStudentAnualReportDataAction,
   hideModalAction,
 } from "../../../../redux/action";
 
@@ -37,12 +38,11 @@ function ReportDataChooserModal(props) {
      setChosenReportYear("");
      dispatch(hideModalAction(false))
     } else if (chosenReportType === "year") {
-      alert(
-        "Choosen ReportType: " +
-          chosenReportType +
-          "\nChoosen academic year: " +
-          chosenReportYear
-      );
+      dispatch(await getStudentAnualReportDataAction(studentid,chosenReportYear));
+      setChosenReportTerm("");
+       setChosenReportType("");
+       setChosenReportYear("");
+       dispatch(hideModalAction(false))
     } else {
       alert("No report type choosen");
     }

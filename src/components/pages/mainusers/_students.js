@@ -43,8 +43,6 @@ class Students extends Component {
   }
 
   componentWillReceiveProps({ allStudents, levelid ,type,getOneType,foundStudent}) {
-    console.log("Action type===>",getOneType)
-    console.log("Action type===>",foundStudent)
     if (levelid) {
       this.setState({
         levelid,
