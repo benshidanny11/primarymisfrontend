@@ -3,17 +3,17 @@ import "jspdf-autotable";
 import report from '../../../../assets/report.JPG'
 const generatePDF = (tickets) => {
 
-    let doc = new jsPDF('p', 'pt')
-    var img = new Image;
-    img.crossOrigin = "";  // for demo as we are at different origin than image
-    img.src =report;
-    doc.text('SOURCE DEV HIGH SCHOOL', 200, 50)
-    doc.setFontSize(8);
-    doc.text('P.O Box: 2681 Kigali, Rwanda',220,70)
-    doc.text('Tel: 078-835-4848',240,90)
-    doc.text('Website: www.sourcedev.org',210,100)
-    doc.text('Email: info@sourcedev.org',205,110)
-    doc.setFontSize(18);
+  let doc = new jsPDF("p", "pt", "a4");
+  var img = new Image();
+  img.crossOrigin = ""; // for demo as we are at different origin than image
+  img.src = report;
+  doc.text("SOURCE DEV HIGH SCHOOL", 200, 50);
+  doc.setFontSize(8);
+  doc.text("P.O Box: 2681 Kigali, Rwanda", 240, 80);
+  doc.text("Tel: 078-835-4848", 240, 90);
+  doc.text("Website: www.sourcedev.org", 240, 100);
+  doc.text("Email: info@sourcedev.org", 240, 110);
+  doc.setFontSize(18);
     doc.text('STUDENT REPORT', 200, 140)
    doc.line(530, 150, 60, 150);
     let raw = tickets
