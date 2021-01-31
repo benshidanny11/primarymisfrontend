@@ -1,7 +1,7 @@
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import report from "../../../../assets/report.JPG";
-import {  yearReportDataHandler } from "../../../../utils/_ReportHelper";
+import {  ReportDataHandler } from "../../../../utils/_ReportHelper";
 const generateReport = (tickets) => {
   // info of maximu marks
   const maxCatMarksPerYer =
@@ -54,7 +54,7 @@ const generateReport = (tickets) => {
   const term3position =
     tickets[tickets.length - 1].report.dataForTerms.term3.position;
   const yearposition = tickets[tickets.length - 1].report.position;
-  let raw = yearReportDataHandler(tickets);
+  let raw = ReportDataHandler(tickets);
   let body = [];
   let foot = [];
   let footer = [];
