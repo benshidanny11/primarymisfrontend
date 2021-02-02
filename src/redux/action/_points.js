@@ -209,7 +209,7 @@ export const getStudentReportDataInTermAction = (studentId, levelid,term,academi
   }
 };
 //generating annual report action
-export const getStudentAnualReportDataAction = (studentId,academicYear) => async (
+export const getStudentAnualReportDataAction = (studentId,levelid,academicYear) => async (
   dispatch
 ) => {
   dispatch({
@@ -217,9 +217,9 @@ export const getStudentAnualReportDataAction = (studentId,academicYear) => async
     payload: { type: "loading-get-report-data" },
   });
   try {
-
+    // console.log(levelid)
     axios
-      .get(`${getStudentAnualReportDataAPI}/${studentId}/${academicYear}`, {
+      .get(`${getStudentAnualReportDataAPI}/${studentId}/${levelid}/${academicYear}`, {
         headers: {
           "Content-Type": "application/json",
           token: cookie.load("primary-mis-token"),
