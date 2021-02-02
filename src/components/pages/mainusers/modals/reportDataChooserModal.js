@@ -38,7 +38,7 @@ function ReportDataChooserModal(props) {
      setChosenReportYear("");
      dispatch(hideModalAction(false))
     } else if (chosenReportType === "year") {
-      dispatch(await getStudentAnualReportDataAction(studentid,chosenReportYear));
+      dispatch(await getStudentAnualReportDataAction(studentid,levelid,chosenReportYear));
       setChosenReportTerm("");
        setChosenReportType("");
        setChosenReportYear("");
