@@ -1,5 +1,5 @@
 import _ from "lodash";
-export const ReportDataHandler = (points) => {
+export const ReportDataHandlerInYear = (points) => {
     points.splice(points.length - 1, 1);
     let subjects = [];
     points.forEach(function (point) {
