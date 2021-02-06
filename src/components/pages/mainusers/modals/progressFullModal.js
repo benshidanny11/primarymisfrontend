@@ -4,7 +4,7 @@ import Loader from "react-loader-spinner";
 
 
 
-export default function ProgressFull({ onClose, open }) {
+export const ProgressFull=({ onClose, open }) =>{
 
   return (
     <div
@@ -13,6 +13,7 @@ export default function ProgressFull({ onClose, open }) {
         justifyContent: "center",
         alignItems: "center",
       }}
+      // progressdothide
       className="progresssdotfull progressdothide"
       id="progresssdotfull"
     >
@@ -21,3 +22,24 @@ export default function ProgressFull({ onClose, open }) {
     </div>
   );
 }
+
+
+export const ProgressFullPoints=({ onClose, open }) =>{
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+      // progressdothide
+      className="progresssdotfullP progressdothide"
+      id="progresssdotfull"
+    >
+      <Loader type="ThreeDots" color="#1168ca" height="20" width="50" >
+      </Loader>
+    </div>
+  );
+}
+

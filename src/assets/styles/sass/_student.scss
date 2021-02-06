@@ -114,11 +114,21 @@ input[type="text"], input[type="email"], input[type="password"], input[type="tel
   display: block;
   background-color: rgba(255, 255, 255, 0.863);
   position: absolute;
-  margin-top: -42%;
+  margin-top: -62%;
+  width: 85%;
+  height: 100%;
+}
+.progresssdotfullP{
+  display: block;
+  background-color: rgba(255, 255, 255, 0.863);
+  position: absolute;
+  margin-top: -40%;
   width: 85%;
   height: 100%;
 }
 .progressdothide{
+  width: 0px;
+  height: 0px;
   visibility: hidden;
 }
 .divsearchcontainer{

@@ -136,7 +136,7 @@ export const getPointsByStudentAction = (levelid,subjectName,term,academicYear,s
   }
 };
 
-export const getAllPointsAction = (levelid, subjectname,term,academicYear) => async (
+export const getAllPointsAction = (levelid, subjectname,term,academicYear,currentPage) => async (
   dispatch
 ) => {
   dispatch({
@@ -145,7 +145,7 @@ export const getAllPointsAction = (levelid, subjectname,term,academicYear) => as
   });
   try {
     axios
-      .get(`${getAllSUbjectPointsInTermAPI}/${levelid}/${subjectname}/${term}/${academicYear}`, {
+      .get(`${getAllSUbjectPointsInTermAPI}/${levelid}/${subjectname}/${term}/${academicYear}/${currentPage}`, {
         headers: {
           "Content-Type": "application/json",
           token: cookie.load("primary-mis-token"),
@@ -171,6 +171,44 @@ export const getAllPointsAction = (levelid, subjectname,term,academicYear) => as
     });
   }
 };
+
+export const getPaginationPointsAction = (levelid, subjectname,term,academicYear,currentPage) => async (
+  dispatch
+) => {
+  dispatch({
+    type: actionType.GET_PAGINATED_POINTS_LOADING_ACTION,
+    payload: { type: "loading-pagination-points" },
+  });
+  try {
+    axios
+      .get(`${getAllSUbjectPointsInTermAPI}/${levelid}/${subjectname}/${term}/${academicYear}/${currentPage}`, {
+        headers: {
+          "Content-Type": "application/json",
+          token: cookie.load("primary-mis-token"),
+        },
+      })
+      .then((response) => {
+        //  console.log(response)
+        dispatch({
+          type: actionType.GET_PAGINATED_POINTS_RESPONSE_ACTION,
+          payload: response.data,
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: actionType.GET_PAGINATED_POINTS_ERROR_ACTION,
+          payload: e,
+        });
+      });
+  } catch (e) {
+    dispatch({
+      type: actionType.GET_PAGINATED_POINTS_ERROR_ACTION,
+      payload: e.response,
+    });
+  }
+};
+
+
 //84/2/1/2020-2021
 export const getStudentReportDataInTermAction = (studentId, levelid,term,academicYear) => async (
   dispatch

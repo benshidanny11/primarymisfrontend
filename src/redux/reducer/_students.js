@@ -172,3 +172,32 @@ export const updateStudentReducer = (state = updateInitialState, action) => {
       return state;
   }
 };
+
+
+export const paginationStudentReducer = (state = initialState, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case actionTypes.GET_PAGINATION_STUDENTS_RESPONSE_ACTION:
+      return {
+        ...state,
+        ...payload,
+        isFound: true,
+        type: "success-pagination",
+      };
+
+    case actionTypes.GET_PAGINATION_STUDENTS_ERROR_ACTION:
+      return {
+        students: [],
+        data: payload,
+        type: "error-pagination",
+      };
+
+    case actionTypes.GET_PAGINATION_STUDENTS_LOADING_ACTION:
+      return {
+        ...state,
+        ...payload,
+      };
+    default:
+      return state;
+  }
+};

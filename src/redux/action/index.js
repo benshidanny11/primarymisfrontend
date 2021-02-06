@@ -6,7 +6,8 @@ import {
   getAllUsersAction,
   updateUserAction,
   deleteUserAction,
-  getOneUserAction
+  getOneUserAction,
+  getPaginatedUsersAction
 } from "./_user";
 import {
   getAllStudentsAction,
@@ -15,7 +16,8 @@ import {
   createStudentAction,
   updateStudentAction,
   deleteStudentAction,
-  getOneStudentAction
+  getOneStudentAction,
+  getStudentsInPaginationAction,
 } from "./_students";
 import {
   getAllSubjectssAction,
@@ -29,10 +31,23 @@ import {
   getStudentReportDataInTermAction,
   hideModalAction,
   getPointsByStudentAction,
-  getStudentAnualReportDataAction
+  getStudentAnualReportDataAction,
+  getPaginationPointsAction
 } from "./_points";
 import { getAllTeachersAction } from "./_teachers";
-import {disableSearchBox,setStudnetFilterData} from "./_globalActions";
+import {
+  disableSearchBox,
+  setStudnetFilterData,
+  handleNextPageChange,
+  handleTotalPageAction,
+  handlePreviousPageChange,
+  handleMarksNextPageChange,
+  handleMarksTotalPageAction,
+  handleMarksPreviousPageChange,
+  handleUserNextPageChange,
+  handleUserTotalPageAction,
+  handleUserPreviousPageChange
+} from "./_globalActions";
 export {
   loginAction,
   decodeToken,
@@ -62,4 +77,17 @@ export {
   deleteUserAction,
   getOneUserAction,
   getStudentAnualReportDataAction,
+  handlePreviousPageChange,
+  handleNextPageChange,
+  handleTotalPageAction,
+  handleMarksNextPageChange,
+  handleMarksTotalPageAction,
+  handleMarksPreviousPageChange,
+  handleUserNextPageChange,
+  handleUserTotalPageAction,
+  handleUserPreviousPageChange,
+  getStudentsInPaginationAction,
+  getPaginationPointsAction,
+  getPaginatedUsersAction
+
 };
