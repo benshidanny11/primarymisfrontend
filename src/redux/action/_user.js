@@ -82,7 +82,7 @@ export const createRefresh = () => async (dispatch) => {
   
 };
 
-export const getAllUsersAction = () => async (dispatch) => {
+export const getAllUsersAction = (currentPage) => async (dispatch) => {
   
   dispatch({
     type: actionType.GET_ALL_USERS_LOADING_ACTION,
@@ -90,14 +90,14 @@ export const getAllUsersAction = () => async (dispatch) => {
   });
   try {
     const { data } = await axios.get(
-      getUsersAPI,{
+      `${getUsersAPI}/${currentPage}`,{
         headers: {
           "Content-Type": "application/json",
           token: cookie.load("primary-mis-token"),
         },
       }
     );
-    
+    console.log("Users response",data);
     dispatch({
       type: actionType.GET_ALL_USERS_RESPONSE_ACTION,
       payload: data,
@@ -226,6 +226,34 @@ export const getOneUserAction = (seachQuery) => async (dispatch) => {
     dispatch({
       type: actionType.GET_ONE_USER_ERROR_ACTION,
       payload: e,
+    });
+  }
+};
+
+export const getPaginatedUsersAction = (currentPage) => async (dispatch) => {
+  
+  dispatch({
+    type: actionType.GET_PAGINATED_USERS_LOADING_ACTION,
+    payload: { type: "loading-get-paginated-users" },
+  });
+  try {
+    const { data } = await axios.get(
+      `${getUsersAPI}/${currentPage}`,{
+        headers: {
+          "Content-Type": "application/json",
+          token: cookie.load("primary-mis-token"),
+        },
+      }
+    );
+    console.log("Users response",data);
+    dispatch({
+      type: actionType.GET_PAGINATED_USERS_RESPONSE_ACTION,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionType.GET_PAGINATED_USERS_ERROR_ACTION,
+      payload: e.response,
     });
   }
 };

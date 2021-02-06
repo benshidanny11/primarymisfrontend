@@ -5,7 +5,8 @@ import {
   getAllUsersReducer,
   updateUserReducer,
   deleteUSerReducer,
-  getOneUserReducer
+  getOneUserReducer,
+  getPaginatedUsersReducer
 } from "./_user";
 import {
   studentReducer,
@@ -13,6 +14,7 @@ import {
   updateStudentReducer,
   deleteStudentReducer,
   getOneStudentReducer,
+  paginationStudentReducer
 } from "./_students";
 import {
   getAllSubjectsReducer,
@@ -27,11 +29,14 @@ import {
   getStudentReportDataInTermReducer,
   hideModalReducer,
   getMarksByStudentReducer,
-  getStudentAnualReportDataReducer
+  getStudentAnualReportDataReducer,
+  getPaginationPointsReducer
 } from "./_points";
 import {
   disableSearchReducer,
   setFilterStudentDataReducer,
+  handleChangePageReducer,
+  handleTotalPageReducer
 } from "./_globalReducers";
 
 export default combineReducers({
@@ -58,5 +63,10 @@ export default combineReducers({
   getMarksByStudentReducer,
   updateUserReducer,
   deleteUSerReducer,
-  getOneUserReducer
+  getOneUserReducer,
+  handleChangePageReducer,
+  handleTotalPageReducer,
+  paginationStudentReducer,
+  getPaginationPointsReducer,
+  getPaginatedUsersReducer
 });

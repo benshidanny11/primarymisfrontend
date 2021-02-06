@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {
   Table,
@@ -9,10 +9,10 @@ import {
   TableRow,
   Paper,
   Button,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import ContentLoader from "react-content-loader";
-import { Visibility, ArrowBack } from "@material-ui/icons";
+import { Visibility, ArrowBack, ArrowForward } from "@material-ui/icons";
 import cookies from "react-cookies";
 import UpdateUser from "./../modals/updateUSerModal";
 
@@ -20,7 +20,13 @@ import UserMenu from "../menus/userMenu";
 import DeleteUser from "../modals/deleteUSerModal";
 import SearchBox from "../filterers/searchBox";
 import { CustomClickableButton } from "../styledcontrols/buttons";
-import ProgressFull from "../modals/progressFullModal";
+import { useSelector, useDispatch } from "react-redux";
+import {ProgressFull} from "../modals/progressFullModal";
+import {
+  handleUserNextPageChange,
+  handleUserPreviousPageChange,
+  getPaginatedUsersAction,
+} from "../../../../redux/action";
 
 function Userslist({
   users,
@@ -28,14 +34,31 @@ function Userslist({
   showBackToUsers,
   displayNoDataFound,
 }) {
+  ///-----States and variables declarations
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
   const [actionUser, setActionUser] = useState({});
   const [userOptions, setUserOptions] = useState([]);
   const [showUpdateUserModal, setShowUpdateUserModal] = useState(false);
   const [showDeleteUserModal, setShowDeleteUserModal] = React.useState(false);
+  const [disablePrevButon, setDisablePrevButton] = React.useState(false);
+  const [disableNextButon, setDisableNextButton] = React.useState(false);
+
+  //Variables Declarations
 
   const { role } = cookies.load("user");
+  const dispatch = useDispatch();
+  const handleChangePageReducer = useSelector(
+    (state) => state.handleChangePageReducer
+  );
+  const handleTotalPageReducer = useSelector(
+    (state) => state.handleTotalPageReducer
+  );
+  const getStudentReportDataInTermReducer = useSelector(
+    (state) => state.getStudentReportDataInTermReducer
+  );
+
+  ///------------End of  states and variable declaration----
 
   const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -54,10 +77,6 @@ function Userslist({
       },
     },
   }))(TableRow);
-
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
 
   const useStyles = makeStyles({
     table: {},
@@ -85,6 +104,23 @@ function Userslist({
 
   const classes = useStyles();
 
+  //Use effect hoocks
+
+  useEffect(() => {
+    if (handleChangePageReducer.currentPage <= 1) {
+      setDisablePrevButton(true);
+    } else {
+      setDisablePrevButton(false);
+    }
+    if (
+      handleChangePageReducer.currentPage >= handleTotalPageReducer.totalPages
+    ) {
+      setDisableNextButton(true);
+    } else {
+      setDisableNextButton(false);
+    }
+  }, [handleChangePageReducer.currentPage, handleTotalPageReducer.totalPages]);
+
   //Event handlers
 
   const handleClickOpenUserMenu = (user) => {
@@ -106,6 +142,21 @@ function Userslist({
       setShowDeleteUserModal(true);
     }
     setOpenUserMenu(false);
+  };
+
+  const handlePreviousPageEvent = async () => {
+    dispatch(
+      handleUserPreviousPageChange(handleChangePageReducer.currentPage - 1)
+    );
+    dispatch(
+      await getPaginatedUsersAction(handleChangePageReducer.currentPage - 1)
+    );
+  };
+  const handleNextPageEvent = async () => {
+    dispatch(handleUserNextPageChange(handleChangePageReducer.currentPage + 1));
+    dispatch(
+      await getPaginatedUsersAction(handleChangePageReducer.currentPage + 1)
+    );
   };
 
   return (
@@ -134,20 +185,16 @@ function Userslist({
                 />
               </StyledTableCell>
             </StyledTableRow>
-            {
-          
-          displayNoDataFound ? (
-            <Typography
-              variant="h5"
-              align="center"
-              component="h5"
-              gutterBottom
-            >
-              No users found
-            </Typography>
-          ) :
-          
-             users.length !== 0 ? (
+            {displayNoDataFound ? (
+              <Typography
+                variant="h5"
+                align="center"
+                component="h5"
+                gutterBottom
+              >
+                No users found
+              </Typography>
+            ) : users.length !== 0 ? (
               users.map((user, key) =>
                 user.role !== role ? (
                   <StyledTableRow key={key}>
@@ -227,6 +274,44 @@ function Userslist({
             ) : (
               ""
             )}
+            {!showBackToUsers?!displayNoDataFound?
+              <StyledTableRow>
+                <StyledTableCell component="th" scope="row">
+                  {" "}
+                  <Button
+                    aria-controls="customized-menu"
+                    aria-haspopup="true"
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    startIcon={<ArrowBack />}
+                    onClick={handlePreviousPageEvent}
+                    disabled={disablePrevButon}
+                  >
+                    Previous
+                  </Button>
+                </StyledTableCell>
+                <StyledTableCell align=""></StyledTableCell>
+                <StyledTableCell align="">
+                  {handleChangePageReducer.currentPage} /{" "}
+                  {handleTotalPageReducer.totalPages}
+                </StyledTableCell>
+                <StyledTableCell align=""> </StyledTableCell>
+                <StyledTableCell align="center">
+                  <Button
+                    aria-controls="customized-menu"
+                    aria-haspopup="true"
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    startIcon={<ArrowForward />}
+                    onClick={handleNextPageEvent}
+                    disabled={disableNextButon}
+                  >
+                    Next
+                  </Button>
+                </StyledTableCell>
+              </StyledTableRow>:"":""}
           </TableBody>
         </Table>
       </TableContainer>
@@ -235,7 +320,7 @@ function Userslist({
         open={openUserMenu}
         onClose={handleOnSelectedOption}
         options={userOptions}
-        handleOnDismiss={()=>setOpenUserMenu(false)}
+        handleOnDismiss={() => setOpenUserMenu(false)}
       />
 
       <UpdateUser
@@ -251,6 +336,6 @@ function Userslist({
       />
       <ProgressFull />
     </div>
-  )
+  );
 }
 export default Userslist;

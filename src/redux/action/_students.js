@@ -110,14 +110,14 @@ export const deleteStudentAction = (id) => async (dispatch) => {
   }
 };
 
-export const getAllStudentsAction = ({levelid,academicYear}) => async (dispatch) => {
+export const getAllStudentsAction = (levelid,academicYear,currentPage) => async (dispatch) => {
   dispatch({
     type: actionType.GET_ALL_STUDENTS_LOADING_ACTION,
-    payload: { type: "loading" },
+    payload: { type: "loading"},
   });
   try {
     axios
-      .get(`${getStudentssAPI}/${levelid}/${academicYear}`, {
+      .get(`${getStudentssAPI}/${levelid}/${academicYear}/${currentPage}`, {
         headers: {
           "Content-Type": "application/json",
           token: cookie.load("primary-mis-token"),
@@ -204,4 +204,37 @@ export const handleLevelChangeAction = (value) => async (dispatch) => {
     type: actionType.LEVEL_CHANGE,
     payload: value,
   });
+};
+
+export const getStudentsInPaginationAction = (levelid,academicYear,currentPage) => async (dispatch) => {
+  dispatch({
+    type: actionType.GET_PAGINATION_STUDENTS_LOADING_ACTION,
+    payload: { type: "loading-pagination"},
+  });
+  try {
+    axios
+      .get(`${getStudentssAPI}/${levelid}/${academicYear}/${currentPage}`, {
+        headers: {
+          "Content-Type": "application/json",
+          token: cookie.load("primary-mis-token"),
+        },
+      })
+      .then((response) => {
+        dispatch({
+          type: actionType.GET_PAGINATION_STUDENTS_RESPONSE_ACTION,
+          payload: response.data,
+        });
+      })
+      .catch((e) => {
+        dispatch({
+          type: actionType.GET_PAGINATION_STUDENTS_ERROR_ACTION,
+          payload: e.response,
+        });
+      });
+  } catch (e) {
+    dispatch({
+      type: actionType.GET_PAGINATION_STUDENTS_ERROR_ACTION,
+      payload: e.response,
+    });
+  }
 };

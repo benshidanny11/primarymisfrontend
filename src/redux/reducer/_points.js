@@ -166,6 +166,29 @@ const hideinitialState = {
   default:
     return state;
    }
-
-   
   }
+
+  export const getPaginationPointsReducer = (state = initialState, action) => {
+    const { type, payload } = action;
+    switch (type) {
+      case actionTypes.GET_PAGINATED_POINTS_RESPONSE_ACTION:
+        return {
+          ...state,
+          ...payload,
+          type: "success-get-pagination-point",
+        };
+      case actionTypes.GET_PAGINATED_POINTS_ERROR_ACTION:
+        return {
+          ...state,
+          points:[],
+          type: "error-get-pagination-point",
+        };
+      case actionTypes.GET_PAGINATED_POINTS_LOADING_ACTION:
+        return {
+          ...state,
+         type:"loading-get-pagination-point",
+        };
+      default:
+        return state;
+    }
+  };

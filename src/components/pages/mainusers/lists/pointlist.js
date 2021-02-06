@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {
   Table,
@@ -11,7 +11,8 @@ import {
   Button,
 } from "@material-ui/core";
 import ContentLoader from "react-content-loader";
-import { Edit ,ArrowBack} from "@material-ui/icons";
+import { Edit, ArrowBack, ArrowForward } from "@material-ui/icons";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Typography } from "@material-ui/core";
 
@@ -20,9 +21,24 @@ import StudentMenu from "../menus/studentMenu";
 import cookie from "react-cookies";
 import SearchBox from "../filterers/searchBox";
 import UpdateMarksModal from "../modals/updatePointsModal";
-import ProgressFull from "../modals/progressFullModal";
+import {ProgressFullPoints} from "../modals/progressFullModal";
+import {
+  handleMarksNextPageChange,
+  handleMarksPreviousPageChange,
+  getAllPointsAction,
+  getPaginationPointsAction
+} from "../../../../redux/action";
 
-function PointList({ points, displayNoDataFound ,handleSearchByStudent,showBackToPoints,redirectData}) {
+function PointList({
+  points,
+  displayNoDataFound,
+  handleSearchByStudent,
+  showBackToPoints,
+  pointsData,
+}) {
+  //Destructuring props data
+  const { levelid, subjectname, term, academicYear } = pointsData;
+
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: "#1168ca",
@@ -40,24 +56,36 @@ function PointList({ points, displayNoDataFound ,handleSearchByStudent,showBackT
       },
     },
   }))(TableRow);
+  //States initializations
+  const [open, setOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState({});
+  const [options, setOptions] = useState([]);
+  const [showUpdatePointsModal, setShowUpdatePointsModal] =useState(
+    false
+  );
+  const [pointsToUpdate, setPointsToUpdate] = useState({});
+  const [showDeleteStudentModal, setShowDeleteStudentModal] =useState(
+    false
+  );
+  const [disablePrevButon, setDisablePrevButton] = useState(false);
+  const [disableNextButon, setDisableNextButton] = useState(false);
 
-  const [open, setOpen] = React.useState(false);
-  const [selectedStudent, setSelectedStudent] = React.useState({});
-  const [options, setOptions] = React.useState([]);
-  const [showUpdatePointsModal, setShowUpdatePointsModal] = React.useState(
-    false
+  const handleChangePageReducer = useSelector(
+    (state) => state.handleChangePageReducer
   );
-  const [pointsToUpdate, setPointsToUpdate] = React.useState({});
-  const [showDeleteStudentModal, setShowDeleteStudentModal] = React.useState(
-    false
+  const handleTotalPageReducer = useSelector(
+    (state) => state.handleTotalPageReducer
   );
+  const pointsReducer=useSelector((state) => state.getPaginationPointsReducer);
+  //Action dispatcher
+  const dispatch = useDispatch();
+
   const role = cookie.load("user").role;
-
+  //Custom styles
   const useStyles = makeStyles({
     table: {},
     container: {
-     
-      margin:"auto",
+      margin: "auto",
       overflow: "auto",
       padding: 10,
     },
@@ -83,19 +111,62 @@ function PointList({ points, displayNoDataFound ,handleSearchByStudent,showBackT
       },
     },
   });
+
+  //Event handlers
+
   const handleClickOpen = (point) => {
     // console.log(student)'
     setPointsToUpdate(point);
     setShowUpdatePointsModal(true);
-
   };
 
-  const handleBackEvent=()=>{
-    const {levelid,subjectname}=redirectData;
-    window.location.href=`/points?levelid=${levelid}&subjectname=${subjectname}`;
-   // handleBackToStudentList()
+  const handleBackEvent = () => {
+    window.location.href = `/points?levelid=${levelid}&subjectname=${subjectname}`;
+    // handleBackToStudentList()
+  };
+
+  useEffect(() => {
+    if (handleChangePageReducer.currentPage <=1) {
+      setDisablePrevButton(true);
+    }else{
+      setDisablePrevButton(false);
+    }
+    if (handleChangePageReducer.currentPage >=handleTotalPageReducer.totalPages) {
+      setDisableNextButton(true);
+    }else{
+      setDisableNextButton(false);
     }
 
+  }, [handleChangePageReducer.currentPage,handleTotalPageReducer.totalPages]);
+
+  const handlePreviousEvent = async () => {
+    dispatch(
+      handleMarksPreviousPageChange(handleChangePageReducer.currentPage - 1)
+    );
+    dispatch(
+      await getPaginationPointsAction(
+        levelid,
+        subjectname,
+        term,
+        academicYear,
+        handleChangePageReducer.currentPage - 1
+      )
+    );};
+
+  const handleNextPageEvent = async () => {
+    dispatch(
+      handleMarksNextPageChange(handleChangePageReducer.currentPage + 1)
+    );
+    dispatch(
+      await getPaginationPointsAction(
+        levelid,
+        subjectname,
+        term,
+        academicYear,
+        handleChangePageReducer.currentPage + 1
+      )
+    );
+  };
 
   const classes = useStyles();
 
@@ -106,30 +177,27 @@ function PointList({ points, displayNoDataFound ,handleSearchByStudent,showBackT
           <TableHead>
             <TableRow>
               <StyledTableCell>Student names</StyledTableCell>
-              <StyledTableCell align="" >Class</StyledTableCell>
-              <StyledTableCell align="" >CatOne</StyledTableCell>
-              <StyledTableCell align="" >CatTwo</StyledTableCell>
-              <StyledTableCell align="" >Exam </StyledTableCell>
+              <StyledTableCell align="">Class</StyledTableCell>
+              <StyledTableCell align="">CatOne</StyledTableCell>
+              <StyledTableCell align="">CatTwo</StyledTableCell>
+              <StyledTableCell align="">Exam </StyledTableCell>
               <StyledTableCell align="center">Options</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-          <StyledTableRow>
-                  
-                  <StyledTableCell component="th" scope="row">
-                 
-                  </StyledTableCell>
-                  <StyledTableCell align=""></StyledTableCell>
-                  <StyledTableCell align=""></StyledTableCell>
-                  <StyledTableCell align=""></StyledTableCell>
-                  <StyledTableCell align=""></StyledTableCell>
-                  <StyledTableCell align="center">
-                  <SearchBox
+            <StyledTableRow>
+              <StyledTableCell component="th" scope="row"></StyledTableCell>
+              <StyledTableCell align=""></StyledTableCell>
+              <StyledTableCell align=""></StyledTableCell>
+              <StyledTableCell align=""></StyledTableCell>
+              <StyledTableCell align=""></StyledTableCell>
+              <StyledTableCell align="center">
+                <SearchBox
                   handleSearchQuery={handleSearchByStudent}
                   placeholder="Type student name/ Reg number"
                 />
-                  </StyledTableCell>
-                </StyledTableRow>
+              </StyledTableCell>
+            </StyledTableRow>
             {displayNoDataFound ? (
               <Typography
                 variant="h5"
@@ -142,7 +210,6 @@ function PointList({ points, displayNoDataFound ,handleSearchByStudent,showBackT
             ) : points.length !== 0 ? (
               points.map((point, key) => (
                 <StyledTableRow key={key}>
-
                   <StyledTableCell component="th" scope="row">
                     {point.studentnames}
                   </StyledTableCell>
@@ -188,35 +255,68 @@ function PointList({ points, displayNoDataFound ,handleSearchByStudent,showBackT
                 </ContentLoader>
               </TableRow>
             )}
-             {showBackToPoints ? (
-               <StyledTableRow>
-                  
-               <StyledTableCell component="th" scope="row">
-              
-               </StyledTableCell>
-               <StyledTableCell align=""></StyledTableCell>
-               <StyledTableCell align=""></StyledTableCell>
-               <StyledTableCell align=""></StyledTableCell>
-               <StyledTableCell align=""></StyledTableCell>
-               <StyledTableCell align="center">
-               <Button
-                   aria-controls="customized-menu"
-                   aria-haspopup="true"
-                   variant="contained"
-                   color="primary"
-                   className={classes.button}
-                   startIcon={<ArrowBack />}
-                   onClick={handleBackEvent}
-                 >
-                   Back to list
-                 </Button>
-               </StyledTableCell>
-             </StyledTableRow>
-      
+            {showBackToPoints ? (
+              <StyledTableRow>
+                <StyledTableCell component="th" scope="row"></StyledTableCell>
+                <StyledTableCell align=""></StyledTableCell>
+                <StyledTableCell align=""></StyledTableCell>
+                <StyledTableCell align=""></StyledTableCell>
+                <StyledTableCell align=""></StyledTableCell>
+                <StyledTableCell align="center">
+                  <Button
+                    aria-controls="customized-menu"
+                    aria-haspopup="true"
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    startIcon={<ArrowBack />}
+                    onClick={handleBackEvent}
+                  >
+                    Back to list
+                  </Button>
+                </StyledTableCell>
+              </StyledTableRow>
             ) : (
               ""
             )}
-             
+            {!showBackToPoints?!displayNoDataFound?<StyledTableRow>
+              <StyledTableCell component="th" scope="row">
+                {" "}
+                <Button
+                  aria-controls="customized-menu"
+                  aria-haspopup="true"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  startIcon={<ArrowBack />}
+                  onClick={handlePreviousEvent}
+                  disabled={disablePrevButon}
+                >
+                  Previous
+                </Button>
+              </StyledTableCell>
+              <StyledTableCell align=""></StyledTableCell>
+              <StyledTableCell align=""></StyledTableCell>
+              <StyledTableCell align="">
+                {handleChangePageReducer.currentPage} /{" "}
+                {handleTotalPageReducer.totalPages}
+              </StyledTableCell>
+              <StyledTableCell align=""></StyledTableCell>
+              <StyledTableCell align="center">
+                <Button
+                  aria-controls="customized-menu"
+                  aria-haspopup="true"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  startIcon={<ArrowForward />}
+                  onClick={handleNextPageEvent}
+                  disabled={disableNextButon}
+                >
+                  Next
+                </Button>
+              </StyledTableCell>
+            </StyledTableRow>:"":""}
           </TableBody>
         </Table>
       </TableContainer>
@@ -225,7 +325,7 @@ function PointList({ points, displayNoDataFound ,handleSearchByStudent,showBackT
         onHide={() => setShowUpdatePointsModal(false)}
         points={pointsToUpdate}
       />
-      <ProgressFull/>
+      <ProgressFullPoints />
     </div>
   );
 }

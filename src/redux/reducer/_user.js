@@ -194,3 +194,37 @@ default:
   return state;
  }
 }
+
+export const getPaginatedUsersReducer = (state = getUSersInitialState, action) => {
+ 
+  const { type, payload } = action;
+  switch (type) {
+    case actionTypes.GET_PAGINATED_USERS_RESPONSE_ACTION:
+      
+      return {
+        ...state,
+        ...payload,
+        isFound: true,
+        type: "success-get-paginated-users",
+        
+      };
+
+    case actionTypes.GET_PAGINATED_USERS_ERROR_ACTION:
+      return {
+        ...state,
+        user: { ...payload },
+        type: "error-get-paginated-users",
+      };
+
+    case actionTypes.GET_PAGINATED_USERS_LOADING_ACTION:
+      return {
+        ...state,
+        ...payload,
+      };
+      default:
+        return state;
+       }
+    }
+    
+
+

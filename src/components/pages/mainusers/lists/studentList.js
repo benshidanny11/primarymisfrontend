@@ -12,7 +12,7 @@ import {
   Button,
 } from "@material-ui/core";
 import ContentLoader from "react-content-loader";
-import { Visibility,ArrowBack } from "@material-ui/icons";
+import { Visibility, ArrowBack, ArrowForward } from "@material-ui/icons";
 
 import { Typography } from "@material-ui/core";
 
@@ -21,14 +21,19 @@ import StudentMenu from "../menus/studentMenu";
 import cookie from "react-cookies";
 import generatePDF from "../report/reportGenerator";
 import generateReport from "../report/anualReport";
-import { hideModalAction } from "../../../../redux/action";
+import {
+  hideModalAction,
+  handlePreviousPageChange,
+  handleNextPageChange,
+  getStudentsInPaginationAction,
+} from "../../../../redux/action";
 
 import Updatestudentmodal from "../modals/updateStudentModal";
 import Deletestudentmodal from "../modals/deleteStudentModal";
 import ReportDataChooserModal from "../modals/reportDataChooserModal";
 import SearchBox from "../filterers/searchBox";
-import ProgressFull from "../modals/progressFullModal";
-
+import {ProgressFull} from "../modals/progressFullModal";
+import { $ } from "react-jquery-plugin";
 
 function Userslist({
   students,
@@ -36,7 +41,9 @@ function Userslist({
   handleSearchStudent,
   showBackToStudents,
   handleBackToStudentList,
+  studentData,
 }) {
+  //-------------------Custom styles--------------------
   const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: "#1168ca",
@@ -54,24 +61,6 @@ function Userslist({
       },
     },
   }))(TableRow);
-
-  const [open, setOpen] = React.useState(false);
-  const [selectedStudent, setSelectedStudent] = React.useState({});
-  const [options, setOptions] = React.useState([]);
-  const [showUpdateStudentModal, setShowUpdateStudentModal] = React.useState(
-    false
-  );
-  const [actionStudent, setActionStudent] = React.useState({});
-  const [showDeleteStudentModal, setShowDeleteStudentModal] = React.useState(
-    false
-  );
-  const [showReportDataChooser, setShowReportDataChooser] = React.useState(
-    false
-  );
-
-  const [resetReportData, setResetReportData] = React.useState(false);
-  const role = cookie.load("user").role;
-  console.log();
 
   const useStyles = makeStyles({
     table: {},
@@ -102,8 +91,53 @@ function Userslist({
       },
     },
   });
+  ///---------------End of stylse--------
+
+  //-----------------State and variable initialization--------------------
+
+  const [open, setOpen] = React.useState(false);
+  const [selectedStudent, setSelectedStudent] = React.useState({});
+  const [options, setOptions] = React.useState([]);
+  const [showUpdateStudentModal, setShowUpdateStudentModal] = React.useState(
+    false
+  );
+  const [actionStudent, setActionStudent] = React.useState({});
+  const [showDeleteStudentModal, setShowDeleteStudentModal] = React.useState(
+    false
+  );
+  const [showReportDataChooser, setShowReportDataChooser] = React.useState(
+    false
+  );
+
+  const [resetReportData, setResetReportData] = React.useState(false);
+  const [disablePrevButon, setDisablePrevButton] = React.useState(false);
+  const [disableNextButon, setDisableNextButton] = React.useState(false);
+  const role = cookie.load("user").role;
+
+  //Redux state loading
+  const dispatch = useDispatch();
+
+  const handleChangePageReducer = useSelector(
+    (state) => state.handleChangePageReducer
+  );
+  const handleTotalPageReducer = useSelector(
+    (state) => state.handleTotalPageReducer
+  );
+  const getStudentReportDataInTermReducer = useSelector(
+    (state) => state.getStudentReportDataInTermReducer
+  );
+  const getStudentAnualReportDataReducer = useSelector(
+    (state) => state.getStudentAnualReportDataReducer
+  );
+  const hideModalReducer = useSelector((state) => state.hideModalReducer);
+
+  const studentReducer = useSelector((state) => state.paginationStudentReducer);
+
+  //---------------End of state and variable initialization------------
+
+  //-----Handlers-----------
+
   const handleClickOpen = (student) => {
-    // console.log(student)
     setSelectedStudent(student);
     if (role === "HEAD_MASTER") {
       setOptions([
@@ -115,10 +149,11 @@ function Userslist({
     }
     setOpen(true);
   };
+
   const handleHideDeleteModal = () => {
     setShowDeleteStudentModal(false);
   };
-  const dispatch = useDispatch();
+
   const handleClose = ({ student, option }) => {
     setActionStudent(student);
     if (option === "Update student") {
@@ -131,23 +166,43 @@ function Userslist({
     }
     setOpen(false);
   };
+
   const handleCancelEvent = () => {
     setResetReportData(true);
     setShowReportDataChooser(false);
   };
 
-  const handleBackEvent=()=>{
-  window.location.href="/students"
- // handleBackToStudentList()
-  }
+  const handleBackEvent = () => {
+    window.location.href = "/students";
+    // handleBackToStudentList()
+  };
 
-  const getStudentReportDataInTermReducer = useSelector(
-    (state) => state.getStudentReportDataInTermReducer
-  );
-  const getStudentAnualReportDataReducer = useSelector(
-    (state) => state.getStudentAnualReportDataReducer
-  );
-  const hideModalReducer = useSelector((state) => state.hideModalReducer);
+  const handlePreviousEvent = async () => {
+    dispatch(handlePreviousPageChange(handleChangePageReducer.currentPage - 1));
+    dispatch(
+      await getStudentsInPaginationAction(
+        levelid,
+        academicYear,
+        handleChangePageReducer.currentPage - 1,
+        "paginationloading"
+      )
+    );
+  };
+  const handleNextPageEvent = async () => {
+    dispatch(handleNextPageChange(handleChangePageReducer.currentPage + 1));
+    dispatch(
+      await getStudentsInPaginationAction(
+        levelid,
+        academicYear,
+        handleChangePageReducer.currentPage + 1,
+        "paginationloading"
+      )
+    );
+  };
+  //-------------End of handlers section---------------
+
+  //-----Hooks (UseEffect)---------------
+
   useEffect(() => {
     //Report data is in report data array constant, you can now call report pdf here
     if (getStudentReportDataInTermReducer.type === "success-get-report-data") {
@@ -159,13 +214,55 @@ function Userslist({
   //anual report
   useEffect(() => {
     //Report data is in report data array constant, you can now call report pdf here
-    if (getStudentAnualReportDataReducer.type === "success-get-anual-report-data") {
+    if (
+      getStudentAnualReportDataReducer.type === "success-get-anual-report-data"
+    ) {
       const report = getStudentAnualReportDataReducer.points;
       // console.log(reportData)
       generateReport(report);
     }
-  },[getStudentAnualReportDataReducer.type]);
+  }, [getStudentAnualReportDataReducer.type]);
 
+  useEffect(() => {
+    if (handleChangePageReducer.currentPage <= 1) {
+      setDisablePrevButton(true);
+    } else {
+      setDisablePrevButton(false);
+    }
+    if (
+      handleChangePageReducer.currentPage >= handleTotalPageReducer.totalPages
+    ) {
+      setDisableNextButton(true);
+    } else {
+      setDisableNextButton(false);
+    }
+  }, [handleChangePageReducer.currentPage]);
+
+  useEffect(() => {
+    if (
+      handleChangePageReducer.currentPage >= handleTotalPageReducer.totalPages
+    ) {
+      setDisableNextButton(true);
+    } else {
+      setDisableNextButton(false);
+    }
+  }, [handleTotalPageReducer.totalPages]);
+
+  // useEffect(() => {
+  //  console.log("Typess",studentReducer.type)
+  //   if(studentReducer.type==="loading-pagination")
+  //   {
+  //     $("#progresssdotfull").removeClass("progressdothide")
+  //   }else if(studentReducer.type==="success-pagination"){
+  //     $("#progresssdotfull").addClass("progressdothide")
+  //   }else if(studentReducer.type==="error-pagination"){
+  //     $("#progresssdotfull").addClass("progressdothide")
+  //   }
+
+  // }, [studentReducer.type]);
+
+  const { levelid, academicYear } = studentData;
+  // console.log("Total pages=====>",handleTotalPageReducer.totalPages);
   const classes = useStyles();
 
   return (
@@ -266,22 +363,60 @@ function Userslist({
                     className="btn-submit"
                     handleClickEvent={handleBackToStudents}
                   /> */}
-                   <Button
-                      aria-controls="customized-menu"
-                      aria-haspopup="true"
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      startIcon={<ArrowBack />}
-                      onClick={handleBackEvent}
-                    >
-                      Back to list
-                    </Button>
+                  <Button
+                    aria-controls="customized-menu"
+                    aria-haspopup="true"
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    startIcon={<ArrowBack />}
+                    onClick={handleBackEvent}
+                  >
+                    Back to list
+                  </Button>
                 </StyledTableCell>
               </StyledTableRow>
             ) : (
               ""
             )}
+            {!showBackToStudents?!displayNoDataFound?
+              <StyledTableRow>
+                <StyledTableCell component="th" scope="row">
+                  {" "}
+                  <Button
+                    aria-controls="customized-menu"
+                    aria-haspopup="true"
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    startIcon={<ArrowBack />}
+                    onClick={handlePreviousEvent}
+                    disabled={disablePrevButon}
+                  >
+                    Previous
+                  </Button>
+                </StyledTableCell>
+                <StyledTableCell align=""></StyledTableCell>
+                <StyledTableCell align="">
+                  {handleChangePageReducer.currentPage} /{" "}
+                  {handleTotalPageReducer.totalPages}
+                </StyledTableCell>
+                <StyledTableCell align=""> </StyledTableCell>
+                <StyledTableCell align="center">
+                  <Button
+                    aria-controls="customized-menu"
+                    aria-haspopup="true"
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    startIcon={<ArrowForward />}
+                    onClick={handleNextPageEvent}
+                    disabled={disableNextButon}
+                  >
+                    Next
+                  </Button>
+                </StyledTableCell>
+              </StyledTableRow>:"":""}
           </TableBody>
         </Table>
         <StudentMenu
@@ -289,7 +424,7 @@ function Userslist({
           open={open}
           onClose={handleClose}
           options={options}
-          handleOnDismis={()=>setOpen(false)}
+          handleOnDismis={() => setOpen(false)}
         />
       </TableContainer>
       <Updatestudentmodal
@@ -312,7 +447,7 @@ function Userslist({
           levelid: actionStudent.levelid,
         }}
       />
-      <ProgressFull/>
+      <ProgressFull />
     </div>
   );
 }
