@@ -31,7 +31,7 @@ export const ReportDataHandlerInYear = (points) => {
         })(point, () => {
           waiting--;
           //Chech if iteration is done
-          if (waiting == 0) {
+          if (waiting === 0) {
             newPoints.forEach((newPoint) => {
               finalMarks.push(newPoint);
             });

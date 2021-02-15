@@ -104,6 +104,7 @@ function Leftsidebarnav(props) {
                       <i className="fas fa-angle-down"></i>
                     </div>
                   </Link>
+                  
                 ) : (
                   ""
                 )}
@@ -120,11 +121,65 @@ function Leftsidebarnav(props) {
                     <i className="fas fa-angle-down"></i>
                   </div>
                 </Link>
-              </nav>
+           </nav>
+           </div>
+           <div
+              className="nav-link collapsed"
+              href="#"
+              data-toggle="collapse"
+              data-target="#levels"
+              aria-expanded="false"
+              aria-controls="collapsePages"
+            >
+              <div className="sb-nav-link-icon">
+              <i class="fas fa-school"></i>
+              </div>
+              Class management
+              <div className="sb-sidenav-collapse-arrow">
+                <i className="fas fa-angle-down"></i>
+              </div>
             </div>
-          </div>
+            <div
+              className="collapse"
+              id="levels"
+              aria-labelledby="headingTwo"
+              data-parent="#sidenavAccordion"
+            >
+              <nav
+                className="sb-sidenav-menu-nested nav accordion"
+                id="sidenavAccordionPages"
+              >
+                {role !== "TEACHER" ? ([
+                  <Link
+                    className="nav-link collapsed"
+                    data-toggle="collapse"
+                    data-target="#pagesCollapseAuth"
+                    aria-expanded="false"
+                    aria-controls="pagesCollapseAuth"
+                    to="/class/1"
+                  >
+                    P1
+                  </Link>,
+                  <Link
+                  className="nav-link collapsed"
+                  data-toggle="collapse"
+                  data-target="#pagesCollapseAuth"
+                  aria-expanded="false"
+                  aria-controls="pagesCollapseAuth"
+                  to="/class/2"
+                >
+                  P2
+                </Link>
+                ]
+                  
+                  
+                ) : (
+                  ""
+                )}
+           </nav>
+           </div>
         </div>
-
+</div>
         <div className="sb-sidenav-footer">
           <div className="small">Logged in as:</div>
           {cookie.load("user").names}

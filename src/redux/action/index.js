@@ -35,6 +35,7 @@ import {
   getPaginationPointsAction
 } from "./_points";
 import { getAllTeachersAction } from "./_teachers";
+import { getAllClassessAction } from "./_Class";
 import {
   disableSearchBox,
   setStudnetFilterData,
@@ -88,6 +89,7 @@ export {
   handleUserPreviousPageChange,
   getStudentsInPaginationAction,
   getPaginationPointsAction,
-  getPaginatedUsersAction
+  getPaginatedUsersAction,
+  getAllClassessAction,
 
 };

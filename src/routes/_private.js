@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import React from "react";
 import { Redirect } from 'react-router-dom'
-import { CreactUSer,Home,Users ,Students,Subjects,Points} from '../components/pages/mainusers'
+import { CreactUSer,Home,Users ,Students,Subjects,Points,AllClass} from '../components/pages/mainusers'
 import { useSelector } from "react-redux";
 import _ from 'lodash'
 import cookie from "react-cookies";
@@ -49,7 +49,13 @@ class Routes {
         type: "navigation",
       },
       
-      
+      {
+        path: "/class/:levelid",
+        name: "All classes",
+        icon: "icon-user",
+        component: AllClass,
+        type: "navigation",
+      },
       
     ];
   }

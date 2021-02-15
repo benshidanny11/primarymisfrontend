@@ -39,6 +39,7 @@ import {
   handleTotalPageReducer
 } from "./_globalReducers";
 
+import { getAllClassesReducer } from "./Class";
 export default combineReducers({
   loginReducer,
   createUserReducer,
@@ -68,5 +69,6 @@ export default combineReducers({
   handleTotalPageReducer,
   paginationStudentReducer,
   getPaginationPointsReducer,
-  getPaginatedUsersReducer
+  getPaginatedUsersReducer,
+  getAllClassesReducer,
 });
