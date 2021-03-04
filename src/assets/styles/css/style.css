@@ -9,6 +9,10 @@
   width: 100%;
 }
 
+body {
+  overflow-y: auto;
+}
+
 .selectorContainer {
   display: grid;
   justify-content: space-between;

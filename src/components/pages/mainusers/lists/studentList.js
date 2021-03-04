@@ -32,8 +32,10 @@ import Updatestudentmodal from "../modals/updateStudentModal";
 import Deletestudentmodal from "../modals/deleteStudentModal";
 import ReportDataChooserModal from "../modals/reportDataChooserModal";
 import SearchBox from "../filterers/searchBox";
-import {ProgressFull} from "../modals/progressFullModal";
+import { ProgressFull } from "../modals/progressFullModal";
 import { $ } from "react-jquery-plugin";
+import ResponseMessageModal from "../modals/responseMessageModal";
+
 
 function Userslist({
   students,
@@ -113,6 +115,10 @@ function Userslist({
   const [disablePrevButon, setDisablePrevButton] = React.useState(false);
   const [disableNextButon, setDisableNextButton] = React.useState(false);
   const role = cookie.load("user").role;
+  const [responseErrorMessage,setResponseErrorMessage]=React.useState("");
+
+  const [showResponseModal,setShowResponseModal]=React.useState(false);
+  const [responseErrorErrorTitle,setResponseErrorTitle]=React.useState("");
 
   //Redux state loading
   const dispatch = useDispatch();
@@ -162,6 +168,7 @@ function Userslist({
       setShowDeleteStudentModal(true);
     } else if (option === "View student report") {
       // setShowReportDataChooser(true);
+     
       dispatch(hideModalAction(true));
     }
     setOpen(false);
@@ -217,11 +224,28 @@ function Userslist({
     if (
       getStudentAnualReportDataReducer.type === "success-get-anual-report-data"
     ) {
+      $("#progresssdotfull").addClass("progressdothide")
       const report = getStudentAnualReportDataReducer.points;
       // console.log(reportData)
       generateReport(report);
+    } else if (
+      getStudentAnualReportDataReducer.type === "loading-get-anual-report-data"
+    ) {
+      $("#progresssdotfull").removeClass("progressdothide")
+    } else if (
+      getStudentAnualReportDataReducer.type === "error-get-anual-report-data"
+    ) {
+      $("#progresssdotfull").addClass("progressdothide")
+      setShowResponseModal(true);
+      setResponseErrorMessage(getStudentAnualReportDataReducer.response.data.message)
+      setResponseErrorTitle("Student report error")
+      console.log("On error year report",getStudentAnualReportDataReducer.response.data.message)
     }
   }, [getStudentAnualReportDataReducer.type]);
+
+  const hideResponseModal=()=>{
+    setShowResponseModal(false)
+  }
 
   useEffect(() => {
     if (handleChangePageReducer.currentPage <= 1) {
@@ -379,44 +403,51 @@ function Userslist({
             ) : (
               ""
             )}
-            {!showBackToStudents?!displayNoDataFound?
-              <StyledTableRow>
-                <StyledTableCell component="th" scope="row">
-                  {" "}
-                  <Button
-                    aria-controls="customized-menu"
-                    aria-haspopup="true"
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    startIcon={<ArrowBack />}
-                    onClick={handlePreviousEvent}
-                    disabled={disablePrevButon}
-                  >
-                    Previous
-                  </Button>
-                </StyledTableCell>
-                <StyledTableCell align=""></StyledTableCell>
-                <StyledTableCell align="">
-                  {handleChangePageReducer.currentPage} /{" "}
-                  {handleTotalPageReducer.totalPages}
-                </StyledTableCell>
-                <StyledTableCell align=""> </StyledTableCell>
-                <StyledTableCell align="center">
-                  <Button
-                    aria-controls="customized-menu"
-                    aria-haspopup="true"
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    startIcon={<ArrowForward />}
-                    onClick={handleNextPageEvent}
-                    disabled={disableNextButon}
-                  >
-                    Next
-                  </Button>
-                </StyledTableCell>
-              </StyledTableRow>:"":""}
+            {!showBackToStudents ? (
+              !displayNoDataFound ? (
+                <StyledTableRow>
+                  <StyledTableCell component="th" scope="row">
+                    {" "}
+                    <Button
+                      aria-controls="customized-menu"
+                      aria-haspopup="true"
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      startIcon={<ArrowBack />}
+                      onClick={handlePreviousEvent}
+                      disabled={disablePrevButon}
+                    >
+                      Previous
+                    </Button>
+                  </StyledTableCell>
+                  <StyledTableCell align=""></StyledTableCell>
+                  <StyledTableCell align="">
+                    {handleChangePageReducer.currentPage} /{" "}
+                    {handleTotalPageReducer.totalPages}
+                  </StyledTableCell>
+                  <StyledTableCell align=""> </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Button
+                      aria-controls="customized-menu"
+                      aria-haspopup="true"
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      startIcon={<ArrowForward />}
+                      onClick={handleNextPageEvent}
+                      disabled={disableNextButon}
+                    >
+                      Next
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ) : (
+                ""
+              )
+            ) : (
+              ""
+            )}
           </TableBody>
         </Table>
         <StudentMenu
@@ -448,6 +479,7 @@ function Userslist({
         }}
       />
       <ProgressFull />
+      <ResponseMessageModal title={responseErrorErrorTitle} message={responseErrorMessage} showResponseModal={showResponseModal} onBackClick={handleBackEvent}/>
     </div>
   );
 }
