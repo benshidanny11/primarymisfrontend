@@ -94,7 +94,6 @@ function SubjectList({ subjects, displayNoDataFound, handleSearchStudent }) {
   const useStyles = makeStyles({
     table: {},
     container: {
-      width: 1120,
       margin: "auto",
       overflow: "auto",
       padding: 10,
